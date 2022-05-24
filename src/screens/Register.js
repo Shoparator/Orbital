@@ -24,6 +24,7 @@ import { StatusBar } from "expo-status-bar";
 const Register = ({ navigation }) => {
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
+	const [confirmPassword, setConfirmPassword] = useState("");
 
 	const signUpToast = () => {
 		ToastAndroid.show(
@@ -39,9 +40,18 @@ const Register = ({ navigation }) => {
 		);
 	};
 
+	const samePasswordToast = () => {
+		ToastAndroid.show("Password must be the same!", ToastAndroid.SHORT);
+	};
+
 	const signUpHandler = () => {
 		if (email.length === 0 || password.length === 0) {
 			missingFieldsToast();
+			return;
+		}
+
+		if (password != confirmPassword) {
+			samePasswordToast();
 			return;
 		}
 
@@ -102,6 +112,21 @@ const Register = ({ navigation }) => {
 						value={password}
 						placeholder="Password."
 						textHandler={setPassword}
+						inputType="password"
+						icon={
+							<Ionicons
+								name="ios-lock-closed-outline"
+								size={20}
+								color="#666"
+								style={styles.authImg}
+							/>
+						}
+					/>
+
+					<AuthTextInput
+						value={password}
+						placeholder="Confirm Password."
+						textHandler={setConfirmPassword}
 						inputType="password"
 						icon={
 							<Ionicons
