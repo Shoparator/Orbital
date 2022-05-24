@@ -7,12 +7,19 @@ import {
 	Keyboard,
 	Platform,
 	ToastAndroid,
+	Text,
+	SafeAreaView,
+	TouchableOpacity,
 } from "react-native";
 
 import { signInWithEmailAndPassword } from "firebase/auth";
 
 import { AuthButton, AuthTextInput } from "../components";
 import { auth } from "../firebase";
+
+import MaterialIcons from "react-native-vector-icons/MaterialIcons";
+import Ionicons from "react-native-vector-icons/Ionicons";
+import { StatusBar } from "expo-status-bar";
 
 const Login = ({ navigation }) => {
 	const [email, setEmail] = useState("");
@@ -55,39 +62,71 @@ const Login = ({ navigation }) => {
 	};
 
 	return (
-		<KeyboardAvoidingView
-			style={{ flex: 1 }}
-			behavior={Platform.OS === "ios" ? "padding" : null}
-		>
-			<View style={styles.container}>
-				<Image
-					style={styles.logo}
-					source={require("../../assets/logo_transparent.png")}
-				/>
+		<SafeAreaView style={styles.container}>
+			<StatusBar backgroundColor="#E8EAED" />
+			<KeyboardAvoidingView
+				style={{ flex: 1 }}
+				behavior={Platform.OS === "ios" ? "padding" : null}
+			>
+				<View style={styles.container}>
+					<Image
+						style={styles.logo}
+						source={require("../../assets/logo_transparent.png")}
+					/>
 
-				<AuthTextInput
-					value={email}
-					placeholder="Email."
-					textHandler={setEmail}
-					keyboardType="email-address"
-				/>
+					<Text style={styles.header}> Login </Text>
 
-				<AuthTextInput
-					value={password}
-					placeholder="Password."
-					textHandler={setPassword}
-					secureTextEntry
-				/>
+					<AuthTextInput
+						value={email}
+						placeholder="Email."
+						textHandler={setEmail}
+						keyboardType="email-address"
+						icon={
+							<MaterialIcons
+								name="alternate-email"
+								size={20}
+								color="#666"
+								style={styles.authImg}
+							/>
+						}
+					/>
 
-				<AuthButton onPressHandler={loginHandler} title={"Proceed"} />
-				<AuthButton
-					onPressHandler={() => {
-						navigation.navigate("Register");
-					}}
-					title={`Switch to Sign Up`}
-				/>
-			</View>
-		</KeyboardAvoidingView>
+					<AuthTextInput
+						value={password}
+						placeholder="Password."
+						textHandler={setPassword}
+						inputType="password"
+						icon={
+							<Ionicons
+								name="ios-lock-closed-outline"
+								size={20}
+								color="#666"
+								style={styles.authImg}
+							/>
+						}
+						fieldButtonLabel="Forgot?"
+						fieldButtonFuction={() => {}}
+					/>
+
+					<AuthButton onPressHandler={loginHandler} title={"Login"} />
+
+					<View
+						style={{
+							flexDirection: "row",
+						}}
+					>
+						<Text style={{ marginRight: 5 }}>New to the App?</Text>
+						<TouchableOpacity
+							onPress={() => {
+								navigation.navigate("Register");
+							}}
+						>
+							<Text style={styles.textButton}>Register</Text>
+						</TouchableOpacity>
+					</View>
+				</View>
+			</KeyboardAvoidingView>
+		</SafeAreaView>
 	);
 };
 
@@ -97,12 +136,43 @@ const styles = StyleSheet.create({
 		backgroundColor: "#E8EAED",
 		alignItems: "center",
 		justifyContent: "center",
+		paddingHorizontal: 25,
 	},
 
 	logo: {
 		width: 300,
 		height: 300,
-		marginBottom: 40,
+		marginBottom: 10,
+	},
+
+	fields: {
+		alignSelf: "flex-start",
+		flexDirection: "row",
+		borderBottomColor: "#ccc",
+		borderBottomWidth: 1,
+		paddingBottom: 5,
+		marginBottom: 25,
+	},
+
+	authInput: {
+		flex: 1,
+		paddingVertical: 0,
+	},
+	authImg: {
+		marginRight: 5,
+	},
+
+	header: {
+		fontSize: 28,
+		fontWeight: "500",
+		color: "#333",
+		marginBottom: 30,
+		alignSelf: "flex-start",
+	},
+
+	textButton: {
+		color: "#006ee6",
+		fontWeight: "700",
 	},
 });
 
