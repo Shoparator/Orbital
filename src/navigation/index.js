@@ -5,7 +5,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { onAuthStateChanged, signOut } from "firebase/auth";
 import { MaterialIcons } from "@expo/vector-icons";
 import { auth } from "../firebase";
-import { Login, Track, AddItem } from "../screens";
+import { Login, Track, AddItem, Register } from "../screens";
 
 const Stack = createNativeStackNavigator();
 const TrackStack = createNativeStackNavigator();
@@ -33,7 +33,16 @@ const Navigator = () => {
 
 	const LoginNavigator = () => (
 		<Stack.Navigator initialRouteName={Login}>
-			<Stack.Screen name="Login" component={Login} />
+			<Stack.Screen
+				name="Login"
+				component={Login}
+				options={{ headerShown: false }}
+			/>
+			<Stack.Screen
+				name="Register"
+				component={Register}
+				options={{ headerShown: false }}
+			/>
 		</Stack.Navigator>
 	);
 

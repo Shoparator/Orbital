@@ -9,14 +9,21 @@ import {
 	ToastAndroid,
 } from "react-native";
 
-import { signInWithEmailAndPassword } from "firebase/auth";
+import { createUserWithEmailAndPassword } from "firebase/auth";
 
 import { AuthButton, AuthTextInput } from "../components";
 import { auth } from "../firebase";
 
-const Login = ({ navigation }) => {
+const Register = ({ navigation }) => {
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
+
+	const signUpToast = () => {
+		ToastAndroid.show(
+			"Sign Up successfully completed!",
+			ToastAndroid.SHORT
+		);
+	};
 
 	const missingFieldsToast = () => {
 		ToastAndroid.show(
@@ -25,13 +32,13 @@ const Login = ({ navigation }) => {
 		);
 	};
 
-	const loginHandler = () => {
+	const signUpHandler = () => {
 		if (email.length === 0 || password.length === 0) {
 			missingFieldsToast();
 			return;
 		}
 
-		return signInWithEmailAndPassword(auth, email, password)
+		return createUserWithEmailAndPassword(auth, email, password)
 			.then((userCredentials) => {
 				const user = userCredentials.user;
 
@@ -39,12 +46,13 @@ const Login = ({ navigation }) => {
 				console.log(user);
 
 				restoreForm();
+				signUpToast();
 			})
 			.catch((error) => {
 				const errorCode = error.code;
 				const errorMessage = error.message;
 
-				console.error("[loginHandler]", errorCode, errorMessage);
+				console.error("[signUpHandler]", errorCode, errorMessage);
 			});
 	};
 
@@ -79,12 +87,10 @@ const Login = ({ navigation }) => {
 					secureTextEntry
 				/>
 
-				<AuthButton onPressHandler={loginHandler} title={"Proceed"} />
+				<AuthButton onPressHandler={signUpHandler} title={"Proceed"} />
 				<AuthButton
-					onPressHandler={() => {
-						navigation.navigate("Register");
-					}}
-					title={`Switch to Sign Up`}
+					onPressHandler={() => navigation.navigate("Login")}
+					title={`Switch to Login`}
 				/>
 			</View>
 		</KeyboardAvoidingView>
@@ -106,4 +112,4 @@ const styles = StyleSheet.create({
 	},
 });
 
-export default Login;
+export default Register;
