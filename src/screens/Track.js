@@ -5,6 +5,7 @@ import {
 	SafeAreaView,
 	KeyboardAvoidingView,
 	FlatList,
+	ToastAndroid,
 } from "react-native";
 import {
 	onSnapshot,
@@ -39,6 +40,10 @@ const Track = ({ navigation }) => {
 
 		return unsubscribe;
 	});
+
+	const showRes = (text) => {
+		ToastAndroid.show(text, ToastAndroid.SHORT);
+	};
 
 	const onDeleteHandler = async (id) => {
 		try {

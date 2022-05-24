@@ -1,7 +1,7 @@
 import { StyleSheet, Text, Pressable } from "react-native";
 import React from "react";
 
-const AuthPressable = (props) => {
+const AuthButton = (props) => {
 	const { onPressHandler, title } = props;
 
 	return (
@@ -15,19 +15,20 @@ const AuthPressable = (props) => {
 	);
 };
 
-export default AuthPressable;
+export default AuthButton;
 
 const styles = StyleSheet.create({
 	button: {
-		backgroundColor: "#80E2FF",
-		marginVertical: 5,
-		paddingVertical: 10,
-		width: "80%",
-		height: 40,
-		alignItems: "center",
-		borderRadius: 4,
+		backgroundColor: "#006ee6",
+		padding: 15,
+		width: "100%",
+		borderRadius: 10,
+		marginBottom: 30,
 	},
 	text: {
 		color: "white",
+		textAlign: "center",
+		fontWeight: "700",
+		fontSize: 16,
 	},
 });

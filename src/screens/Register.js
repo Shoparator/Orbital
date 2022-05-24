@@ -12,7 +12,7 @@ import {
 	TouchableOpacity,
 } from "react-native";
 
-import { signInWithEmailAndPassword } from "firebase/auth";
+import { createUserWithEmailAndPassword } from "firebase/auth";
 
 import { AuthButton, AuthTextInput } from "../components";
 import { auth } from "../firebase";
@@ -21,9 +21,17 @@ import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { StatusBar } from "expo-status-bar";
 
-const Login = ({ navigation }) => {
+const Register = ({ navigation }) => {
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
+	const [confirmPassword, setConfirmPassword] = useState("");
+
+	const signUpToast = () => {
+		ToastAndroid.show(
+			"Sign Up successfully completed!",
+			ToastAndroid.SHORT
+		);
+	};
 
 	const missingFieldsToast = () => {
 		ToastAndroid.show(
@@ -32,13 +40,22 @@ const Login = ({ navigation }) => {
 		);
 	};
 
-	const loginHandler = () => {
+	const samePasswordToast = () => {
+		ToastAndroid.show("Password must be the same!", ToastAndroid.SHORT);
+	};
+
+	const signUpHandler = () => {
 		if (email.length === 0 || password.length === 0) {
 			missingFieldsToast();
 			return;
 		}
 
-		return signInWithEmailAndPassword(auth, email, password)
+		if (password != confirmPassword) {
+			samePasswordToast();
+			return;
+		}
+
+		return createUserWithEmailAndPassword(auth, email, password)
 			.then((userCredentials) => {
 				const user = userCredentials.user;
 
@@ -46,12 +63,13 @@ const Login = ({ navigation }) => {
 				console.log(user);
 
 				restoreForm();
+				signUpToast();
 			})
 			.catch((error) => {
 				const errorCode = error.code;
 				const errorMessage = error.message;
 
-				console.error("[loginHandler]", errorCode, errorMessage);
+				console.error("[signUpHandler]", errorCode, errorMessage);
 			});
 	};
 
@@ -63,7 +81,6 @@ const Login = ({ navigation }) => {
 
 	return (
 		<SafeAreaView style={styles.container}>
-			<StatusBar backgroundColor="#E8EAED" />
 			<KeyboardAvoidingView
 				style={{ flex: 1 }}
 				behavior={Platform.OS === "ios" ? "padding" : null}
@@ -74,7 +91,7 @@ const Login = ({ navigation }) => {
 						source={require("../../assets/logo_transparent.png")}
 					/>
 
-					<Text style={styles.header}> Login </Text>
+					<Text style={styles.header}> Register </Text>
 
 					<AuthTextInput
 						value={email}
@@ -104,24 +121,42 @@ const Login = ({ navigation }) => {
 								style={styles.authImg}
 							/>
 						}
-						fieldButtonLabel="Forgot?"
-						fieldButtonFuction={() => {}}
 					/>
 
-					<AuthButton onPressHandler={loginHandler} title={"Login"} />
+					<AuthTextInput
+						value={password}
+						placeholder="Confirm Password."
+						textHandler={setConfirmPassword}
+						inputType="password"
+						icon={
+							<Ionicons
+								name="ios-lock-closed-outline"
+								size={20}
+								color="#666"
+								style={styles.authImg}
+							/>
+						}
+					/>
+
+					<AuthButton
+						onPressHandler={signUpHandler}
+						title={"Register"}
+					/>
 
 					<View
 						style={{
 							flexDirection: "row",
 						}}
 					>
-						<Text style={{ marginRight: 5 }}>New to the App?</Text>
+						<Text style={{ marginRight: 5 }}>
+							Already have an account?
+						</Text>
 						<TouchableOpacity
 							onPress={() => {
-								navigation.navigate("Register");
+								navigation.navigate("Login");
 							}}
 						>
-							<Text style={styles.textButton}>Register</Text>
+							<Text style={styles.textButton}>Login</Text>
 						</TouchableOpacity>
 					</View>
 				</View>
@@ -176,4 +211,4 @@ const styles = StyleSheet.create({
 	},
 });
 
-export default Login;
+export default Register;
