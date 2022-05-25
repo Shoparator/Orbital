@@ -5,9 +5,7 @@ import {
 	KeyboardAvoidingView,
 	Keyboard,
 	Platform,
-	TouchableOpacity,
 	ToastAndroid,
-	Text,
 } from "react-native";
 
 import { addDoc, collection } from "firebase/firestore";
