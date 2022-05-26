@@ -10,7 +10,7 @@ import {
 
 import { addDoc, collection } from "firebase/firestore";
 
-import { db } from "../firebase";
+import { db, auth } from "../firebase";
 
 import { TextInput } from "../components";
 
@@ -27,7 +27,7 @@ const AddItem = ({ navigation }) => {
 		}
 
 		try {
-			const taskRef = await addDoc(collection(db, "listings"), {
+			const taskRef = await addDoc(collection(db, auth.currentUser.uid), {
 				name: name,
 				url: url,
 				price: null,
