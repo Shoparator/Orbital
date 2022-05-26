@@ -124,7 +124,7 @@ const Register = ({ navigation }) => {
 					/>
 
 					<AuthTextInput
-						value={password}
+						value={confirmPassword}
 						placeholder="Confirm Password."
 						textHandler={setConfirmPassword}
 						inputType="password"

@@ -9,21 +9,18 @@ import {
 	ToastAndroid,
 	Text,
 	SafeAreaView,
-	TouchableOpacity,
 } from "react-native";
 
-import { signInWithEmailAndPassword } from "firebase/auth";
+import { sendPasswordResetEmail } from "firebase/auth";
 
 import { AuthButton, AuthTextInput } from "../components";
 import { auth } from "../firebase";
 
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
-import Ionicons from "react-native-vector-icons/Ionicons";
 import { StatusBar } from "expo-status-bar";
 
-const Login = ({ navigation }) => {
+const Forget = ({ navigation }) => {
 	const [email, setEmail] = useState("");
-	const [password, setPassword] = useState("");
 
 	const missingFieldsToast = () => {
 		ToastAndroid.show(
@@ -32,32 +29,26 @@ const Login = ({ navigation }) => {
 		);
 	};
 
-	const loginHandler = () => {
-		if (email.length === 0 || password.length === 0) {
+	const resetHandler = () => {
+		if (email.length === 0) {
 			missingFieldsToast();
 			return;
 		}
 
-		return signInWithEmailAndPassword(auth, email, password)
-			.then((userCredentials) => {
-				const user = userCredentials.user;
-
-				// To show the user object returned
-				// console.log(user);
-
+		return sendPasswordResetEmail(auth, email)
+			.then(() => {
 				restoreForm();
 			})
 			.catch((error) => {
 				const errorCode = error.code;
 				const errorMessage = error.message;
 
-				console.error("[loginHandler]", errorCode, errorMessage);
+				console.error("[resetHandler]", errorCode, errorMessage);
 			});
 	};
 
 	const restoreForm = () => {
 		setEmail("");
-		setPassword("");
 		Keyboard.dismiss();
 	};
 
@@ -74,7 +65,7 @@ const Login = ({ navigation }) => {
 						source={require("../../assets/logo_transparent.png")}
 					/>
 
-					<Text style={styles.header}> Login </Text>
+					<Text style={styles.header}> Reset Password </Text>
 
 					<AuthTextInput
 						value={email}
@@ -91,44 +82,10 @@ const Login = ({ navigation }) => {
 						}
 					/>
 
-					<AuthTextInput
-						value={password}
-						placeholder="Password."
-						textHandler={setPassword}
-						inputType="password"
-						icon={
-							<Ionicons
-								name="ios-lock-closed-outline"
-								size={20}
-								color="#666"
-								style={styles.authImg}
-							/>
-						}
-						button={
-							<TouchableOpacity
-								onPress={() => navigation.navigate("Forget")}
-							>
-								<Text style={styles.buttonText}>Forget?</Text>
-							</TouchableOpacity>
-						}
+					<AuthButton
+						onPressHandler={resetHandler}
+						title={"Reset Password"}
 					/>
-
-					<AuthButton onPressHandler={loginHandler} title={"Login"} />
-
-					<View
-						style={{
-							flexDirection: "row",
-						}}
-					>
-						<Text style={{ marginRight: 5 }}>New to the App?</Text>
-						<TouchableOpacity
-							onPress={() => {
-								navigation.navigate("Register");
-							}}
-						>
-							<Text style={styles.textButton}>Register</Text>
-						</TouchableOpacity>
-					</View>
 				</View>
 			</KeyboardAvoidingView>
 		</SafeAreaView>
@@ -150,6 +107,19 @@ const styles = StyleSheet.create({
 		marginBottom: 10,
 	},
 
+	fields: {
+		alignSelf: "flex-start",
+		flexDirection: "row",
+		borderBottomColor: "#ccc",
+		borderBottomWidth: 1,
+		paddingBottom: 5,
+		marginBottom: 25,
+	},
+
+	authInput: {
+		flex: 1,
+		paddingVertical: 0,
+	},
 	authImg: {
 		marginRight: 5,
 	},
@@ -166,8 +136,6 @@ const styles = StyleSheet.create({
 		color: "#006ee6",
 		fontWeight: "700",
 	},
-
-	buttonText: { color: "#006ee6", fontWeight: "700" },
 });
 
-export default Login;
+export default Forget;
