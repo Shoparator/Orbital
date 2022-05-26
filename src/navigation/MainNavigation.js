@@ -86,7 +86,7 @@ const MainNavigation = () => {
 	const logoutHandler = () => {
 		signOut(auth).then(() => {
 			setIsAuth(false);
-			setUser({});
+			// setUser({});
 		});
 	};
 

@@ -6,6 +6,7 @@ import {
 	KeyboardAvoidingView,
 	FlatList,
 	ToastAndroid,
+	TouchableOpacity,
 } from "react-native";
 import {
 	onSnapshot,
@@ -19,9 +20,11 @@ import { db } from "../firebase";
 
 import { Item } from "../components";
 import ActionButton from "react-native-action-button";
+import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 
 const Track = ({ navigation }) => {
 	const [listings, setListings] = useState([]);
+	const [isRefresh, setIsRefresh] = useState(false);
 
 	useEffect(() => {
 		// Expensive operation. Consider your app's design on when to invoke this.
@@ -37,9 +40,13 @@ const Track = ({ navigation }) => {
 
 			setListings([...listings]);
 		});
-
 		return unsubscribe;
-	});
+	}, [refresh]); // Temporary measure to prevent useEffect from constantly happening.
+
+	const refresh = () => {
+		setIsRefresh(true);
+		setIsRefresh(false);
+	};
 
 	const showRes = (text) => {
 		ToastAndroid.show(text, ToastAndroid.SHORT);
@@ -65,6 +72,16 @@ const Track = ({ navigation }) => {
 			<SafeAreaView style={styles.container}>
 				<View style={styles.contentContainer}>
 					<View style={styles.listContainer}>
+						<TouchableOpacity
+							onPress={refresh}
+							style={{ alignSelf: "flex-end", padding: 10 }}
+						>
+							<MaterialIcons
+								name="refresh"
+								size={28}
+								color="#407BFF"
+							/>
+						</TouchableOpacity>
 						<FlatList
 							data={listings}
 							renderItem={({ item, index }) => (
@@ -93,11 +110,9 @@ const Track = ({ navigation }) => {
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
-		backgroundColor: "#FAF9F6",
 	},
 	contentContainer: {
 		flex: 1,
-		backgroundColor: "#FAF9F6",
 	},
 	listContainer: {
 		flex: 1,
