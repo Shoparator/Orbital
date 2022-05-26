@@ -1,15 +1,21 @@
 import React, { useState, useEffect } from "react";
 import { TouchableOpacity } from "react-native";
-import { NavigationContainer, TabActions } from "@react-navigation/native";
+import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { onAuthStateChanged, signOut } from "firebase/auth";
 import { MaterialIcons } from "@expo/vector-icons";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { auth } from "../firebase";
-import { Login, Track, AddItem, Register } from "../screens";
-import HomeScreen from "../screens/HomeScreen";
-import SettingsScreen from "../screens/SettingsScreen";
+import {
+	Login,
+	Track,
+	AddItem,
+	Register,
+	Forget,
+	HomeScreen,
+	SettingsScreen,
+} from "../screens";
 
 const homeName = "Home";
 const trackName = "Track";
@@ -67,6 +73,11 @@ const MainNavigation = () => {
 			<Stack.Screen
 				name="Register"
 				component={Register}
+				options={{ headerShown: false }}
+			/>
+			<Stack.Screen
+				name="Forget"
+				component={Forget}
 				options={{ headerShown: false }}
 			/>
 		</Stack.Navigator>

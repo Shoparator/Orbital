@@ -42,7 +42,8 @@ const Login = ({ navigation }) => {
 			.then((userCredentials) => {
 				// const user = userCredentials.user;
 
-				// // To show the user object returned
+				// To show the user object returned
+
 				// console.log(user);
 
 				restoreForm();
@@ -104,8 +105,13 @@ const Login = ({ navigation }) => {
 								style={styles.authImg}
 							/>
 						}
-						fieldButtonLabel="Forgot?"
-						fieldButtonFuction={() => {}}
+						button={
+							<TouchableOpacity
+								onPress={() => navigation.navigate("Forget")}
+							>
+								<Text style={styles.buttonText}>Forget?</Text>
+							</TouchableOpacity>
+						}
 					/>
 
 					<AuthButton onPressHandler={loginHandler} title={"Login"} />
@@ -145,19 +151,6 @@ const styles = StyleSheet.create({
 		marginBottom: 10,
 	},
 
-	fields: {
-		alignSelf: "flex-start",
-		flexDirection: "row",
-		borderBottomColor: "#ccc",
-		borderBottomWidth: 1,
-		paddingBottom: 5,
-		marginBottom: 25,
-	},
-
-	authInput: {
-		flex: 1,
-		paddingVertical: 0,
-	},
 	authImg: {
 		marginRight: 5,
 	},
@@ -174,6 +167,8 @@ const styles = StyleSheet.create({
 		color: "#006ee6",
 		fontWeight: "700",
 	},
+
+	buttonText: { color: "#006ee6", fontWeight: "700" },
 });
 
 export default Login;

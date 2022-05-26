@@ -9,29 +9,18 @@ import {
 	ToastAndroid,
 	Text,
 	SafeAreaView,
-	TouchableOpacity,
 } from "react-native";
 
-import { createUserWithEmailAndPassword } from "firebase/auth";
+import { sendPasswordResetEmail } from "firebase/auth";
 
 import { AuthButton, AuthTextInput } from "../components";
 import { auth } from "../firebase";
 
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
-import Ionicons from "react-native-vector-icons/Ionicons";
 import { StatusBar } from "expo-status-bar";
 
-const Register = ({ navigation }) => {
+const Forget = ({ navigation }) => {
 	const [email, setEmail] = useState("");
-	const [password, setPassword] = useState("");
-	const [confirmPassword, setConfirmPassword] = useState("");
-
-	const signUpToast = () => {
-		ToastAndroid.show(
-			"Sign Up successfully completed!",
-			ToastAndroid.SHORT
-		);
-	};
 
 	const missingFieldsToast = () => {
 		ToastAndroid.show(
@@ -40,42 +29,26 @@ const Register = ({ navigation }) => {
 		);
 	};
 
-	const samePasswordToast = () => {
-		ToastAndroid.show("Password must be the same!", ToastAndroid.SHORT);
-	};
-
-	const signUpHandler = () => {
-		if (email.length === 0 || password.length === 0) {
+	const resetHandler = () => {
+		if (email.length === 0) {
 			missingFieldsToast();
 			return;
 		}
 
-		if (password != confirmPassword) {
-			samePasswordToast();
-			return;
-		}
-
-		return createUserWithEmailAndPassword(auth, email, password)
-			.then((userCredentials) => {
-				const user = userCredentials.user;
-
-				// To show the user object returned
-				console.log(user);
-
+		return sendPasswordResetEmail(auth, email)
+			.then(() => {
 				restoreForm();
-				signUpToast();
 			})
 			.catch((error) => {
 				const errorCode = error.code;
 				const errorMessage = error.message;
 
-				console.error("[signUpHandler]", errorCode, errorMessage);
+				console.error("[resetHandler]", errorCode, errorMessage);
 			});
 	};
 
 	const restoreForm = () => {
 		setEmail("");
-		setPassword("");
 		Keyboard.dismiss();
 	};
 
@@ -92,7 +65,7 @@ const Register = ({ navigation }) => {
 						source={require("../../assets/logo_transparent.png")}
 					/>
 
-					<Text style={styles.header}> Register </Text>
+					<Text style={styles.header}> Reset Password </Text>
 
 					<AuthTextInput
 						value={email}
@@ -109,57 +82,10 @@ const Register = ({ navigation }) => {
 						}
 					/>
 
-					<AuthTextInput
-						value={password}
-						placeholder="Password."
-						textHandler={setPassword}
-						inputType="password"
-						icon={
-							<Ionicons
-								name="ios-lock-closed-outline"
-								size={20}
-								color="#666"
-								style={styles.authImg}
-							/>
-						}
-					/>
-
-					<AuthTextInput
-						value={confirmPassword}
-						placeholder="Confirm Password."
-						textHandler={setConfirmPassword}
-						inputType="password"
-						icon={
-							<Ionicons
-								name="ios-lock-closed-outline"
-								size={20}
-								color="#666"
-								style={styles.authImg}
-							/>
-						}
-					/>
-
 					<AuthButton
-						onPressHandler={signUpHandler}
-						title={"Register"}
+						onPressHandler={resetHandler}
+						title={"Reset Password"}
 					/>
-
-					<View
-						style={{
-							flexDirection: "row",
-						}}
-					>
-						<Text style={{ marginRight: 5 }}>
-							Already have an account?
-						</Text>
-						<TouchableOpacity
-							onPress={() => {
-								navigation.navigate("Login");
-							}}
-						>
-							<Text style={styles.textButton}>Login</Text>
-						</TouchableOpacity>
-					</View>
 				</View>
 			</KeyboardAvoidingView>
 		</SafeAreaView>
@@ -212,4 +138,4 @@ const styles = StyleSheet.create({
 	},
 });
 
-export default Register;
+export default Forget;
