@@ -40,9 +40,10 @@ const Login = ({ navigation }) => {
 
 		return signInWithEmailAndPassword(auth, email, password)
 			.then((userCredentials) => {
-				const user = userCredentials.user;
+				// const user = userCredentials.user;
 
 				// To show the user object returned
+
 				// console.log(user);
 
 				restoreForm();

@@ -16,7 +16,7 @@ import {
 	deleteDoc,
 } from "firebase/firestore";
 
-import { db } from "../firebase";
+import { db, auth } from "../firebase";
 
 import { Item } from "../components";
 import ActionButton from "react-native-action-button";
@@ -29,7 +29,7 @@ const Track = ({ navigation }) => {
 	useEffect(() => {
 		// Expensive operation. Consider your app's design on when to invoke this.
 		// Could use Redux to help on first application load.
-		const taskQuery = query(collection(db, "listings"));
+		const taskQuery = query(collection(db, auth.currentUser.uid));
 
 		const unsubscribe = onSnapshot(taskQuery, (snapshot) => {
 			const listings = [];
@@ -54,7 +54,7 @@ const Track = ({ navigation }) => {
 
 	const onDeleteHandler = async (id) => {
 		try {
-			await deleteDoc(doc(db, "listings", id));
+			await deleteDoc(doc(db, auth.currentUser.uid, id));
 
 			console.log("onDeleteHandler success", id);
 			showRes("Successfully deleted task!");
