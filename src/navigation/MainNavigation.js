@@ -32,7 +32,10 @@ const MainNavigation = () => {
 	 */
 	const [isAuth, setIsAuth] = useState(false);
 
+	// Helper Functions
+
 	useEffect(() => {
+		// Checks with firebase whether the user is signed in
 		const unsubscribeAuthStateChanged = onAuthStateChanged(
 			auth,
 			(authenticatedUser) => {
@@ -46,6 +49,19 @@ const MainNavigation = () => {
 
 		return unsubscribeAuthStateChanged;
 	}, []);
+
+	const logoutHandler = () => {
+		signOut(auth).then(() => {
+			// Sign user out from firebase
+			setIsAuth(false); // Change listener to false
+		});
+	};
+
+	const LogoutIcon = () => (
+		<TouchableOpacity onPress={logoutHandler}>
+			<MaterialIcons name="logout" size={28} color="#407BFF" />
+		</TouchableOpacity>
+	);
 
 	const HomeStack = () => (
 		<Stack2.Navigator>
@@ -61,6 +77,13 @@ const MainNavigation = () => {
 				options={{ headerRight: () => <LogoutIcon /> }}
 			/>
 		</Stack2.Navigator>
+	);
+
+	const TrackNavigator = () => (
+		<TrackStack.Navigator initialRouteName="Currently Tracking">
+			<TrackStack.Screen name="Currently Tracking" component={Track} />
+			<TrackStack.Screen name="Add Item" component={AddItem} />
+		</TrackStack.Navigator>
 	);
 
 	const LoginNavigator = () => (
@@ -81,26 +104,6 @@ const MainNavigation = () => {
 				options={{ headerShown: false }}
 			/>
 		</Stack.Navigator>
-	);
-
-	const logoutHandler = () => {
-		signOut(auth).then(() => {
-			setIsAuth(false);
-			// setUser({});
-		});
-	};
-
-	const LogoutIcon = () => (
-		<TouchableOpacity onPress={logoutHandler}>
-			<MaterialIcons name="logout" size={28} color="#407BFF" />
-		</TouchableOpacity>
-	);
-
-	const TrackNavigator = () => (
-		<TrackStack.Navigator initialRouteName="Currently Tracking">
-			<TrackStack.Screen name="Currently Tracking" component={Track} />
-			<TrackStack.Screen name="Add Item" component={AddItem} />
-		</TrackStack.Navigator>
 	);
 
 	const MainNavigator = () => (
@@ -143,6 +146,8 @@ const MainNavigation = () => {
 		</Tab.Navigator>
 	);
 
+	// If user is authenticated by Firebase, bring user to the main screen.
+	// Else bring user to login screen
 	return (
 		<NavigationContainer>
 			{isAuth ? <MainNavigator /> : <LoginNavigator />}

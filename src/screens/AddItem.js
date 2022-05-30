@@ -17,15 +17,19 @@ import { TextInput } from "../components";
 import { Button } from "react-native-ios-kit";
 
 const AddItem = ({ navigation }) => {
+	// Store values for the fields
 	const [name, setName] = useState("");
 	const [url, setUrl] = useState("");
 
+	// Helper Functions
 	const submitHandler = async () => {
+		// Checks if fields are empty
 		if (name.length === 0 || url.length === 0) {
 			showRes("Fields cannot be empty!");
 			return;
 		}
 
+		// Attempt to add the listing to Firestore
 		try {
 			const taskRef = await addDoc(collection(db, auth.currentUser.uid), {
 				name: name,
@@ -41,10 +45,12 @@ const AddItem = ({ navigation }) => {
 		}
 	};
 
+	// Android Only pop up
 	const showRes = (text) => {
 		ToastAndroid.show(text, ToastAndroid.SHORT);
 	};
 
+	// Clears fields and dismisses the keyboard
 	const clearForm = () => {
 		setName("");
 		setUrl("");

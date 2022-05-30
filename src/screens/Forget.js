@@ -29,7 +29,9 @@ const Forget = ({ navigation }) => {
 		);
 	};
 
+	// Reset password through Firebase
 	const resetHandler = () => {
+		// Check if an email is typed
 		if (email.length === 0) {
 			missingFieldsToast();
 			return;

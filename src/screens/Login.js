@@ -22,9 +22,13 @@ import Ionicons from "react-native-vector-icons/Ionicons";
 import { StatusBar } from "expo-status-bar";
 
 const Login = ({ navigation }) => {
+	// Store values that are typed
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
 
+	// Helper Fucntions
+
+	// Android Only pop up
 	const missingFieldsToast = () => {
 		ToastAndroid.show(
 			"Missing fields, please try again!",
@@ -32,34 +36,31 @@ const Login = ({ navigation }) => {
 		);
 	};
 
+	// Empties the fields and dismisses the keyboard
+	const restoreForm = () => {
+		setEmail("");
+		setPassword("");
+		Keyboard.dismiss();
+	};
+
+	// Function to handle the login
 	const loginHandler = () => {
+		// Checks if there is anything typed
 		if (email.length === 0 || password.length === 0) {
 			missingFieldsToast();
 			return;
 		}
 
+		// Function from firebase to sign in
 		return signInWithEmailAndPassword(auth, email, password)
 			.then((userCredentials) => {
-				// const user = userCredentials.user;
-
-				// To show the user object returned
-
-				// console.log(user);
-
 				restoreForm();
 			})
 			.catch((error) => {
 				const errorCode = error.code;
 				const errorMessage = error.message;
-
 				console.error("[loginHandler]", errorCode, errorMessage);
 			});
-	};
-
-	const restoreForm = () => {
-		setEmail("");
-		setPassword("");
-		Keyboard.dismiss();
 	};
 
 	return (
