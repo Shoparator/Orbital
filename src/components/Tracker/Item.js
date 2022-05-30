@@ -1,9 +1,57 @@
-import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import React from "react";
+import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
+import { jsdom } from "jsdom-jscore-rn";
+import axios from "axios";
+import { auth, db } from "../../firebase";
+import { doc, updateDoc } from "firebase/firestore";
 
 const Task = (props) => {
 	const { data, onDelete } = props;
+
+	const getPrice = async (url) => {
+		const { data: html } = await axios
+			.get(url, {
+				headers: {
+					Accept: "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3",
+					"Accept-Encoding": "gzip",
+					"Accept-Language": "en-US,en;q=0.9,es;q=0.8",
+					"Upgrade-Insecure-Requests": "1",
+					"User-Agent":
+						"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/76.0.3809.132 Safari/537.36",
+					Referer: "https://www.google.com/",
+				},
+			})
+			.catch((err) => console.error(err));
+		if (url.includes("lazada")) {
+			const price = jsdom(html).querySelector(
+				"#module_product_price_1"
+			).textContent;
+
+			if (price != data.price) {
+				const ref = doc(db, auth.currentUser.uid, data.id);
+				await updateDoc(ref, {
+					price: price,
+				});
+			}
+		}
+		if (url.includes("amazon")) {
+			const price =
+				"$" +
+				jsdom(html)
+					.querySelector("#corePrice_desktop")
+					.textContent.split("$")[1];
+
+			if (price != data.price) {
+				const ref = doc(db, auth.currentUser.uid, data.id);
+				await updateDoc(ref, {
+					price: price,
+				});
+			}
+		}
+	};
+
+	getPrice(data.url);
 
 	const DeleteIcon = () => (
 		<TouchableOpacity onPress={() => onDelete(data.id)}>
