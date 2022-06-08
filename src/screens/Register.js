@@ -26,7 +26,6 @@ const Register = ({ navigation }) => {
 	const [password, setPassword] = useState("");
 	const [confirmPassword, setConfirmPassword] = useState("");
 
-	// Android only pop up functions
 	const signUpToast = () => {
 		ToastAndroid.show(
 			"Sign Up successfully completed!",
@@ -45,7 +44,6 @@ const Register = ({ navigation }) => {
 		ToastAndroid.show("Password must be the same!", ToastAndroid.SHORT);
 	};
 
-	// Helper Fucntions
 	const signUpHandler = () => {
 		if (email.length === 0 || password.length === 0) {
 			missingFieldsToast();
@@ -57,9 +55,13 @@ const Register = ({ navigation }) => {
 			return;
 		}
 
-		// Use Firebase function to create an account
 		return createUserWithEmailAndPassword(auth, email, password)
-			.then(() => {
+			.then((userCredentials) => {
+				const user = userCredentials.user;
+
+				// To show the user object returned
+				console.log(user);
+
 				restoreForm();
 				signUpToast();
 			})
@@ -71,7 +73,6 @@ const Register = ({ navigation }) => {
 			});
 	};
 
-	// Clears fields and dismisses keyboard
 	const restoreForm = () => {
 		setEmail("");
 		setPassword("");
