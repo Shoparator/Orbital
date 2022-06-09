@@ -26,9 +26,9 @@ const Track = ({ navigation }) => {
 	const [listings, setListings] = useState([]);
 	const [isRefresh, setIsRefresh] = useState(false);
 
+	// Helper Functions
 	useEffect(() => {
-		// Expensive operation. Consider your app's design on when to invoke this.
-		// Could use Redux to help on first application load.
+		// Retrieve the data stored in firestore and stores in listings array
 		const taskQuery = query(collection(db, auth.currentUser.uid));
 
 		const unsubscribe = onSnapshot(taskQuery, (snapshot) => {
@@ -41,19 +41,23 @@ const Track = ({ navigation }) => {
 			setListings([...listings]);
 		});
 		return unsubscribe;
-	}, [refresh]); // Temporary measure to prevent useEffect from constantly happening.
+	}, [refresh]);
 
+	// Refreshes the list by triggering the above
 	const refresh = () => {
 		setIsRefresh(true);
 		setIsRefresh(false);
 	};
 
+	// Android Only pop up
 	const showRes = (text) => {
 		ToastAndroid.show(text, ToastAndroid.SHORT);
 	};
 
+	// Deletes the listing
 	const onDeleteHandler = async (id) => {
 		try {
+			// Use function from firestore.
 			await deleteDoc(doc(db, auth.currentUser.uid, id));
 
 			console.log("onDeleteHandler success", id);

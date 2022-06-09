@@ -9,6 +9,10 @@ import { doc, updateDoc } from "firebase/firestore";
 const Task = (props) => {
 	const { data, onDelete } = props;
 
+	// Helper Functions
+
+	// Retrieves the current price for the item in the listing and updates Firestore.
+	// Only works for Lazada and Amazon currently.
 	const getPrice = async (url) => {
 		const { data: html } = await axios
 			.get(url, {
