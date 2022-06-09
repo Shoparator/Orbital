@@ -8,17 +8,11 @@ import {
 	ToastAndroid,
 	TouchableOpacity,
 } from "react-native";
-import {
-	onSnapshot,
-	query,
-	collection,
-	doc,
-	deleteDoc,
-} from "firebase/firestore";
+import { onSnapshot, query, collection } from "firebase/firestore";
 
 import { db, auth } from "../firebase";
 
-import { Item } from "../components";
+import { ItemButton } from "../components";
 import ActionButton from "react-native-action-button";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 
@@ -28,7 +22,8 @@ const Track = ({ navigation }) => {
 
 	// Helper Functions
 	useEffect(() => {
-		// Retrieve the data stored in firestore and stores in listings array
+		// Expensive operation. Consider your app's design on when to invoke this.
+		// Could use Redux to help on first application load.
 		const taskQuery = query(collection(db, auth.currentUser.uid));
 
 		const unsubscribe = onSnapshot(taskQuery, (snapshot) => {
@@ -41,31 +36,12 @@ const Track = ({ navigation }) => {
 			setListings([...listings]);
 		});
 		return unsubscribe;
-	}, [refresh]);
+	}, [refresh]); // Temporary measure to prevent useEffect from constantly happening.
 
 	// Refreshes the list by triggering the above
 	const refresh = () => {
 		setIsRefresh(true);
 		setIsRefresh(false);
-	};
-
-	// Android Only pop up
-	const showRes = (text) => {
-		ToastAndroid.show(text, ToastAndroid.SHORT);
-	};
-
-	// Deletes the listing
-	const onDeleteHandler = async (id) => {
-		try {
-			// Use function from firestore.
-			await deleteDoc(doc(db, auth.currentUser.uid, id));
-
-			console.log("onDeleteHandler success", id);
-			showRes("Successfully deleted task!");
-		} catch (err) {
-			console.log("onDeleteHandler failure", err);
-			showRes("Failed to delete task!");
-		}
 	};
 
 	return (
@@ -89,11 +65,7 @@ const Track = ({ navigation }) => {
 						<FlatList
 							data={listings}
 							renderItem={({ item, index }) => (
-								<Item
-									data={item}
-									key={index}
-									onDelete={onDeleteHandler}
-								/>
+								<ItemButton data={item} key={index} />
 							)}
 							style={styles.list}
 							showsVerticalScrollIndicator={false}
@@ -120,7 +92,6 @@ const styles = StyleSheet.create({
 	},
 	listContainer: {
 		flex: 1,
-		paddingBottom: 70,
 	},
 	list: {
 		overflow: "scroll",

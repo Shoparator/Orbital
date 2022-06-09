@@ -1,33 +1,37 @@
-import { StyleSheet, TextInput } from "react-native";
+import { StyleSheet, TextInput, View } from "react-native";
 import React from "react";
 
-const THEME = "#3F3F3F";
-
 const AuthTextInput = (props) => {
-	const { placeholder, value, textHandler } = props;
+	const { placeholder, value, textHandler, icon } = props;
 
 	return (
-		<TextInput
-			style={styles.textInput}
-			placeholder={placeholder}
-			value={value}
-			onChangeText={textHandler}
-			selectionColor={THEME}
-		/>
+		<View style={styles.fields}>
+			{icon}
+
+			<TextInput
+				style={styles.authInput}
+				placeholder={placeholder}
+				value={value}
+				onChangeText={textHandler}
+			/>
+		</View>
 	);
 };
 
 export default AuthTextInput;
 
 const styles = StyleSheet.create({
-	textInput: {
-		alignSelf: "center",
-		borderWidth: 2,
-		borderColor: THEME,
-		borderRadius: 4,
-		width: "80%",
-		height: 40,
-		paddingHorizontal: 8,
-		marginBottom: 10,
+	fields: {
+		alignSelf: "flex-start",
+		flexDirection: "row",
+		borderBottomColor: "#ccc",
+		borderBottomWidth: 1,
+		paddingBottom: 5,
+		marginBottom: 25,
+	},
+
+	authInput: {
+		flex: 1,
+		paddingVertical: 0,
 	},
 });
