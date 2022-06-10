@@ -18,6 +18,7 @@ import {
 	ItemDetails,
 	EditItem,
 } from "../screens";
+import { navigationRef } from "./RootNavigation";
 
 // const homeName = "Home"; // Home stack commented out because currently not in use
 const trackName = "Track";
@@ -156,7 +157,7 @@ const MainNavigation = () => {
 	// If user is authenticated by Firebase, bring user to the main screen.
 	// Else bring user to login screen
 	return (
-		<NavigationContainer>
+		<NavigationContainer ref={navigationRef}>
 			{isAuth ? <MainNavigator /> : <LoginNavigator />}
 		</NavigationContainer>
 	);

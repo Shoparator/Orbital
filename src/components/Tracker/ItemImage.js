@@ -1,16 +1,10 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { StyleSheet, Text, View, Image } from "react-native";
 import { jsdom } from "jsdom-jscore-rn";
 import axios from "axios";
 
 import { auth, db } from "../../firebase";
-import {
-	doc,
-	updateDoc,
-	Timestamp,
-	getDoc,
-	collection,
-} from "firebase/firestore";
+import { doc, updateDoc, Timestamp } from "firebase/firestore";
 
 const ItemImage = (props) => {
 	const { data } = props;
