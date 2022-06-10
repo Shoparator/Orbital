@@ -112,9 +112,9 @@ const ItemImage = (props) => {
 		}
 	};
 
-	// useEffect(() => {
-	// 	updateData(data.url);
-	// }, []);
+	useEffect(() => {
+		updateData(data.url);
+	}, []);
 
 	return (
 		<View style={styles.container}>
