@@ -5,16 +5,13 @@ import {
 	KeyboardAvoidingView,
 	Keyboard,
 	Platform,
-	ToastAndroid,
 	SafeAreaView,
 } from "react-native";
-
-import { doc } from "firebase/firestore";
+import { doc, updateDoc } from "firebase/firestore";
+import Toast from "react-native-root-toast";
 
 import { db, auth } from "../firebase";
-
 import { TextInput, AuthButton } from "../components";
-
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import { useRoute } from "@react-navigation/native";
 
@@ -25,28 +22,41 @@ const EditItem = () => {
 	const [warnPrice, setWarnPrice] = useState("");
 
 	const submitHandler = async () => {
-		if (name.length === 0 || url.length === 0) {
-			showRes("Fields cannot be empty!");
+		if (isNaN(warnPrice)) {
+			showRes("Notify At should contains numbers only.");
 			return;
 		}
-
-		try {
-			const ref = doc(db, auth.currentUser.uid, data.id);
-			await updateDoc(ref, {
-				name: name,
-				thresholdPrice: warnPrice,
-			});
-			clearForm();
-			console.log("onSubmitHandler success", taskRef.id);
-			showRes("Successfully added listing!");
-		} catch (err) {
-			console.log("onSubmitHandler failure", err);
-			showRes("Failed to add listing!");
+		if (name.length > 0 || warnPrice.length > 0) {
+			try {
+				const ref = doc(
+					db,
+					"track",
+					"users",
+					auth.currentUser.uid,
+					data.id
+				);
+				await updateDoc(ref, {
+					name: name == "" ? data.name : name,
+					thresholdPrice:
+						warnPrice == "" ? data.thresholdPrice : warnPrice,
+				});
+				clearForm();
+				console.log("onSubmitHandler success", ref.id);
+				showRes("Successfully added listing!");
+			} catch (err) {
+				console.log("onSubmitHandler failure", err);
+				showRes("Failed to add listing!");
+			}
 		}
 	};
 
 	const showRes = (text) => {
-		ToastAndroid.show(text, ToastAndroid.SHORT);
+		Toast.show(text, {
+			duration: Toast.durations.SHORT,
+			backgroundColor: "#fff",
+			textColor: "black",
+			position: Toast.positions.CENTER - 50,
+		});
 	};
 
 	const clearForm = () => {
@@ -77,11 +87,11 @@ const EditItem = () => {
 
 					<TextInput
 						value={warnPrice}
-						placeholder={"$" + data.thresholdPrice}
+						placeholder={data.thresholdPrice}
 						textHandler={setWarnPrice}
 						icon={
 							<MaterialIcons
-								name="tag"
+								name="attach-money"
 								style={styles.authImg}
 								size={20}
 							/>

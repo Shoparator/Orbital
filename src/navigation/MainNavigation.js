@@ -19,13 +19,13 @@ import {
 	EditItem,
 } from "../screens";
 
-const homeName = "Home";
+// const homeName = "Home"; // Home stack commented out because currently not in use
 const trackName = "Track";
 const settingsName = "Settings";
 
 const Tab = createBottomTabNavigator();
 const LoginStack = createNativeStackNavigator();
-const HomeStack = createNativeStackNavigator();
+// const HomeStack = createNativeStackNavigator();
 const SettingsStack = createNativeStackNavigator();
 const TrackStack = createNativeStackNavigator();
 
@@ -53,11 +53,11 @@ const MainNavigation = () => {
 		return unsubscribeAuthStateChanged;
 	}, []);
 
-	const HomeNavigator = () => (
-		<HomeStack.Navigator>
-			<HomeStack.Screen name={homeName} component={HomeScreen} />
-		</HomeStack.Navigator>
-	);
+	// const HomeNavigator = () => (
+	// 	<HomeStack.Navigator>
+	// 		<HomeStack.Screen name={homeName} component={HomeScreen} />
+	// 	</HomeStack.Navigator>
+	// );
 
 	const SettingsNavigator = () => (
 		<SettingsStack.Navigator>
@@ -113,15 +113,17 @@ const MainNavigation = () => {
 
 	const MainNavigator = () => (
 		<Tab.Navigator
-			initialRouteName={homeName}
+			initialRouteName={trackName}
 			screenOptions={({ route }) => ({
 				tabBarIcon: ({ focused, color, size }) => {
 					let iconName;
 					let currentTab = route.name;
 
-					if (currentTab === homeName) {
-						iconName = focused ? "home" : "home-outline";
-					} else if (currentTab === trackName) {
+					// if (currentTab === homeName) {
+					// 	iconName = focused ? "home" : "home-outline";
+					// } else
+
+					if (currentTab === trackName) {
 						iconName = focused ? "list" : "list-outline";
 					} else if (currentTab === settingsName) {
 						iconName = focused ? "settings" : "settings-outline";
@@ -133,11 +135,11 @@ const MainNavigation = () => {
 				},
 			})}
 		>
-			<Tab.Screen
+			{/* <Tab.Screen
 				name={homeName}
 				component={HomeNavigator}
 				options={{ headerShown: false }}
-			/>
+			/> */}
 			<Tab.Screen
 				name={trackName}
 				component={TrackNavigator}

@@ -1,9 +1,16 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { StyleSheet, Text, View, Image } from "react-native";
 import { jsdom } from "jsdom-jscore-rn";
 import axios from "axios";
+
 import { auth, db } from "../../firebase";
-import { doc, updateDoc, Timestamp } from "firebase/firestore";
+import {
+	doc,
+	updateDoc,
+	Timestamp,
+	getDoc,
+	collection,
+} from "firebase/firestore";
 
 const ItemImage = (props) => {
 	const { data } = props;
@@ -30,7 +37,13 @@ const ItemImage = (props) => {
 					.replace(",", "");
 
 				if (price != data.price1) {
-					const ref = doc(db, auth.currentUser.uid, data.id);
+					const ref = doc(
+						db,
+						"track",
+						"users",
+						auth.currentUser.uid,
+						data.id
+					);
 					await updateDoc(ref, {
 						price1: price,
 						time1: Timestamp.now(),
@@ -46,7 +59,13 @@ const ItemImage = (props) => {
 				)[0].src;
 
 				if (imgUrl != data.imgUrl) {
-					const ref = doc(db, auth.currentUser.uid, data.id);
+					const ref = doc(
+						db,
+						"track",
+						"users",
+						auth.currentUser.uid,
+						data.id
+					);
 					await updateDoc(ref, {
 						imgUrl: imgUrl,
 					});
@@ -61,7 +80,13 @@ const ItemImage = (props) => {
 					.querySelector("#corePrice_desktop")
 					.textContent.split("$")[3];
 				if (price != data.price1) {
-					const ref = doc(db, auth.currentUser.uid, data.id);
+					const ref = doc(
+						db,
+						"track",
+						"users",
+						auth.currentUser.uid,
+						data.id
+					);
 					await updateDoc(ref, {
 						price1: price,
 						time1: Timestamp.now(),
@@ -76,7 +101,13 @@ const ItemImage = (props) => {
 					jsdom(html).querySelector(".imgTagWrapper img").src;
 
 				if (imgUrl != data.imgUrl) {
-					const ref = doc(db, auth.currentUser.uid, data.id);
+					const ref = doc(
+						db,
+						"track",
+						"users",
+						auth.currentUser.uid,
+						data.id
+					);
 					await updateDoc(ref, {
 						imgUrl: imgUrl,
 					});
@@ -85,12 +116,11 @@ const ItemImage = (props) => {
 				console.log("Failed to scrape image from Amazon");
 			}
 		}
-
-		if (parseFloat(data.price1) <= parseFloat(data.thresholdPrice)) {
-		}
 	};
 
-	updateData(data.url);
+	// useEffect(() => {
+	// 	updateData(data.url);
+	// }, []);
 
 	return (
 		<View style={styles.container}>

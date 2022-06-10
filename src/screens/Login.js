@@ -6,20 +6,18 @@ import {
 	KeyboardAvoidingView,
 	Keyboard,
 	Platform,
-	ToastAndroid,
 	Text,
 	SafeAreaView,
 	TouchableOpacity,
 } from "react-native";
-
 import { signInWithEmailAndPassword } from "firebase/auth";
-
-import { AuthButton, AuthTextInput } from "../components";
-import { auth } from "../firebase";
-
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { StatusBar } from "expo-status-bar";
+import Toast from "react-native-root-toast";
+
+import { AuthButton, AuthTextInput } from "../components";
+import { auth } from "../firebase";
 
 const Login = ({ navigation }) => {
 	// Store values that are typed
@@ -28,12 +26,13 @@ const Login = ({ navigation }) => {
 
 	// Helper Fucntions
 
-	// Android Only pop up
 	const missingFieldsToast = () => {
-		ToastAndroid.show(
-			"Missing fields, please try again!",
-			ToastAndroid.SHORT
-		);
+		Toast.show("Missing fields, please try again!", {
+			duration: Toast.durations.SHORT,
+			backgroundColor: "#fff",
+			textColor: "black",
+			position: Toast.positions.CENTER - 50,
+		});
 	};
 
 	// Empties the fields and dismisses the keyboard

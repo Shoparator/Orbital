@@ -5,13 +5,13 @@ import {
 	TouchableOpacity,
 	Linking,
 	Dimensions,
-	ToastAndroid,
 } from "react-native";
 import { LineChart } from "react-native-chart-kit";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { deleteDoc, doc } from "firebase/firestore";
 import ActionButton from "react-native-action-button";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
+import Toast from "react-native-root-toast";
 
 import { AuthButton, ItemImage } from "../components";
 import { db, auth } from "../firebase";
@@ -26,7 +26,11 @@ const ItemDetails = () => {
 		navigation.setOptions({
 			headerRight: () => (
 				<TouchableOpacity onPress={() => onDeleteHandler(data.id)}>
-					<MaterialIcons name="delete" size={30} />
+					<MaterialIcons
+						name="delete"
+						size={30}
+						color="rgba(10,132,255,1)"
+					/>
 				</TouchableOpacity>
 			),
 		});
@@ -34,7 +38,9 @@ const ItemDetails = () => {
 
 	const onDeleteHandler = async (id) => {
 		try {
-			await deleteDoc(doc(db, auth.currentUser.uid, id));
+			await deleteDoc(
+				doc(db, "track", "users", auth.currentUser.uid, id)
+			);
 
 			console.log("onDeleteHandler success", id);
 			showRes("Successfully deleted task!");
@@ -46,7 +52,12 @@ const ItemDetails = () => {
 	};
 
 	const showRes = (text) => {
-		ToastAndroid.show(text, ToastAndroid.SHORT);
+		Toast.show(text, {
+			duration: Toast.durations.SHORT,
+			backgroundColor: "#fff",
+			textColor: "black",
+			position: Toast.positions.CENTER - 50,
+		});
 	};
 
 	const chartConfig = {

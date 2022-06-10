@@ -5,16 +5,13 @@ import {
 	KeyboardAvoidingView,
 	Keyboard,
 	Platform,
-	ToastAndroid,
 	SafeAreaView,
 } from "react-native";
-
-import { addDoc, collection, Timestamp } from "firebase/firestore";
+import { addDoc, collection, doc, Timestamp } from "firebase/firestore";
+import Toast from "react-native-root-toast";
 
 import { db, auth } from "../firebase";
-
 import { AuthButton, TextInput } from "../components";
-
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 
 const AddItem = ({ navigation }) => {
@@ -33,21 +30,24 @@ const AddItem = ({ navigation }) => {
 
 		// Attempt to add the listing to Firestore
 		try {
-			const taskRef = await addDoc(collection(db, auth.currentUser.uid), {
-				name: name,
-				url: url,
-				price1: null,
-				price2: 0,
-				price3: 0,
-				price4: 0,
-				price5: 0,
-				thresholdPrice: warnPrice,
-				time1: Timestamp.now(),
-				time2: Timestamp.now(),
-				time3: Timestamp.now(),
-				time4: Timestamp.now(),
-				time5: Timestamp.now(),
-			});
+			const taskRef = await addDoc(
+				doc(db, "track", "users", auth.currentUser.uid),
+				{
+					name: name,
+					url: url,
+					price1: null,
+					price2: 0,
+					price3: 0,
+					price4: 0,
+					price5: 0,
+					thresholdPrice: warnPrice,
+					time1: Timestamp.now(),
+					time2: Timestamp.now(),
+					time3: Timestamp.now(),
+					time4: Timestamp.now(),
+					time5: Timestamp.now(),
+				}
+			);
 			clearForm();
 			console.log("onSubmitHandler success", taskRef.id);
 			showRes("Successfully added listing!");
@@ -57,9 +57,13 @@ const AddItem = ({ navigation }) => {
 		}
 	};
 
-	// Android Only pop up
 	const showRes = (text) => {
-		ToastAndroid.show(text, ToastAndroid.SHORT);
+		Toast.show(text, {
+			duration: Toast.durations.SHORT,
+			backgroundColor: "#fff",
+			textColor: "black",
+			position: Toast.positions.CENTER - 50,
+		});
 	};
 
 	// Clears fields and dismisses the keyboard
@@ -109,7 +113,7 @@ const AddItem = ({ navigation }) => {
 						textHandler={setWarnPrice}
 						icon={
 							<MaterialIcons
-								name="tag"
+								name="attach-money"
 								style={styles.authImg}
 								size={20}
 							/>
