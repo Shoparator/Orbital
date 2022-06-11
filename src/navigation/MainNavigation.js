@@ -15,15 +15,19 @@ import {
 	Forget,
 	HomeScreen,
 	SettingsScreen,
+	ItemDetails,
+	EditItem,
 } from "../screens";
+import { navigationRef } from "./RootNavigation";
 
-const homeName = "Home";
+// const homeName = "Home"; // Home stack commented out because currently not in use
 const trackName = "Track";
 const settingsName = "Settings";
 
 const Tab = createBottomTabNavigator();
-const Stack = createNativeStackNavigator();
-const Stack2 = createNativeStackNavigator();
+const LoginStack = createNativeStackNavigator();
+// const HomeStack = createNativeStackNavigator();
+const SettingsStack = createNativeStackNavigator();
 const TrackStack = createNativeStackNavigator();
 
 const MainNavigation = () => {
@@ -50,10 +54,46 @@ const MainNavigation = () => {
 		return unsubscribeAuthStateChanged;
 	}, []);
 
+	// const HomeNavigator = () => (
+	// 	<HomeStack.Navigator>
+	// 		<HomeStack.Screen name={homeName} component={HomeScreen} />
+	// 	</HomeStack.Navigator>
+	// );
+
+	const SettingsNavigator = () => (
+		<SettingsStack.Navigator>
+			<SettingsStack.Screen
+				name={settingsName}
+				component={SettingsScreen}
+				options={{ headerRight: () => <LogoutIcon /> }}
+			/>
+		</SettingsStack.Navigator>
+	);
+
+	const LoginNavigator = () => (
+		<LoginStack.Navigator initialRouteName={Login}>
+			<LoginStack.Screen
+				name="Login"
+				component={Login}
+				options={{ headerShown: false }}
+			/>
+			<LoginStack.Screen
+				name="Register"
+				component={Register}
+				options={{ headerShown: false }}
+			/>
+			<LoginStack.Screen
+				name="Forget"
+				component={Forget}
+				options={{ headerShown: false }}
+			/>
+		</LoginStack.Navigator>
+	);
+
 	const logoutHandler = () => {
 		signOut(auth).then(() => {
-			// Sign user out from firebase
-			setIsAuth(false); // Change listener to false
+			setIsAuth(false);
+			// setUser({});
 		});
 	};
 
@@ -63,60 +103,28 @@ const MainNavigation = () => {
 		</TouchableOpacity>
 	);
 
-	const HomeStack = () => (
-		<Stack2.Navigator>
-			<Stack2.Screen name={homeName} component={HomeScreen} />
-		</Stack2.Navigator>
-	);
-
-	const SettingsStack = () => (
-		<Stack2.Navigator>
-			<Stack2.Screen
-				name={settingsName}
-				component={SettingsScreen}
-				options={{ headerRight: () => <LogoutIcon /> }}
-			/>
-		</Stack2.Navigator>
-	);
-
 	const TrackNavigator = () => (
 		<TrackStack.Navigator initialRouteName="Currently Tracking">
 			<TrackStack.Screen name="Currently Tracking" component={Track} />
 			<TrackStack.Screen name="Add Item" component={AddItem} />
+			<TrackStack.Screen name="Item Details" component={ItemDetails} />
+			<TrackStack.Screen name="Edit Item" component={EditItem} />
 		</TrackStack.Navigator>
-	);
-
-	const LoginNavigator = () => (
-		<Stack.Navigator initialRouteName={Login}>
-			<Stack.Screen
-				name="Login"
-				component={Login}
-				options={{ headerShown: false }}
-			/>
-			<Stack.Screen
-				name="Register"
-				component={Register}
-				options={{ headerShown: false }}
-			/>
-			<Stack.Screen
-				name="Forget"
-				component={Forget}
-				options={{ headerShown: false }}
-			/>
-		</Stack.Navigator>
 	);
 
 	const MainNavigator = () => (
 		<Tab.Navigator
-			initialRouteName={homeName}
+			initialRouteName={trackName}
 			screenOptions={({ route }) => ({
 				tabBarIcon: ({ focused, color, size }) => {
 					let iconName;
 					let currentTab = route.name;
 
-					if (currentTab === homeName) {
-						iconName = focused ? "home" : "home-outline";
-					} else if (currentTab === trackName) {
+					// if (currentTab === homeName) {
+					// 	iconName = focused ? "home" : "home-outline";
+					// } else
+
+					if (currentTab === trackName) {
 						iconName = focused ? "list" : "list-outline";
 					} else if (currentTab === settingsName) {
 						iconName = focused ? "settings" : "settings-outline";
@@ -128,11 +136,11 @@ const MainNavigation = () => {
 				},
 			})}
 		>
-			<Tab.Screen
+			{/* <Tab.Screen
 				name={homeName}
-				component={HomeStack}
+				component={HomeNavigator}
 				options={{ headerShown: false }}
-			/>
+			/> */}
 			<Tab.Screen
 				name={trackName}
 				component={TrackNavigator}
@@ -140,7 +148,7 @@ const MainNavigation = () => {
 			/>
 			<Tab.Screen
 				name={settingsName}
-				component={SettingsStack}
+				component={SettingsNavigator}
 				options={{ headerShown: false }}
 			/>
 		</Tab.Navigator>
@@ -149,7 +157,7 @@ const MainNavigation = () => {
 	// If user is authenticated by Firebase, bring user to the main screen.
 	// Else bring user to login screen
 	return (
-		<NavigationContainer>
+		<NavigationContainer ref={navigationRef}>
 			{isAuth ? <MainNavigator /> : <LoginNavigator />}
 		</NavigationContainer>
 	);

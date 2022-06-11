@@ -6,12 +6,11 @@ import {
 	KeyboardAvoidingView,
 	Keyboard,
 	Platform,
-	ToastAndroid,
 	Text,
 	SafeAreaView,
 } from "react-native";
-
 import { sendPasswordResetEmail } from "firebase/auth";
+import Toast from "react-native-root-toast";
 
 import { AuthButton, AuthTextInput } from "../components";
 import { auth } from "../firebase";
@@ -23,10 +22,12 @@ const Forget = ({ navigation }) => {
 	const [email, setEmail] = useState("");
 
 	const missingFieldsToast = () => {
-		ToastAndroid.show(
-			"Missing fields, please try again!",
-			ToastAndroid.SHORT
-		);
+		Toast.show("Missing fields, please try again!", {
+			duration: Toast.durations.SHORT,
+			backgroundColor: "#fff",
+			textColor: "black",
+			position: Toast.positions.CENTER - 50,
+		});
 	};
 
 	// Reset password through Firebase

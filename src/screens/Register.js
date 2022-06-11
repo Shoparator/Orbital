@@ -6,43 +6,49 @@ import {
 	KeyboardAvoidingView,
 	Keyboard,
 	Platform,
-	ToastAndroid,
 	Text,
 	SafeAreaView,
 	TouchableOpacity,
 } from "react-native";
-
 import { createUserWithEmailAndPassword } from "firebase/auth";
-
-import { AuthButton, AuthTextInput } from "../components";
-import { auth } from "../firebase";
-
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { StatusBar } from "expo-status-bar";
+import Toast from "react-native-root-toast";
+
+import { AuthButton, AuthTextInput } from "../components";
+import { auth } from "../firebase";
 
 const Register = ({ navigation }) => {
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
 	const [confirmPassword, setConfirmPassword] = useState("");
 
-	// Android only pop up functions
 	const signUpToast = () => {
-		ToastAndroid.show(
-			"Sign Up successfully completed!",
-			ToastAndroid.SHORT
-		);
+		Toast.show("Sign Up successfully completed!", {
+			duration: Toast.durations.SHORT,
+			backgroundColor: "#fff",
+			textColor: "black",
+			position: Toast.positions.CENTER - 50,
+		});
 	};
 
 	const missingFieldsToast = () => {
-		ToastAndroid.show(
-			"Missing fields, please try again!",
-			ToastAndroid.SHORT
-		);
+		Toast.show("Missing fields, please try again!", {
+			duration: Toast.durations.SHORT,
+			backgroundColor: "#fff",
+			textColor: "black",
+			position: Toast.positions.CENTER - 50,
+		});
 	};
 
 	const samePasswordToast = () => {
-		ToastAndroid.show("Password must be the same!", ToastAndroid.SHORT);
+		Toast.show("Password must be the same!", {
+			duration: Toast.durations.SHORT,
+			backgroundColor: "#fff",
+			textColor: "black",
+			position: Toast.positions.CENTER - 50,
+		});
 	};
 
 	// Helper Fucntions

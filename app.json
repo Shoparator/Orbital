@@ -4,10 +4,10 @@
     "slug": "Shoparator",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/logo_transparent.png",
     "userInterfaceStyle": "light",
     "splash": {
-      "image": "./assets/splash.png",
+      "image": "./assets/logo_transparent.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
@@ -21,13 +21,16 @@
       "supportsTablet": true
     },
     "android": {
+      "package": "expo.shoparator",
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
+        "foregroundImage": "./assets/logo_transparent.png",
         "backgroundColor": "#FFFFFF"
-      }
+      },
+      "permissions": ["NOTIFICATIONS"],
+      "useNextNotificationsApi": true
     },
     "web": {
-      "favicon": "./assets/favicon.png"
+      "favicon": "./assets/logo_transparent.png"
     },
     "packagerOpts": {
       "sourceExts": ["cjs"]

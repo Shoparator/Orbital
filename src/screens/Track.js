@@ -1,37 +1,44 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useLayoutEffect } from "react";
 import {
 	StyleSheet,
 	View,
 	SafeAreaView,
 	KeyboardAvoidingView,
 	FlatList,
-	ToastAndroid,
 	TouchableOpacity,
 } from "react-native";
-import {
-	onSnapshot,
-	query,
-	collection,
-	doc,
-	deleteDoc,
-} from "firebase/firestore";
-
-import { db, auth } from "../firebase";
-
-import { Item } from "../components";
+import { onSnapshot, query, collection } from "firebase/firestore";
 import ActionButton from "react-native-action-button";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 
+import { db, auth } from "../firebase";
+import { ItemButton, SearchBar } from "../components";
+
 const Track = ({ navigation }) => {
 	const [listings, setListings] = useState([]);
+	const [searchPhrase, setSearchPhrase] = useState("");
+	const [clicked, setClicked] = useState(false);
 	const [isRefresh, setIsRefresh] = useState(false);
+
+	useLayoutEffect(() => {
+		navigation.setOptions({
+			headerRight: () => (
+				<TouchableOpacity onPress={refresh}>
+					<MaterialIcons name="refresh" size={30} color="#407BFF" />
+				</TouchableOpacity>
+			),
+		});
+	}, []);
 
 	// Helper Functions
 	useEffect(() => {
 		// Retrieve the data stored in firestore and stores in listings array
-		const taskQuery = query(collection(db, auth.currentUser.uid));
+		const listingsQuery = query(
+			collection(db, "track", "users", auth.currentUser.uid)
+		);
 
-		const unsubscribe = onSnapshot(taskQuery, (snapshot) => {
+		const unsubscribe = onSnapshot(listingsQuery, (snapshot) => {
+			snapshot.docChanges;
 			const listings = [];
 
 			snapshot.forEach((doc) => {
@@ -41,31 +48,12 @@ const Track = ({ navigation }) => {
 			setListings([...listings]);
 		});
 		return unsubscribe;
-	}, [refresh]);
+	}, [refresh]); // Temporary measure to prevent useEffect from constantly happening.
 
 	// Refreshes the list by triggering the above
 	const refresh = () => {
 		setIsRefresh(true);
 		setIsRefresh(false);
-	};
-
-	// Android Only pop up
-	const showRes = (text) => {
-		ToastAndroid.show(text, ToastAndroid.SHORT);
-	};
-
-	// Deletes the listing
-	const onDeleteHandler = async (id) => {
-		try {
-			// Use function from firestore.
-			await deleteDoc(doc(db, auth.currentUser.uid, id));
-
-			console.log("onDeleteHandler success", id);
-			showRes("Successfully deleted task!");
-		} catch (err) {
-			console.log("onDeleteHandler failure", err);
-			showRes("Failed to delete task!");
-		}
 	};
 
 	return (
@@ -75,25 +63,21 @@ const Track = ({ navigation }) => {
 		>
 			<SafeAreaView style={styles.container}>
 				<View style={styles.contentContainer}>
+					<SearchBar
+						searchPhrase={searchPhrase}
+						setSearchPhrase={setSearchPhrase}
+						clicked={clicked}
+						setClicked={setClicked}
+					/>
 					<View style={styles.listContainer}>
-						<TouchableOpacity
-							onPress={refresh}
-							style={{ alignSelf: "flex-end", padding: 10 }}
-						>
-							<MaterialIcons
-								name="refresh"
-								size={28}
-								color="#407BFF"
-							/>
-						</TouchableOpacity>
 						<FlatList
-							data={listings}
+							data={listings.filter((item) =>
+								item.name
+									.toLowerCase()
+									.includes(searchPhrase.toLowerCase())
+							)}
 							renderItem={({ item, index }) => (
-								<Item
-									data={item}
-									key={index}
-									onDelete={onDeleteHandler}
-								/>
+								<ItemButton data={item} key={index} />
 							)}
 							style={styles.list}
 							showsVerticalScrollIndicator={false}
@@ -120,7 +104,6 @@ const styles = StyleSheet.create({
 	},
 	listContainer: {
 		flex: 1,
-		paddingBottom: 70,
 	},
 	list: {
 		overflow: "scroll",
