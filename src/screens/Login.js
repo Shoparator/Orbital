@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import {
 	StyleSheet,
 	View,
@@ -13,16 +13,17 @@ import {
 import { signInWithEmailAndPassword } from "firebase/auth";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import Ionicons from "react-native-vector-icons/Ionicons";
-import { StatusBar } from "expo-status-bar";
 import Toast from "react-native-root-toast";
 
 import { AuthButton, AuthTextInput } from "../components";
 import { auth } from "../firebase";
+import { ThemeContext } from "../components/ThemeManager";
 
 const Login = ({ navigation }) => {
 	// Store values that are typed
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
+	const { darkTheme } = useContext(ThemeContext);
 
 	// Helper Fucntions
 
@@ -63,19 +64,24 @@ const Login = ({ navigation }) => {
 	};
 
 	return (
-		<SafeAreaView style={styles.container}>
-			<StatusBar backgroundColor="#E8EAED" />
+		<SafeAreaView
+			style={darkTheme ? darkStyles.container : styles.container}
+		>
 			<KeyboardAvoidingView
 				style={{ flex: 1 }}
 				behavior={Platform.OS === "ios" ? "padding" : null}
 			>
-				<View style={styles.container}>
+				<View
+					style={darkTheme ? darkStyles.container : styles.container}
+				>
 					<Image
 						style={styles.logo}
 						source={require("../../assets/logo_transparent.png")}
 					/>
 
-					<Text style={styles.header}> Login </Text>
+					<Text style={darkTheme ? darkStyles.header : styles.header}>
+						Login
+					</Text>
 
 					<AuthTextInput
 						value={email}
@@ -121,7 +127,9 @@ const Login = ({ navigation }) => {
 							flexDirection: "row",
 						}}
 					>
-						<Text style={{ marginRight: 5 }}>New to the App?</Text>
+						<Text style={darkTheme ? darkStyles.text : styles.text}>
+							New to the App?
+						</Text>
 						<TouchableOpacity
 							onPress={() => {
 								navigation.navigate("Register");
@@ -169,6 +177,33 @@ const styles = StyleSheet.create({
 	},
 
 	buttonText: { color: "#006ee6", fontWeight: "700" },
+
+	text: {
+		marginRight: 5,
+	},
+});
+
+const darkStyles = StyleSheet.create({
+	container: {
+		flex: 1,
+		backgroundColor: "#121212",
+		alignItems: "center",
+		justifyContent: "center",
+		paddingHorizontal: 25,
+	},
+
+	header: {
+		fontSize: 28,
+		fontWeight: "500",
+		color: "#fff",
+		marginBottom: 30,
+		alignSelf: "flex-start",
+	},
+
+	text: {
+		marginRight: 5,
+		color: "#fff",
+	},
 });
 
 export default Login;

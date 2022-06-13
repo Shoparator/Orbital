@@ -1,8 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo, useContext } from "react";
 import { TouchableOpacity, StyleSheet, View } from "react-native";
 import {
 	getFocusedRouteNameFromRoute,
 	NavigationContainer,
+	DarkTheme,
+	DefaultTheme,
 } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
@@ -24,6 +26,7 @@ import {
 } from "../screens";
 import { TabButton } from "../components";
 import { navigationRef } from "./RootNavigation";
+import { ThemeContext } from "../components/ThemeManager";
 
 // const homeName = "Home"; // Home stack commented out because currently not in use
 const trackName = "Track";
@@ -41,6 +44,7 @@ const MainNavigation = () => {
 	 * This hook serves as a listener to auth state changes provided by firebase.
 	 */
 	const [isAuth, setIsAuth] = useState(false);
+	const { darkTheme } = useContext(ThemeContext);
 
 	// Helper Functions
 
@@ -99,11 +103,10 @@ const MainNavigation = () => {
 	const logoutHandler = () => {
 		signOut(auth).then(() => {
 			setIsAuth(false);
-			// setUser({});
 		});
 	};
 
-	const LogoutIcon = (logoutHandler) => (
+	const LogoutIcon = () => (
 		<TouchableOpacity onPress={logoutHandler}>
 			<MaterialIcons name="logout" size={28} color="#407BFF" />
 		</TouchableOpacity>
@@ -211,7 +214,10 @@ const MainNavigation = () => {
 	// If user is authenticated by Firebase, bring user to the main screen.
 	// Else bring user to login screen
 	return (
-		<NavigationContainer ref={navigationRef}>
+		<NavigationContainer
+			ref={navigationRef}
+			theme={darkTheme ? DarkTheme : DefaultTheme}
+		>
 			{isAuth ? <MainNavigator /> : <LoginNavigator />}
 		</NavigationContainer>
 	);

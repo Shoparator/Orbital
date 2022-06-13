@@ -1,13 +1,15 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useContext } from "react";
 import { StyleSheet, Text, View, Image } from "react-native";
 import { jsdom } from "jsdom-jscore-rn";
 import axios from "axios";
 
 import { auth, db } from "../../firebase";
 import { doc, updateDoc, Timestamp } from "firebase/firestore";
+import { ThemeContext } from "../ThemeManager";
 
 const ItemImage = (props) => {
 	const { data } = props;
+	const { darkTheme } = useContext(ThemeContext);
 
 	const updateData = async (url) => {
 		const { data: html } = await axios
@@ -117,16 +119,18 @@ const ItemImage = (props) => {
 	}, []);
 
 	return (
-		<View style={styles.container}>
+		<View style={darkTheme ? darkStyles.container : styles.container}>
 			<View>
 				<Image style={styles.logo} source={{ uri: data.imgUrl }} />
 			</View>
 			<View style={styles.rightContainer}>
-				<Text style={styles.text}>Name: {data.name}</Text>
-				<Text style={styles.text}>
+				<Text style={darkTheme ? darkStyles.text : styles.text}>
+					Name: {data.name}
+				</Text>
+				<Text style={darkTheme ? darkStyles.text : styles.text}>
 					Current Price: {"$" + data.price1}
 				</Text>
-				<Text style={styles.text}>
+				<Text style={darkTheme ? darkStyles.text : styles.text}>
 					Notify At: ${data.thresholdPrice}
 				</Text>
 			</View>
@@ -155,10 +159,27 @@ const styles = StyleSheet.create({
 		fontSize: 14,
 		marginBottom: 4,
 	},
-
 	logo: {
 		width: 150,
 		height: 150,
 		margin: 10,
+	},
+});
+
+const darkStyles = StyleSheet.create({
+	container: {
+		flexDirection: "row",
+		margin: 10,
+		borderWidth: 1,
+		borderColor: "#d1d1d1",
+		borderRadius: 10,
+		backgroundColor: "#080808",
+	},
+	text: {
+		fontWeight: "bold",
+		marginRight: 10,
+		fontSize: 14,
+		marginBottom: 4,
+		color: "#fff",
 	},
 });
