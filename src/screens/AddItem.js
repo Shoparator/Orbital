@@ -9,6 +9,7 @@ import {
 } from "react-native";
 import { addDoc, collection, Timestamp } from "firebase/firestore";
 import Toast from "react-native-root-toast";
+import { StatusBar } from "expo-status-bar";
 
 import { db, auth } from "../firebase";
 import { AuthButton, AuthTextInput } from "../components";
@@ -79,6 +80,7 @@ const AddItem = ({ navigation }) => {
 
 	return (
 		<SafeAreaView style={styles.container}>
+			<StatusBar style={darkTheme ? "light" : "dark"} />
 			<KeyboardAvoidingView
 				style={styles.container}
 				behavior={Platform.OS === "ios" ? "padding" : null}

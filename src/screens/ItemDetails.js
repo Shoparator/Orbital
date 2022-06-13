@@ -12,6 +12,7 @@ import { deleteDoc, doc } from "firebase/firestore";
 import ActionButton from "react-native-action-button";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import Toast from "react-native-root-toast";
+import { StatusBar } from "expo-status-bar";
 
 import { AuthButton, ItemImage } from "../components";
 import { db, auth } from "../firebase";
@@ -95,6 +96,7 @@ const ItemDetails = () => {
 
 	return (
 		<View style={styles.container}>
+			<StatusBar style={darkTheme ? "light" : "dark"} />
 			<View>
 				<ItemImage data={data} />
 			</View>
@@ -116,7 +118,6 @@ const ItemDetails = () => {
 				/>
 			</View>
 			<ActionButton
-				buttonText=""
 				icon={
 					<MaterialIcons
 						name="edit"

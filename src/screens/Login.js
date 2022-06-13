@@ -14,6 +14,7 @@ import { signInWithEmailAndPassword } from "firebase/auth";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import Toast from "react-native-root-toast";
+import { StatusBar } from "expo-status-bar";
 
 import { AuthButton, AuthTextInput } from "../components";
 import { auth } from "../firebase";
@@ -67,6 +68,8 @@ const Login = ({ navigation }) => {
 		<SafeAreaView
 			style={darkTheme ? darkStyles.container : styles.container}
 		>
+			<StatusBar style={darkTheme ? "light" : "dark"} />
+
 			<KeyboardAvoidingView
 				style={{ flex: 1 }}
 				behavior={Platform.OS === "ios" ? "padding" : null}

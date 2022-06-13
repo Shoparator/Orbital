@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import {
 	StyleSheet,
 	View,
@@ -9,17 +9,20 @@ import {
 } from "react-native";
 import { doc, updateDoc } from "firebase/firestore";
 import Toast from "react-native-root-toast";
-
-import { db, auth } from "../firebase";
-import { TextInput, AuthButton } from "../components";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import { useRoute } from "@react-navigation/native";
+import { StatusBar } from "expo-status-bar";
+
+import { db, auth } from "../firebase";
+import { AuthButton, AuthTextInput } from "../components";
+import { ThemeContext } from "../components/ThemeManager";
 
 const EditItem = () => {
 	const route = useRoute();
 	const data = route.params.data;
 	const [name, setName] = useState("");
 	const [warnPrice, setWarnPrice] = useState("");
+	const { darkTheme } = useContext(ThemeContext);
 
 	const submitHandler = async () => {
 		if (isNaN(warnPrice)) {
@@ -67,37 +70,44 @@ const EditItem = () => {
 
 	return (
 		<SafeAreaView style={styles.container}>
+			<StatusBar style={darkTheme ? "light" : "dark"} />
 			<KeyboardAvoidingView
 				style={styles.container}
 				behavior={Platform.OS === "ios" ? "padding" : null}
 			>
 				<View style={styles.container}>
-					<TextInput
+					<AuthTextInput
 						value={name}
 						placeholder={data.name}
 						textHandler={setName}
 						icon={
 							<MaterialIcons
 								name="description"
-								style={styles.authImg}
+								style={
+									darkTheme
+										? darkStyles.authImg
+										: styles.authImg
+								}
 								size={20}
 							/>
 						}
 					/>
-
-					<TextInput
+					<AuthTextInput
 						value={warnPrice}
 						placeholder={data.thresholdPrice}
 						textHandler={setWarnPrice}
 						icon={
 							<MaterialIcons
 								name="attach-money"
-								style={styles.authImg}
+								style={
+									darkTheme
+										? darkStyles.authImg
+										: styles.authImg
+								}
 								size={20}
 							/>
 						}
 					/>
-
 					<AuthButton title="Submit" onPressHandler={submitHandler} />
 				</View>
 			</KeyboardAvoidingView>
@@ -108,7 +118,6 @@ const EditItem = () => {
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
-		backgroundColor: "#E8EAED",
 		alignItems: "center",
 		justifyContent: "center",
 		paddingHorizontal: 20,
@@ -132,6 +141,13 @@ const styles = StyleSheet.create({
 	},
 
 	buttonText: { color: "#006ee6", fontWeight: "700" },
+});
+
+const darkStyles = StyleSheet.create({
+	authImg: {
+		marginRight: 5,
+		color: "#fff",
+	},
 });
 
 export default EditItem;

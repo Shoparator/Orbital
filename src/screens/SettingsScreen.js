@@ -1,5 +1,7 @@
-import React, { useContext, useState } from "react";
+import React, { useContext } from "react";
 import { View, StyleSheet } from "react-native";
+import { StatusBar } from "expo-status-bar";
+
 import { ToggleButton } from "../components";
 import { ThemeContext } from "../components/ThemeManager";
 
@@ -8,6 +10,7 @@ const SettingsScreen = ({ navigation }) => {
 
 	return (
 		<View style={styles.home}>
+			<StatusBar style={darkTheme ? "light" : "dark"} />
 			<ToggleButton
 				text={"Dark Mode"}
 				onPress={toggleTheme}

@@ -90,6 +90,7 @@ const Register = ({ navigation }) => {
 		<SafeAreaView
 			style={darkTheme ? darkStyles.container : styles.container}
 		>
+			<StatusBar style={darkTheme ? "light" : "dark"} />
 			<KeyboardAvoidingView
 				style={{ flex: 1 }}
 				behavior={Platform.OS === "ios" ? "padding" : null}

@@ -12,6 +12,7 @@ import {
 } from "react-native";
 import { sendPasswordResetEmail } from "firebase/auth";
 import Toast from "react-native-root-toast";
+import { StatusBar } from "expo-status-bar";
 
 import { AuthButton, AuthTextInput } from "../components";
 import { auth } from "../firebase";
@@ -61,6 +62,7 @@ const Forget = ({ navigation }) => {
 		<SafeAreaView
 			style={darkTheme ? darkStyles.container : styles.container}
 		>
+			<StatusBar style={darkTheme ? "light" : "dark"} />
 			<KeyboardAvoidingView
 				style={{ flex: 1 }}
 				behavior={Platform.OS === "ios" ? "padding" : null}
