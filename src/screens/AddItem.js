@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import {
 	StyleSheet,
 	View,
@@ -11,14 +11,17 @@ import { addDoc, collection, Timestamp } from "firebase/firestore";
 import Toast from "react-native-root-toast";
 
 import { db, auth } from "../firebase";
-import { AuthButton, TextInput } from "../components";
+import { AuthButton, AuthTextInput } from "../components";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
+import { ThemeContext } from "../components/ThemeManager";
 
 const AddItem = ({ navigation }) => {
 	// Store values for the fields
 	const [name, setName] = useState("");
 	const [url, setUrl] = useState("");
 	const [warnPrice, setWarnPrice] = useState("");
+
+	const { darkTheme } = useContext(ThemeContext);
 
 	// Helper Functions
 	const submitHandler = async () => {
@@ -81,40 +84,53 @@ const AddItem = ({ navigation }) => {
 				behavior={Platform.OS === "ios" ? "padding" : null}
 			>
 				<View style={styles.container}>
-					<TextInput
+					<AuthTextInput
 						value={name}
 						placeholder="Item Name."
 						textHandler={setName}
 						icon={
 							<MaterialIcons
 								name="description"
-								style={styles.authImg}
+								style={
+									darkTheme
+										? darkStyles.authImg
+										: styles.authImg
+								}
 								size={20}
 							/>
 						}
+						placeholderTextColor={darkTheme ? "#fff" : null}
 					/>
 
-					<TextInput
+					<AuthTextInput
 						value={url}
 						placeholder="Item Url."
 						textHandler={setUrl}
 						icon={
 							<MaterialIcons
 								name="link"
-								style={styles.authImg}
+								style={
+									darkTheme
+										? darkStyles.authImg
+										: styles.authImg
+								}
 								size={20}
 							/>
 						}
 					/>
 
-					<TextInput
+					<AuthTextInput
 						value={warnPrice}
 						placeholder="Notify At."
 						textHandler={setWarnPrice}
 						icon={
 							<MaterialIcons
 								name="attach-money"
-								style={styles.authImg}
+								style={
+									darkTheme
+										? darkStyles.authImg
+										: styles.authImg
+								}
 								size={20}
 							/>
 						}
@@ -130,7 +146,6 @@ const AddItem = ({ navigation }) => {
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
-		backgroundColor: "#E8EAED",
 		alignItems: "center",
 		justifyContent: "center",
 		paddingHorizontal: 20,
@@ -140,20 +155,14 @@ const styles = StyleSheet.create({
 		marginRight: 5,
 	},
 
-	header: {
-		fontSize: 28,
-		fontWeight: "500",
-		color: "#333",
-		marginBottom: 30,
-		alignSelf: "flex-start",
-	},
-
-	textButton: {
-		color: "#006ee6",
-		fontWeight: "700",
-	},
-
 	buttonText: { color: "#006ee6", fontWeight: "700" },
+});
+
+const darkStyles = StyleSheet.create({
+	authImg: {
+		marginRight: 5,
+		color: "#fff",
+	},
 });
 
 export default AddItem;
