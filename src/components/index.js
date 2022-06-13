@@ -4,3 +4,4 @@ export { default as ItemButton } from "./Tracker/ItemButton";
 export { default as TextInput } from "./TextInput";
 export { default as ItemImage } from "./Tracker/ItemImage";
 export { default as SearchBar } from "./Searchbar/SearchBar";
+export { default as TabButton } from "./Navigation/TabButton";

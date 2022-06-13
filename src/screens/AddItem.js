@@ -7,7 +7,7 @@ import {
 	Platform,
 	SafeAreaView,
 } from "react-native";
-import { addDoc, collection, doc, Timestamp } from "firebase/firestore";
+import { addDoc, collection, Timestamp } from "firebase/firestore";
 import Toast from "react-native-root-toast";
 
 import { db, auth } from "../firebase";
@@ -31,7 +31,7 @@ const AddItem = ({ navigation }) => {
 		// Attempt to add the listing to Firestore
 		try {
 			const taskRef = await addDoc(
-				doc(db, "track", "users", auth.currentUser.uid),
+				collection(db, "track", "users", auth.currentUser.uid),
 				{
 					name: name,
 					url: url,

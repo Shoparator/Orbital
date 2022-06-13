@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { StyleSheet, Text, View, Image } from "react-native";
 import { jsdom } from "jsdom-jscore-rn";
 import axios from "axios";
@@ -122,10 +122,12 @@ const ItemImage = (props) => {
 				<Image style={styles.logo} source={{ uri: data.imgUrl }} />
 			</View>
 			<View style={styles.rightContainer}>
-				<Text style={styles.text}>{data.name}</Text>
-				<Text style={styles.text}>{"$" + data.price1}</Text>
+				<Text style={styles.text}>Name: {data.name}</Text>
 				<Text style={styles.text}>
-					{"Notify At: $" + data.thresholdPrice}
+					Current Price: {"$" + data.price1}
+				</Text>
+				<Text style={styles.text}>
+					Notify At: ${data.thresholdPrice}
 				</Text>
 			</View>
 		</View>
@@ -150,7 +152,8 @@ const styles = StyleSheet.create({
 	text: {
 		fontWeight: "bold",
 		marginRight: 10,
-		fontSize: 20,
+		fontSize: 14,
+		marginBottom: 4,
 	},
 
 	logo: {
