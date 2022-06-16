@@ -1,4 +1,4 @@
-import React, { useLayoutEffect } from "react";
+import React, { useLayoutEffect, useContext } from "react";
 import {
 	StyleSheet,
 	View,
@@ -12,15 +12,18 @@ import { deleteDoc, doc } from "firebase/firestore";
 import ActionButton from "react-native-action-button";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import Toast from "react-native-root-toast";
+import { StatusBar } from "expo-status-bar";
 
 import { AuthButton, ItemImage } from "../components";
 import { db, auth } from "../firebase";
+import { ThemeContext } from "../components/ThemeManager";
 
 const ItemDetails = () => {
 	const route = useRoute();
 	const navigation = useNavigation();
 	const data = route.params.data;
 	const screenWidth = Dimensions.get("window").width;
+	const { darkTheme } = useContext(ThemeContext);
 
 	useLayoutEffect(() => {
 		navigation.setOptions({
@@ -63,7 +66,10 @@ const ItemDetails = () => {
 	const chartConfig = {
 		backgroundGradientFromOpacity: 0,
 		backgroundGradientToOpacity: 0,
-		color: (opacity = 1) => `rgba(0,0,0, ${opacity})`,
+		color: (opacity = 1) =>
+			darkTheme
+				? `rgba(255,255,255, ${opacity})`
+				: `rgba(0,0,0, ${opacity})`,
 		barPercentage: 0.5,
 	};
 
@@ -90,15 +96,17 @@ const ItemDetails = () => {
 
 	return (
 		<View style={styles.container}>
+			<StatusBar style={darkTheme ? "light" : "dark"} />
 			<View>
 				<ItemImage data={data} />
 			</View>
-			<View style={StyleSheet.container}>
+			<View>
 				<LineChart
 					data={chartData}
 					width={screenWidth}
 					height={220}
 					chartConfig={chartConfig}
+					style={{ marginRight: 40 }}
 				/>
 			</View>
 			<View>
@@ -110,7 +118,6 @@ const ItemDetails = () => {
 				/>
 			</View>
 			<ActionButton
-				buttonText=""
 				icon={
 					<MaterialIcons
 						name="edit"

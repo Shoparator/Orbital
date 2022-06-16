@@ -1,34 +1,17 @@
-import React, { useState, useEffect, useLayoutEffect } from "react";
-import {
-	StyleSheet,
-	View,
-	SafeAreaView,
-	KeyboardAvoidingView,
-	FlatList,
-	TouchableOpacity,
-} from "react-native";
+import React, { useState, useEffect, useContext } from "react";
+import { StyleSheet, View, SafeAreaView, FlatList } from "react-native";
 import { onSnapshot, query, collection } from "firebase/firestore";
-import ActionButton from "react-native-action-button";
-import MaterialIcons from "react-native-vector-icons/MaterialIcons";
+import { StatusBar } from "expo-status-bar";
 
 import { db, auth } from "../firebase";
 import { ItemButton, SearchBar } from "../components";
+import { ThemeContext } from "../components/ThemeManager";
 
 const Track = ({ navigation }) => {
 	const [listings, setListings] = useState([]);
 	const [searchPhrase, setSearchPhrase] = useState("");
 	const [clicked, setClicked] = useState(false);
-	const [isRefresh, setIsRefresh] = useState(false);
-
-	useLayoutEffect(() => {
-		navigation.setOptions({
-			headerRight: () => (
-				<TouchableOpacity onPress={refresh}>
-					<MaterialIcons name="refresh" size={30} color="#407BFF" />
-				</TouchableOpacity>
-			),
-		});
-	}, []);
+	const { darkTheme } = useContext(ThemeContext);
 
 	// Helper Functions
 	useEffect(() => {
@@ -48,56 +31,42 @@ const Track = ({ navigation }) => {
 			setListings([...listings]);
 		});
 		return unsubscribe;
-	}, [refresh]); // Temporary measure to prevent useEffect from constantly happening.
-
-	// Refreshes the list by triggering the above
-	const refresh = () => {
-		setIsRefresh(true);
-		setIsRefresh(false);
-	};
+	}, []);
 
 	return (
-		<KeyboardAvoidingView
-			style={{ flex: 1 }}
-			behavior={Platform.OS === "ios" ? "padding" : null}
-		>
-			<SafeAreaView style={styles.container}>
-				<View style={styles.contentContainer}>
-					<SearchBar
-						searchPhrase={searchPhrase}
-						setSearchPhrase={setSearchPhrase}
-						clicked={clicked}
-						setClicked={setClicked}
+		<SafeAreaView style={styles.container}>
+			<StatusBar style={darkTheme ? "light" : "dark"} />
+			<View style={styles.contentContainer}>
+				<SearchBar
+					searchPhrase={searchPhrase}
+					setSearchPhrase={setSearchPhrase}
+					clicked={clicked}
+					setClicked={setClicked}
+				/>
+				<View style={styles.listContainer}>
+					<FlatList
+						data={listings.filter((item) =>
+							item.name
+								.toLowerCase()
+								.includes(searchPhrase.toLowerCase())
+						)}
+						renderItem={({ item, index }) => (
+							<ItemButton data={item} key={index} />
+						)}
+						style={styles.list}
+						showsVerticalScrollIndicator={false}
 					/>
-					<View style={styles.listContainer}>
-						<FlatList
-							data={listings.filter((item) =>
-								item.name
-									.toLowerCase()
-									.includes(searchPhrase.toLowerCase())
-							)}
-							renderItem={({ item, index }) => (
-								<ItemButton data={item} key={index} />
-							)}
-							style={styles.list}
-							showsVerticalScrollIndicator={false}
-						/>
-					</View>
 				</View>
-			</SafeAreaView>
-			<ActionButton
-				buttonColor="rgba(10,132,255,1)"
-				onPress={() => {
-					navigation.navigate("Add Item");
-				}}
-			/>
-		</KeyboardAvoidingView>
+			</View>
+		</SafeAreaView>
 	);
 };
 
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
+		marginBottom: 100,
+		marginHorizontal: 10,
 	},
 	contentContainer: {
 		flex: 1,

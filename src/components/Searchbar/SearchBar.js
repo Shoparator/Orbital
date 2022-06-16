@@ -63,11 +63,11 @@ export default SearchBar;
 // styles
 const styles = StyleSheet.create({
 	container: {
-		margin: 15,
-		justifyContent: "flex-start",
+		marginVertical: 10,
+		justifyContent: "center",
 		alignItems: "center",
 		flexDirection: "row",
-		width: "95%",
+		width: "100%",
 	},
 	searchBar__unclicked: {
 		padding: 10,
@@ -80,15 +80,16 @@ const styles = StyleSheet.create({
 	searchBar__clicked: {
 		padding: 10,
 		flexDirection: "row",
-		width: "80%",
+		width: "75%",
 		backgroundColor: "#d9dbda",
 		borderRadius: 15,
 		alignItems: "center",
 		justifyContent: "space-evenly",
+		marginRight: 10,
 	},
 	input: {
 		fontSize: 20,
 		marginLeft: 10,
-		width: "90%",
+		width: "80%",
 	},
 });

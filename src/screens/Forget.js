@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import {
 	StyleSheet,
 	View,
@@ -8,18 +8,21 @@ import {
 	Platform,
 	Text,
 	SafeAreaView,
+	TouchableOpacity,
 } from "react-native";
 import { sendPasswordResetEmail } from "firebase/auth";
 import Toast from "react-native-root-toast";
+import { StatusBar } from "expo-status-bar";
 
 import { AuthButton, AuthTextInput } from "../components";
 import { auth } from "../firebase";
 
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
-import { StatusBar } from "expo-status-bar";
+import { ThemeContext } from "../components/ThemeManager";
 
 const Forget = ({ navigation }) => {
 	const [email, setEmail] = useState("");
+	const { darkTheme } = useContext(ThemeContext);
 
 	const missingFieldsToast = () => {
 		Toast.show("Missing fields, please try again!", {
@@ -56,19 +59,25 @@ const Forget = ({ navigation }) => {
 	};
 
 	return (
-		<SafeAreaView style={styles.container}>
-			<StatusBar backgroundColor="#E8EAED" />
+		<SafeAreaView
+			style={darkTheme ? darkStyles.container : styles.container}
+		>
+			<StatusBar style={darkTheme ? "light" : "dark"} />
 			<KeyboardAvoidingView
 				style={{ flex: 1 }}
 				behavior={Platform.OS === "ios" ? "padding" : null}
 			>
-				<View style={styles.container}>
+				<View
+					style={darkTheme ? darkStyles.container : styles.container}
+				>
 					<Image
 						style={styles.logo}
 						source={require("../../assets/logo_transparent.png")}
 					/>
 
-					<Text style={styles.header}> Reset Password </Text>
+					<Text style={darkTheme ? darkStyles.header : styles.header}>
+						Reset Password
+					</Text>
 
 					<AuthTextInput
 						value={email}
@@ -89,6 +98,22 @@ const Forget = ({ navigation }) => {
 						onPressHandler={resetHandler}
 						title={"Reset Password"}
 					/>
+					<View
+						style={{
+							flexDirection: "row",
+						}}
+					>
+						<Text style={darkTheme ? darkStyles.text : styles.text}>
+							Remembered Password?
+						</Text>
+						<TouchableOpacity
+							onPress={() => {
+								navigation.navigate("Login");
+							}}
+						>
+							<Text style={styles.textButton}>Login</Text>
+						</TouchableOpacity>
+					</View>
 				</View>
 			</KeyboardAvoidingView>
 		</SafeAreaView>
@@ -138,6 +163,33 @@ const styles = StyleSheet.create({
 	textButton: {
 		color: "#006ee6",
 		fontWeight: "700",
+	},
+
+	text: {
+		marginRight: 5,
+	},
+});
+
+const darkStyles = StyleSheet.create({
+	container: {
+		flex: 1,
+		backgroundColor: "#121212",
+		alignItems: "center",
+		justifyContent: "center",
+		paddingHorizontal: 25,
+	},
+
+	header: {
+		fontSize: 28,
+		fontWeight: "500",
+		color: "#fff",
+		marginBottom: 30,
+		alignSelf: "flex-start",
+	},
+
+	text: {
+		marginRight: 5,
+		color: "#fff",
 	},
 });
 

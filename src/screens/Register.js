@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import {
 	StyleSheet,
 	View,
@@ -18,11 +18,13 @@ import Toast from "react-native-root-toast";
 
 import { AuthButton, AuthTextInput } from "../components";
 import { auth } from "../firebase";
+import { ThemeContext } from "../components/ThemeManager";
 
 const Register = ({ navigation }) => {
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
 	const [confirmPassword, setConfirmPassword] = useState("");
+	const { darkTheme } = useContext(ThemeContext);
 
 	const signUpToast = () => {
 		Toast.show("Sign Up successfully completed!", {
@@ -85,19 +87,25 @@ const Register = ({ navigation }) => {
 	};
 
 	return (
-		<SafeAreaView style={styles.container}>
-			<StatusBar backgroundColor="#E8EAED" />
+		<SafeAreaView
+			style={darkTheme ? darkStyles.container : styles.container}
+		>
+			<StatusBar style={darkTheme ? "light" : "dark"} />
 			<KeyboardAvoidingView
 				style={{ flex: 1 }}
 				behavior={Platform.OS === "ios" ? "padding" : null}
 			>
-				<View style={styles.container}>
+				<View
+					style={darkTheme ? darkStyles.container : styles.container}
+				>
 					<Image
 						style={styles.logo}
 						source={require("../../assets/logo_transparent.png")}
 					/>
 
-					<Text style={styles.header}> Register </Text>
+					<Text style={darkTheme ? darkStyles.header : styles.header}>
+						Register
+					</Text>
 
 					<AuthTextInput
 						value={email}
@@ -154,7 +162,7 @@ const Register = ({ navigation }) => {
 							flexDirection: "row",
 						}}
 					>
-						<Text style={{ marginRight: 5 }}>
+						<Text style={darkTheme ? darkStyles.text : styles.text}>
 							Already have an account?
 						</Text>
 						<TouchableOpacity
@@ -186,19 +194,6 @@ const styles = StyleSheet.create({
 		marginBottom: 10,
 	},
 
-	fields: {
-		alignSelf: "flex-start",
-		flexDirection: "row",
-		borderBottomColor: "#ccc",
-		borderBottomWidth: 1,
-		paddingBottom: 5,
-		marginBottom: 25,
-	},
-
-	authInput: {
-		flex: 1,
-		paddingVertical: 0,
-	},
 	authImg: {
 		marginRight: 5,
 	},
@@ -214,6 +209,35 @@ const styles = StyleSheet.create({
 	textButton: {
 		color: "#006ee6",
 		fontWeight: "700",
+	},
+
+	buttonText: { color: "#006ee6", fontWeight: "700" },
+
+	text: {
+		marginRight: 5,
+	},
+});
+
+const darkStyles = StyleSheet.create({
+	container: {
+		flex: 1,
+		backgroundColor: "#121212",
+		alignItems: "center",
+		justifyContent: "center",
+		paddingHorizontal: 25,
+	},
+
+	header: {
+		fontSize: 28,
+		fontWeight: "500",
+		color: "#fff",
+		marginBottom: 30,
+		alignSelf: "flex-start",
+	},
+
+	text: {
+		marginRight: 5,
+		color: "#fff",
 	},
 });
 

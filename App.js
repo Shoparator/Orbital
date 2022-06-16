@@ -10,6 +10,7 @@ import { LogBox } from "react-native";
 import { db, auth } from "./src/firebase";
 import { doc, setDoc } from "firebase/firestore";
 import * as RootNavigation from "./src/navigation/RootNavigation";
+import { ThemeProvider } from "./src/components/ThemeManager";
 
 LogBox.ignoreLogs(["Warning: ..."]); // Ignore log notification by message
 LogBox.ignoreAllLogs(); //Ignore all log notifications
@@ -127,7 +128,9 @@ export default function App() {
 
 	return (
 		<RootSiblingParent>
-			<MainNavigation />
+			<ThemeProvider>
+				<MainNavigation />
+			</ThemeProvider>
 		</RootSiblingParent>
 	);
 }

@@ -1,18 +1,31 @@
-import React from "react";
-import { View, Text, StyleSheet } from "react-native";
+import React, { useContext } from "react";
+import { View, StyleSheet } from "react-native";
+import { StatusBar } from "expo-status-bar";
 
-const SettingsScreen = ({ navigation }) => (
-    <View style={styles.home} onPress={() => navigation.navigate("Home")}>
-        <Text>SettingsScreen</Text>
-    </View>
-);
+import { ToggleButton } from "../components";
+import { ThemeContext } from "../components/ThemeManager";
+
+const SettingsScreen = ({ navigation }) => {
+	const { darkTheme, toggleTheme } = useContext(ThemeContext);
+
+	return (
+		<View style={styles.home}>
+			<StatusBar style={darkTheme ? "light" : "dark"} />
+			<ToggleButton
+				text={"Dark Mode"}
+				onPress={toggleTheme}
+				value={darkTheme}
+			/>
+		</View>
+	);
+};
 
 const styles = StyleSheet.create({
-    home: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-    }
+	home: {
+		// flex: 1,
+		// justifyContent: "center",
+		// alignItems: "center",
+	},
 });
 
 export default SettingsScreen;
