@@ -24,8 +24,9 @@ const EditItem = () => {
 	const [warnPrice, setWarnPrice] = useState("");
 	const { darkTheme } = useContext(ThemeContext);
 
+	// Submits changes to firebase database
 	const submitHandler = async () => {
-		if (isNaN(warnPrice)) {
+		if (isNaN(warnPrice)) { // Ensures only numbers inputted in the field
 			showRes("Notify At should contains numbers only.");
 			return;
 		}
@@ -53,6 +54,7 @@ const EditItem = () => {
 		}
 	};
 
+	// Pop up to display message
 	const showRes = (text) => {
 		Toast.show(text, {
 			duration: Toast.durations.SHORT,
@@ -62,6 +64,7 @@ const EditItem = () => {
 		});
 	};
 
+	// Clears all fields and dismisses keyboard
 	const clearForm = () => {
 		setName("");
 		setWarnPrice("");

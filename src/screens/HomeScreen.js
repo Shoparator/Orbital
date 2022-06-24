@@ -3,6 +3,7 @@ import { StyleSheet } from "react-native";
 import SearchBar from "../components/Searchbar/SearchBar";
 
 const HomeScreen = ({ navigation }) => {
+	// Not used currently
 	const [searchPhrase, setSearchPhrase] = useState("");
 	const [clicked, setClicked] = useState(false);
 

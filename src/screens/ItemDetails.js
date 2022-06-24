@@ -25,6 +25,7 @@ const ItemDetails = () => {
 	const screenWidth = Dimensions.get("window").width;
 	const { darkTheme } = useContext(ThemeContext);
 
+	// Add delete icon on the header
 	useLayoutEffect(() => {
 		navigation.setOptions({
 			headerRight: () => (
@@ -39,6 +40,7 @@ const ItemDetails = () => {
 		});
 	}, []);
 
+	// Function of the delete icon
 	const onDeleteHandler = async (id) => {
 		try {
 			await deleteDoc(
@@ -54,6 +56,7 @@ const ItemDetails = () => {
 		}
 	};
 
+	// Pop up to display message
 	const showRes = (text) => {
 		Toast.show(text, {
 			duration: Toast.durations.SHORT,
@@ -63,6 +66,7 @@ const ItemDetails = () => {
 		});
 	};
 
+	// Price History styling
 	const chartConfig = {
 		backgroundGradientFromOpacity: 0,
 		backgroundGradientToOpacity: 0,
@@ -75,21 +79,21 @@ const ItemDetails = () => {
 
 	const chartData = {
 		labels: [
-			data.time1.toDate().toLocaleDateString("en-SG"),
-			data.time2.toDate().toLocaleDateString("en-SG"),
-			data.time3.toDate().toLocaleDateString("en-SG"),
-			data.time4.toDate().toLocaleDateString("en-SG"),
-			data.time5.toDate().toLocaleDateString("en-SG"),
+			data.time[0],
+			data.time[1],
+			data.time[2],
+			data.time[3],
 		],
 		datasets: [
 			{
-				data: [1, 2, 3, 4, 5],
+				data: [data.price[0], data.price[1], data.price[2], data.price[3]],
 				color: (opacity = 1) => `rgba(10,132,255, ${opacity})`, // optional
 				strokeWidth: 2, // optional
 			},
 		],
 	};
 
+	// Navigates to edit page
 	const onPress = () => {
 		navigation.navigate("Edit Item", { data: data });
 	};

@@ -7,7 +7,7 @@ import {
 	Platform,
 	SafeAreaView,
 } from "react-native";
-import { addDoc, collection, Timestamp } from "firebase/firestore";
+import { addDoc, collection } from "firebase/firestore";
 import Toast from "react-native-root-toast";
 import { StatusBar } from "expo-status-bar";
 
@@ -39,17 +39,9 @@ const AddItem = ({ navigation }) => {
 				{
 					name: name,
 					url: url,
-					price1: null,
-					price2: 0,
-					price3: 0,
-					price4: 0,
-					price5: 0,
+					price: [0, 0, 0, 0],
 					thresholdPrice: warnPrice,
-					time1: Timestamp.now(),
-					time2: Timestamp.now(),
-					time3: Timestamp.now(),
-					time4: Timestamp.now(),
-					time5: Timestamp.now(),
+					time: [0,0,0,0]
 				}
 			);
 			clearForm();
@@ -61,6 +53,7 @@ const AddItem = ({ navigation }) => {
 		}
 	};
 
+	// Pop up to display message
 	const showRes = (text) => {
 		Toast.show(text, {
 			duration: Toast.durations.SHORT,
