@@ -40,6 +40,7 @@ const styles = StyleSheet.create({
 	rightContainer: {
 		padding: 10,
 		alignSelf: "center",
+		flex: 1,
 	},
 	text: {
 		fontWeight: "bold",
