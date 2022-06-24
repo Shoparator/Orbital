@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { View, StyleSheet } from "react-native";
+import { View, StyleSheet, SafeAreaView } from "react-native";
 import { StatusBar } from "expo-status-bar";
 
 import { ToggleButton } from "../components";
@@ -9,14 +9,14 @@ const SettingsScreen = ({ navigation }) => {
 	const { darkTheme, toggleTheme } = useContext(ThemeContext);
 
 	return (
-		<View style={styles.home}>
+		<SafeAreaView style={styles.home}>
 			<StatusBar style={darkTheme ? "light" : "dark"} />
 			<ToggleButton
 				text={"Dark Mode"}
 				onPress={toggleTheme}
 				value={darkTheme}
 			/>
-		</View>
+		</SafeAreaView>
 	);
 };
 

@@ -1,6 +1,7 @@
 {
   "expo": {
     "name": "Shoparator",
+    "owner": "shoparator",
     "slug": "Shoparator",
     "version": "1.0.0",
     "orientation": "portrait",

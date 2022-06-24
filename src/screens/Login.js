@@ -37,6 +37,15 @@ const Login = ({ navigation }) => {
 		});
 	};
 
+	const loginFailedToast = () => {
+		Toast.show("Login failed. Please check your email and password.", {
+			duration: Toast.durations.SHORT,
+			backgroundColor: "#fff",
+			textColor: "black",
+			position: Toast.positions.CENTER - 50,
+		});
+	};
+
 	// Empties the fields and dismisses the keyboard
 	const restoreForm = () => {
 		setEmail("");
@@ -61,6 +70,7 @@ const Login = ({ navigation }) => {
 				const errorCode = error.code;
 				const errorMessage = error.message;
 				console.error("[loginHandler]", errorCode, errorMessage);
+				loginFailedToast();
 			});
 	};
 
