@@ -27,42 +27,24 @@ const Register = ({ navigation }) => {
 	const { darkTheme } = useContext(ThemeContext);
 
 	// Pop ups to display message
-	const signUpToast = () => {
-		Toast.show("Sign Up successfully completed!", {
+	const showRes = (message) => {
+		Toast.show(message, {
 			duration: Toast.durations.SHORT,
 			backgroundColor: "#fff",
 			textColor: "black",
 			position: Toast.positions.CENTER - 50,
 		});
-	};
-
-	const missingFieldsToast = () => {
-		Toast.show("Missing fields, please try again!", {
-			duration: Toast.durations.SHORT,
-			backgroundColor: "#fff",
-			textColor: "black",
-			position: Toast.positions.CENTER - 50,
-		});
-	};
-
-	const samePasswordToast = () => {
-		Toast.show("Password must be the same!", {
-			duration: Toast.durations.SHORT,
-			backgroundColor: "#fff",
-			textColor: "black",
-			position: Toast.positions.CENTER - 50,
-		});
-	};
+	}
 
 	// Helper Fucntions
 	const signUpHandler = () => {
 		if (email.length === 0 || password.length === 0) {
-			missingFieldsToast();
+			showRes("Missing fields, please try again!");
 			return;
 		}
 
 		if (password != confirmPassword) {
-			samePasswordToast();
+			showRes("Password must be the same!");
 			return;
 		}
 
@@ -70,7 +52,8 @@ const Register = ({ navigation }) => {
 		return createUserWithEmailAndPassword(auth, email, password)
 			.then(() => {
 				restoreForm();
-				signUpToast();
+				showRes("Verify email to login");
+
 			})
 			.catch((error) => {
 				const errorCode = error.code;

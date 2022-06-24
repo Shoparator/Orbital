@@ -11,6 +11,7 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { onAuthStateChanged, signOut } from "firebase/auth";
 import { MaterialIcons } from "@expo/vector-icons";
 import Ionicons from "react-native-vector-icons/Ionicons";
+import Toast from "react-native-root-toast";
 
 import { auth } from "../firebase";
 import {
@@ -46,6 +47,16 @@ const MainNavigation = () => {
 	const [isAuth, setIsAuth] = useState(false);
 	const { darkTheme } = useContext(ThemeContext);
 
+
+	const verifyAccountToast = () => {
+		Toast.show("Verify your email to login.", {
+			duration: Toast.durations.SHORT,
+			backgroundColor: "#fff",
+			textColor: "black",
+			position: Toast.positions.CENTER - 50,
+		});
+	};
+
 	// Helper Functions
 
 	useEffect(() => {
@@ -54,9 +65,14 @@ const MainNavigation = () => {
 			auth,
 			(authenticatedUser) => {
 				if (authenticatedUser) {
-					setIsAuth(true);
+					if ((!auth.currentUser.emailVerified)) {
+						setIsAuth(false);
+						verifyAccountToast();
+					} else {
+						setIsAuth(true);
+					}
 				} else {
-					setIsAuth(false);
+					setIsAuth(false)
 				}
 			}
 		);

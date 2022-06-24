@@ -5,14 +5,15 @@ import {
 	TouchableOpacity,
 	Linking,
 	Dimensions,
+	SafeAreaView
 } from "react-native";
-import { LineChart } from "react-native-chart-kit";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { deleteDoc, doc } from "firebase/firestore";
 import ActionButton from "react-native-action-button";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import Toast from "react-native-root-toast";
 import { StatusBar } from "expo-status-bar";
+import PureChart from 'react-native-pure-chart';
 
 import { AuthButton, ItemImage } from "../components";
 import { db, auth } from "../firebase";
@@ -66,52 +67,27 @@ const ItemDetails = () => {
 		});
 	};
 
-	// Price History styling
-	const chartConfig = {
-		backgroundGradientFromOpacity: 0,
-		backgroundGradientToOpacity: 0,
-		color: (opacity = 1) =>
-			darkTheme
-				? `rgba(255,255,255, ${opacity})`
-				: `rgba(0,0,0, ${opacity})`,
-		barPercentage: 0.5,
-	};
-
-	const chartData = {
-		labels: [
-			data.time[0],
-			data.time[1],
-			data.time[2],
-			data.time[3],
-		],
-		datasets: [
-			{
-				data: [data.price[0], data.price[1], data.price[2], data.price[3]],
-				color: (opacity = 1) => `rgba(10,132,255, ${opacity})`, // optional
-				strokeWidth: 2, // optional
-			},
-		],
-	};
-
 	// Navigates to edit page
 	const onPress = () => {
 		navigation.navigate("Edit Item", { data: data });
 	};
 
+	const chartData = [
+		{x: data.time[4], y: parseFloat(data.price[4])},
+		{x: data.time[3], y: parseFloat(data.price[3])},
+		{x: data.time[2], y: parseFloat(data.price[2])},
+		{x: data.time[1], y: parseFloat(data.price[1])},
+		{x: data.time[0], y: parseFloat(data.price[0])}
+	];
+
 	return (
-		<View style={styles.container}>
+		<SafeAreaView style={styles.container}>
 			<StatusBar style={darkTheme ? "light" : "dark"} />
 			<View>
 				<ItemImage data={data} />
 			</View>
-			<View>
-				<LineChart
-					data={chartData}
-					width={screenWidth}
-					height={220}
-					chartConfig={chartConfig}
-					style={{ marginRight: 40 }}
-				/>
+			<View style={{padding:10, marginBottom:10}}>
+				<PureChart data={chartData} type='line' />
 			</View>
 			<View>
 				<AuthButton
@@ -131,7 +107,7 @@ const ItemDetails = () => {
 				buttonColor="rgba(10,132,255,1)"
 				onPress={onPress}
 			/>
-		</View>
+		</SafeAreaView>
 	);
 };
 

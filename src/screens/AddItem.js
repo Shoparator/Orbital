@@ -39,9 +39,9 @@ const AddItem = ({ navigation }) => {
 				{
 					name: name,
 					url: url,
-					price: [0, 0, 0, 0],
+					price: [0, 0, 0, 0, 0],
 					thresholdPrice: warnPrice,
-					time: [0,0,0,0]
+					time: [0, 0, 0, 0, 0]
 				}
 			);
 			clearForm();
