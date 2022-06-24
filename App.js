@@ -15,6 +15,7 @@ import { ThemeProvider } from "./src/components/ThemeManager";
 LogBox.ignoreLogs(["Warning: ..."]); // Ignore log notification by message
 LogBox.ignoreAllLogs(); //Ignore all log notifications
 
+// Notification handlers
 const BACKGROUND_NOTIFICATION_TASK = "BACKGROUND-NOTIFICATION-TASK";
 
 Notifications.setNotificationHandler({
@@ -72,10 +73,12 @@ TaskManager.defineTask(
 	({ data, error, executionInfo }) => handleNewNotification(data.notification)
 );
 
+// Main app
 export default function App() {
 	const notificationListener = useRef();
 	const responseListener = useRef();
 
+	// Notification listeners
 	const handleNewNotification = async (notificationObject) => {
 		try {
 			console.log(notificationObject);
@@ -97,7 +100,7 @@ export default function App() {
 	};
 
 	useEffect(() => {
-		registerForPushNotificationsAsync();
+		registerForPushNotificationsAsync(); 
 
 		// This listener is fired whenever a notification is received while the app is foregrounded
 		notificationListener.current =

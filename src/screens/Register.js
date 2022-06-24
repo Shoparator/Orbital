@@ -26,6 +26,7 @@ const Register = ({ navigation }) => {
 	const [confirmPassword, setConfirmPassword] = useState("");
 	const { darkTheme } = useContext(ThemeContext);
 
+	// Pop ups to display message
 	const signUpToast = () => {
 		Toast.show("Sign Up successfully completed!", {
 			duration: Toast.durations.SHORT,
