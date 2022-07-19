@@ -1,3 +1,4 @@
+import 'react-native-gesture-handler';
 import React, { useEffect, useRef } from "react";
 import { Platform } from "react-native";
 import * as Device from "expo-device";
@@ -11,6 +12,7 @@ import { db, auth } from "./src/firebase";
 import { doc, setDoc } from "firebase/firestore";
 import * as RootNavigation from "./src/navigation/RootNavigation";
 import { ThemeProvider } from "./src/components/ThemeManager";
+
 
 LogBox.ignoreLogs(["Warning: ..."]); // Ignore log notification by message
 LogBox.ignoreAllLogs(); //Ignore all log notifications
