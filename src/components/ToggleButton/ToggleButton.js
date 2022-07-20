@@ -26,20 +26,22 @@ const styles = StyleSheet.create({
 		flexDirection: "row",
 		alignItems: "center",
 		justifyContent: "space-between",
-		paddingHorizontal: 20,
-		borderBottomColor: "#AEC6CF",
-		borderBottomWidth: 1,
+		paddingHorizontal: 18,
+
 	},
 	text: {
 		justifyContent: "center",
-		fontSize: 16,
+		fontSize: 14,
+		color: "#696969",
+		fontWeight: "500"
 	},
 });
 
 const darkStyles = StyleSheet.create({
 	text: {
 		justifyContent: "center",
-		fontSize: 16,
-		color: "#fff",
+		fontSize: 14,
+		color: "#a9a9a9",
+		fontWeight: "500"
 	},
 });

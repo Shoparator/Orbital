@@ -8,6 +8,7 @@ import {
 } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { createDrawerNavigator, DrawerContentScrollView, DrawerItemList, DrawerItem } from '@react-navigation/drawer';
 import { onAuthStateChanged, signOut } from "firebase/auth";
 import { MaterialIcons } from "@expo/vector-icons";
 import Ionicons from "react-native-vector-icons/Ionicons";
@@ -24,29 +25,33 @@ import {
 	SettingsScreen,
 	ItemDetails,
 	EditItem,
+	Coupon
 } from "../screens";
 import { TabButton } from "../components";
 import { navigationRef } from "./RootNavigation";
 import { ThemeContext } from "../components/ThemeManager";
+import { ToggleButton } from "../components";
 
 // const homeName = "Home"; // Home stack commented out because currently not in use
 const trackName = "Track";
-const settingsName = "Settings";
+// const settingsName = "Settings";
+const couponsName = "Coupons";
 
 const Tab = createBottomTabNavigator();
 const LoginStack = createNativeStackNavigator();
 // const HomeStack = createNativeStackNavigator();
-const SettingsStack = createNativeStackNavigator();
+// const SettingsStack = createNativeStackNavigator();
 const TrackStack = createNativeStackNavigator();
 const AddStack = createNativeStackNavigator();
+const DrawerStack = createDrawerNavigator();
+const CouponStack = createNativeStackNavigator();
 
 const MainNavigation = () => {
 	/**
 	 * This hook serves as a listener to auth state changes provided by firebase.
 	 */
 	const [isAuth, setIsAuth] = useState(false);
-	const { darkTheme } = useContext(ThemeContext);
-
+	const { darkTheme, toggleTheme } = useContext(ThemeContext);
 
 	const verifyAccountToast = () => {
 		Toast.show("Verify your email to login.", {
@@ -86,15 +91,15 @@ const MainNavigation = () => {
 	// 	</HomeStack.Navigator>
 	// );
 
-	const SettingsNavigator = () => (
-		<SettingsStack.Navigator>
-			<SettingsStack.Screen
-				name={settingsName}
-				component={SettingsScreen}
-				options={{ headerRight: () => <LogoutIcon /> }}
-			/>
-		</SettingsStack.Navigator>
-	);
+	// const SettingsNavigator = () => (
+	// 	<SettingsStack.Navigator>
+	// 		<SettingsStack.Screen
+	// 			name={settingsName}
+	// 			component={SettingsScreen}
+	// 			options={{ headerRight: () => <LogoutIcon /> }}
+	// 		/>
+	// 	</SettingsStack.Navigator>
+	// );
 
 	const LoginNavigator = () => (
 		<LoginStack.Navigator initialRouteName={Login}>
@@ -116,9 +121,20 @@ const MainNavigation = () => {
 		</LoginStack.Navigator>
 	);
 
+	// Pop up to display message
+	const showRes = (text) => {
+		Toast.show(text, {
+			duration: Toast.durations.SHORT,
+			backgroundColor: "#fff",
+			textColor: "black",
+			position: Toast.positions.CENTER - 50,
+		});
+	};
+
 	const logoutHandler = () => {
 		signOut(auth).then(() => {
 			setIsAuth(false);
+			showRes("Logged out successfullly!");
 		});
 	};
 
@@ -166,6 +182,12 @@ const MainNavigation = () => {
 		</AddStack.Navigator>
 	);
 
+	const CouponNavigator = () => (
+		<CouponStack.Navigator>
+			<CouponStack.Screen name="Coupons" component={Coupon} />
+		</CouponStack.Navigator>
+	);
+
 	const BottomTabButton = ({ children, onPress }) => {
 		return (
 			<TouchableOpacity style={styles.BottomTabButton} onPress={onPress}>
@@ -174,9 +196,8 @@ const MainNavigation = () => {
 		);
 	};
 
-	const MainNavigator = () => (
+	const TabNavigator = () => (
 		<Tab.Navigator
-			initialRouteName={trackName}
 			screenOptions={({ route }) => ({
 				tabBarButton: (props) => {
 					let item;
@@ -187,10 +208,10 @@ const MainNavigation = () => {
 							route: trackName,
 							iconName: "show-chart",
 						};
-					} else if (currentTab === settingsName) {
+					} else if (currentTab === couponsName) {
 						item = {
-							route: settingsName,
-							iconName: "settings",
+							route: couponsName,
+							iconName: "local-atm",
 						};
 					}
 					return <TabButton {...props} item={item} />;
@@ -200,11 +221,6 @@ const MainNavigation = () => {
 				tabBarShowLabel: false,
 			})}
 		>
-			{/* <Tab.Screen
-				name={homeName}
-				component={HomeNavigator}
-				options={{ headerShown: false }}
-			/> */}
 			<Tab.Screen name={trackName} component={TrackNavigator} />
 			<Tab.Screen
 				name={"Add"}
@@ -223,9 +239,32 @@ const MainNavigation = () => {
 					...styles.tabScreen,
 				}}
 			/>
-			<Tab.Screen name={settingsName} component={SettingsNavigator} />
+			{/* <Tab.Screen name={settingsName} component={SettingsNavigator} /> */}
+			<Tab.Screen name={couponsName} component={CouponNavigator} />
 		</Tab.Navigator>
 	);
+
+	function CustomDrawerContent(props) {
+		return (
+		  <DrawerContentScrollView {...props}>
+			<DrawerItemList {...props} />
+			<ToggleButton
+				text={"Dark Mode"}
+				onPress={toggleTheme}
+				value={darkTheme}
+			/>
+			<DrawerItem label="Logout" onPress={() => logoutHandler()} />
+		  </DrawerContentScrollView>
+		);
+	  }
+
+	const DrawerNavigator = () => {
+		return (
+			<DrawerStack.Navigator screenOptions={{ headerShown: false, swipeEdgeWidth: 100 }} drawerContent={props => <CustomDrawerContent {...props}/>}>
+				<DrawerStack.Screen name="Main" component={TabNavigator} />
+			</DrawerStack.Navigator>
+		);
+	}
 
 	// If user is authenticated by Firebase, bring user to the main screen.
 	// Else bring user to login screen
@@ -234,7 +273,7 @@ const MainNavigation = () => {
 			ref={navigationRef}
 			theme={darkTheme ? DarkTheme : DefaultTheme}
 		>
-			{isAuth ? <MainNavigator /> : <LoginNavigator />}
+			{isAuth ? <DrawerNavigator /> : <LoginNavigator />}
 		</NavigationContainer>
 	);
 };
