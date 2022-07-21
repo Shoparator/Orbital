@@ -12,6 +12,7 @@ const AuthTextInput = (props) => {
 		textHandler,
 		icon,
 		button,
+		testID
 	} = props;
 
 	const { darkTheme } = useContext(ThemeContext);
@@ -28,6 +29,7 @@ const AuthTextInput = (props) => {
 				onChangeText={textHandler}
 				keyboardType={keyboardType}
 				placeholderTextColor={darkTheme ? "#fff" : null}
+				testID={testID}
 			/>
 
 			{button}

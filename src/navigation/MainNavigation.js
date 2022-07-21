@@ -21,8 +21,6 @@ import {
 	AddItem,
 	Register,
 	Forget,
-	HomeScreen,
-	SettingsScreen,
 	ItemDetails,
 	EditItem,
 	Coupon
@@ -32,15 +30,11 @@ import { navigationRef } from "./RootNavigation";
 import { ThemeContext } from "../components/ThemeManager";
 import { ToggleButton } from "../components";
 
-// const homeName = "Home"; // Home stack commented out because currently not in use
 const trackName = "Track";
-// const settingsName = "Settings";
 const couponsName = "Coupons";
 
 const Tab = createBottomTabNavigator();
 const LoginStack = createNativeStackNavigator();
-// const HomeStack = createNativeStackNavigator();
-// const SettingsStack = createNativeStackNavigator();
 const TrackStack = createNativeStackNavigator();
 const AddStack = createNativeStackNavigator();
 const DrawerStack = createDrawerNavigator();
@@ -85,22 +79,6 @@ const MainNavigation = () => {
 		return unsubscribeAuthStateChanged;
 	}, []);
 
-	// const HomeNavigator = () => (
-	// 	<HomeStack.Navigator>
-	// 		<HomeStack.Screen name={homeName} component={HomeScreen} />
-	// 	</HomeStack.Navigator>
-	// );
-
-	// const SettingsNavigator = () => (
-	// 	<SettingsStack.Navigator>
-	// 		<SettingsStack.Screen
-	// 			name={settingsName}
-	// 			component={SettingsScreen}
-	// 			options={{ headerRight: () => <LogoutIcon /> }}
-	// 		/>
-	// 	</SettingsStack.Navigator>
-	// );
-
 	const LoginNavigator = () => (
 		<LoginStack.Navigator initialRouteName={Login}>
 			<LoginStack.Screen
@@ -137,12 +115,6 @@ const MainNavigation = () => {
 			showRes("Logged out successfullly!");
 		});
 	};
-
-	const LogoutIcon = () => (
-		<TouchableOpacity onPress={logoutHandler}>
-			<MaterialIcons name="logout" size={28} color="#407BFF" />
-		</TouchableOpacity>
-	);
 
 	const TrackNavigator = ({ navigation, route }) => {
 		const tabHiddenRoutes = ["Item Details", "Edit Item"];
@@ -239,7 +211,6 @@ const MainNavigation = () => {
 					...styles.tabScreen,
 				}}
 			/>
-			{/* <Tab.Screen name={settingsName} component={SettingsNavigator} /> */}
 			<Tab.Screen name={couponsName} component={CouponNavigator} />
 		</Tab.Navigator>
 	);

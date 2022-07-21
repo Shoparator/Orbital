@@ -90,9 +90,10 @@ const Login = ({ navigation }) => {
 					<Image
 						style={styles.logo}
 						source={require("../../assets/logo_transparent.png")}
+						testID="logo"
 					/>
 
-					<Text style={darkTheme ? darkStyles.header : styles.header}>
+					<Text style={darkTheme ? darkStyles.header : styles.header} testID="header">
 						Login
 					</Text>
 
@@ -109,6 +110,7 @@ const Login = ({ navigation }) => {
 								style={styles.authImg}
 							/>
 						}
+						testID="email_field"
 					/>
 
 					<AuthTextInput
@@ -127,13 +129,15 @@ const Login = ({ navigation }) => {
 						button={
 							<TouchableOpacity
 								onPress={() => navigation.navigate("Forget")}
+								testID="navigate_to_forget"
 							>
 								<Text style={styles.buttonText}>Forget?</Text>
 							</TouchableOpacity>
 						}
+						testID="password_field"
 					/>
 
-					<AuthButton onPressHandler={loginHandler} title={"Login"} />
+					<AuthButton onPressHandler={loginHandler} title={"Login"} testID="login_button" />
 
 					<View
 						style={{
@@ -147,6 +151,7 @@ const Login = ({ navigation }) => {
 							onPress={() => {
 								navigation.navigate("Register");
 							}}
+							testID="navigate_to_register"
 						>
 							<Text style={styles.textButton}>Register</Text>
 						</TouchableOpacity>
