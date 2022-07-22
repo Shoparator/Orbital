@@ -1,6 +1,6 @@
 import React from 'react';
 import AuthTextInput from '../AuthTextInput';
-import { ThemeContext } from '../../ThemeManager';
+import { ThemeContext } from '../../Contexts/ThemeManager';
 import { render,screen } from '@testing-library/react-native';
 
 describe('Auth Components', () => {

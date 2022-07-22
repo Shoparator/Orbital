@@ -1,6 +1,6 @@
 import React from 'react';
 import ItemDetails from "../ItemDetails";
-import { ThemeContext } from '../../components/ThemeManager';
+import { ThemeContext } from '../../components/Contexts/ThemeManager';
 import { render, fireEvent } from '@testing-library/react-native';
 
 jest.mock('firebase/auth', () => {

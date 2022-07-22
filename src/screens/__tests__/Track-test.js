@@ -1,6 +1,6 @@
 import React from 'react';
 import Track from "../Track";
-import { ThemeContext } from '../../components/ThemeManager';
+import { ThemeContext } from '../../components/Contexts/ThemeManager';
 import { render, fireEvent } from '@testing-library/react-native';
 import * as Firestore from "firebase/firestore";
 

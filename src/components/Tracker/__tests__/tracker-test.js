@@ -1,7 +1,7 @@
 import React from 'react';
 import ItemButton from "../ItemButton";
 import VoucherBlock from '../VoucherBlock';
-import { ThemeContext } from '../../ThemeManager';
+import { ThemeContext } from '../../Contexts/ThemeManager';
 import { render, fireEvent } from '@testing-library/react-native';
 
 const mockedNavigate = jest.fn();

@@ -1,6 +1,6 @@
 import React from 'react';
 import Register from "../Register";
-import { ThemeContext } from '../../components/ThemeManager';
+import { ThemeContext } from '../../components/Contexts/ThemeManager';
 import { render, fireEvent } from '@testing-library/react-native';
 import Toast from 'react-native-root-toast';
 import * as auth from 'firebase/auth'

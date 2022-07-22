@@ -2,7 +2,7 @@ import React from 'react';
 import { render, fireEvent, waitFor } from '@testing-library/react-native';
 
 import Login from "../Login";
-import { ThemeContext } from '../../components/ThemeManager';
+import { ThemeContext } from '../../components/Contexts/ThemeManager';
 import Toast from 'react-native-root-toast';
 import * as auth from 'firebase/auth'
 
