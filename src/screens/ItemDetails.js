@@ -4,7 +4,6 @@ import {
 	View,
 	TouchableOpacity,
 	Linking,
-	Dimensions,
 	SafeAreaView
 } from "react-native";
 import { useNavigation, useRoute } from "@react-navigation/native";
@@ -23,14 +22,13 @@ const ItemDetails = () => {
 	const route = useRoute();
 	const navigation = useNavigation();
 	const data = route.params.data;
-	const screenWidth = Dimensions.get("window").width;
 	const { darkTheme } = useContext(ThemeContext);
 
 	// Add delete icon on the header
 	useLayoutEffect(() => {
 		navigation.setOptions({
 			headerRight: () => (
-				<TouchableOpacity onPress={() => onDeleteHandler(data.id)}>
+				<TouchableOpacity onPress={() => onDeleteHandler(data.id)} testID="delete_button" >
 					<MaterialIcons
 						name="delete"
 						size={30}
@@ -87,7 +85,7 @@ const ItemDetails = () => {
 				<ItemImage data={data} />
 			</View>
 			<View style={{padding:10, marginBottom:10}}>
-				<PureChart data={chartData} type='line' />
+				<PureChart data={chartData} type='line' testID="chart" />
 			</View>
 			<View>
 				<AuthButton
@@ -95,6 +93,7 @@ const ItemDetails = () => {
 						Linking.openURL(data.url);
 					}}
 					title="Go to Product Page"
+					testID="redirect_button"
 				/>
 			</View>
 			<ActionButton
@@ -106,6 +105,7 @@ const ItemDetails = () => {
 				}
 				buttonColor="rgba(10,132,255,1)"
 				onPress={onPress}
+				testID="navigate_to_edit_item"
 			/>
 		</SafeAreaView>
 	);

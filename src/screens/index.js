@@ -3,8 +3,6 @@ export { default as Track } from "./Track";
 export { default as AddItem } from "./AddItem";
 export { default as Register } from "./Register";
 export { default as Forget } from "./Forget";
-export { default as HomeScreen } from "./HomeScreen";
-export { default as SettingsScreen } from "./SettingsScreen";
 export { default as ItemDetails } from "./ItemDetails";
 export { default as EditItem } from "./EditItem";
 export { default as Coupon } from "./Coupon";

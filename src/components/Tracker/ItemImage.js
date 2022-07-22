@@ -9,16 +9,16 @@ const ItemImage = (props) => {
 	return (
 		<View style={darkTheme ? darkStyles.container : styles.container}>
 			<View>
-				<Image style={styles.logo} source={{ uri: data.imgUrl }} />
+				<Image style={styles.logo} source={{ uri: data.imgUrl }} testID="image" />
 			</View>
 			<View style={styles.rightContainer}>
-				<Text style={darkTheme ? darkStyles.text : styles.text}>
+				<Text style={darkTheme ? darkStyles.text : styles.text} testID="name">
 					Name: {data.name}
 				</Text>
-				<Text style={darkTheme ? darkStyles.text : styles.text}>
+				<Text style={darkTheme ? darkStyles.text : styles.text} testID="price">
 					Current Price: {"$" + data.price[0]}
 				</Text>
-				<Text style={darkTheme ? darkStyles.text : styles.text}>
+				<Text style={darkTheme ? darkStyles.text : styles.text} testID="threshold_price">
 					Notify At: ${data.thresholdPrice}
 				</Text>
 			</View>

@@ -14,6 +14,7 @@ const ItemButton = (props) => {
 					data: data,
 				})
 			}
+			testID="item_button"
 		>
 			<ItemImage data={data} />
 		</TouchableOpacity>

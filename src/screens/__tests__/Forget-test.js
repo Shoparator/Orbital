@@ -2,7 +2,11 @@ import React from 'react';
 import Forget from "../Forget";
 import { ThemeContext } from '../../components/ThemeManager';
 import { render, fireEvent } from '@testing-library/react-native';
+import Toast from 'react-native-root-toast';
+import * as auth from 'firebase/auth'
 
+Toast.show = jest.fn();
+jest.mock("firebase/auth");
 
 describe('Forget screen', () => {
     it("should render the screen without crashing", () => {
@@ -50,5 +54,19 @@ describe('Forget screen', () => {
         fireEvent.press(redirectRegister);
 
         expect(navigation.navigate).toHaveBeenCalledWith("Login");
+    })
+
+    it('Should display error toast when fields are empty', async () => {
+        const page = render(
+            <ThemeContext.Provider value={{darkTheme: false}}>
+                <Forget/>
+            </ThemeContext.Provider>
+        );
+
+        const submitButton = page.getByTestId("submit_button");
+        fireEvent.press(submitButton);
+
+        expect(Toast.show).toHaveBeenCalled();
+        expect(auth.sendPasswordResetEmail).not.toHaveBeenCalled();
     })
 })

@@ -28,6 +28,7 @@ const SearchBar = ({ clicked, searchPhrase, setSearchPhrase, setClicked }) => {
 					onFocus={() => {
 						setClicked(true);
 					}}
+					testID="search_bar"
 				/>
 				{/* cross Icon, depending on whether the search bar is clicked or not */}
 				{clicked && (
@@ -51,6 +52,7 @@ const SearchBar = ({ clicked, searchPhrase, setSearchPhrase, setClicked }) => {
 							Keyboard.dismiss();
 							setClicked(false);
 						}}
+						testID="search_bar_button"
 					></Button>
 				</View>
 			)}

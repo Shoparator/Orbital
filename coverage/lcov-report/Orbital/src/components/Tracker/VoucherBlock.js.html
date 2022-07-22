@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">37.5% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>3/8</span>
+                <span class='fraction'>8/8</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">50% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/14</span>
+                <span class='fraction'>7/14</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>0/1</span>
+                <span class='fraction'>1/1</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">37.5% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>3/8</span>
+                <span class='fraction'>8/8</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line low'></div>
+    <div class='status-line high'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -180,20 +180,20 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -226,7 +226,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">6x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -281,7 +281,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">6x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -293,25 +293,25 @@
 import { StyleSheet, Text, View, Image } from "react-native";
 import { ThemeContext } from "../ThemeManager";
 &nbsp;
-const VoucherBlock = <span class="fstat-no" title="function not covered" >(p</span>rops) =&gt; {
-	const { data, shop } = <span class="cstat-no" title="statement not covered" >props;</span>
-	const { darkTheme } = <span class="cstat-no" title="statement not covered" >useContext(ThemeContext);</span>
+const VoucherBlock = (props) =&gt; {
+	const { data, shop } = props;
+	const { darkTheme } = useContext(ThemeContext);
 &nbsp;
-	const info = <span class="cstat-no" title="statement not covered" >data.split("/");</span>
+	const info = data.split("/");
 &nbsp;
-	const bankIcon = (<span class="cstat-no" title="statement not covered" >info[0].includes("HSBC") ? require("../../../assets/HSBC.png") </span>
-					: info[0].includes("UOB") ? require("../../../assets/UOB.png")
-					: info[0].includes("DBS") ? require("../../../assets/DBS.png")
-					: info[0].includes("ICBC") ? require("../../../assets/ICBC.png")
-					: info[0].includes("CIMB") ? require("../../../assets/CIMB.png")
+	const bankIcon = (info[0].includes("HSBC") ? <span class="branch-0 cbranch-no" title="branch not covered" >require("../../../assets/HSBC.png") </span>
+					: info[0].includes("UOB") ? <span class="branch-0 cbranch-no" title="branch not covered" >require("../../../assets/UOB.png")</span>
+					: info[0].includes("DBS") ? <span class="branch-0 cbranch-no" title="branch not covered" >require("../../../assets/DBS.png")</span>
+					: info[0].includes("ICBC") ? <span class="branch-0 cbranch-no" title="branch not covered" >require("../../../assets/ICBC.png")</span>
+					: info[0].includes("CIMB") ? <span class="branch-0 cbranch-no" title="branch not covered" >require("../../../assets/CIMB.png")</span>
 					: require("../../../assets/Citi.png"));
 &nbsp;
-<span class="cstat-no" title="statement not covered" >	return (</span>
-		&lt;View style={darkTheme ? darkStyles.container : styles.container}&gt;
+	return (
+		&lt;View style={darkTheme ? <span class="branch-0 cbranch-no" title="branch not covered" >darkStyles.container </span>: styles.container}&gt;
 			&lt;View style={{backgroundColor: "rgb(10, 148, 244)", justifyContent: "center", borderRadius: 10}}&gt;
 				&lt;View style={styles.logo}&gt;
 					{info[0].includes("Voucher") 
-						? &lt;Image source={bankIcon} style={{flex: 1, width: undefined, height: undefined, resizeMode: 'contain'}} /&gt;
+						? <span class="branch-0 cbranch-no" title="branch not covered" >&lt;Image source={bankIcon} style={{flex: 1, width: undefined, height: undefined, resizeMode: 'contain'}} /&gt;</span>
 						: &lt;Text style={styles.categoryText}&gt;
 							{info[0]}
 						&lt;/Text&gt;
@@ -409,7 +409,7 @@ const darkStyles = StyleSheet.create({
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2022-07-21T13:37:57.575Z
+                at 2022-07-22T14:23:07.596Z
             </div>
         <script src="../../../../prettify.js"></script>
         <script>

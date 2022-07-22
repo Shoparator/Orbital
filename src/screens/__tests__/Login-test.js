@@ -1,9 +1,13 @@
 import React from 'react';
+import { render, fireEvent, waitFor } from '@testing-library/react-native';
+
 import Login from "../Login";
 import { ThemeContext } from '../../components/ThemeManager';
-import { render, fireEvent } from '@testing-library/react-native';
-import renderer from 'react-test-renderer';
+import Toast from 'react-native-root-toast';
+import * as auth from 'firebase/auth'
 
+Toast.show = jest.fn();
+jest.mock("firebase/auth");
 
 describe('Login screen', () => {
     it("should render the screen without crashing", () => {
@@ -74,23 +78,17 @@ describe('Login screen', () => {
         expect(navigation.navigate).toHaveBeenCalledWith("Forget");
     })
 
-    // it('Should attempt login at Login', async () => {
-    //     let login = renderer.create(
-    //         <ThemeContext.Provider value={{darkTheme: false}}>
-    //             <Login/>
-    //         </ThemeContext.Provider>
-    //     ).getInstance();
+    it('Should display error toast when fields are empty', async () => {
+        const page = render(
+            <ThemeContext.Provider value={{darkTheme: false}}>
+                <Login/>
+            </ThemeContext.Provider>
+        );
 
-    //     const page = render(
-    //         <ThemeContext.Provider value={{darkTheme: false}}>
-    //             <Login/>
-    //         </ThemeContext.Provider>
-    //     );
+        const loginButton = page.getByTestId("login_button");
+        fireEvent.press(loginButton);
 
-    //     const loginButton = page.getByTestId("login_button");
-
-    //     fireEvent.press(loginButton);
-
-    //     expect(login.loginHandler()).toBeCalled();
-    // })
+        expect(Toast.show).toHaveBeenCalled();
+        expect(auth.signInWithEmailAndPassword).not.toHaveBeenCalled();
+    })
 })

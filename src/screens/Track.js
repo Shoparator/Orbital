@@ -7,36 +7,30 @@ import { db, auth } from "../firebase";
 import { ItemButton, SearchBar } from "../components";
 import { ThemeContext } from "../components/ThemeManager";
 
-const Track = ({ navigation, testParams }) => {
-	const [listings, setListings] = useState([]);
+const Track = ({ navigation }) => {
+	const [listings, setListings] = React.useState([]);
 	const [searchPhrase, setSearchPhrase] = useState("");
 	const [clicked, setClicked] = useState(false);
 	const { darkTheme } = useContext(ThemeContext);
 
 
 	// Helper Functions
-	if (testParams!= null) {
+	useEffect(() => {
+		// Retrieve the data stored in firestore and stores in listings array
+		const listingsQuery = query(
+			collection(db, "track", "users", auth.currentUser.uid)
+		);
+		const unsubscribe = onSnapshot(listingsQuery, (snapshot) => {
+			const listings = [];
 
-		setListings(...testParams["testingList"]);
-	} else {
-		useEffect(() => {
-			// Retrieve the data stored in firestore and stores in listings array
-			const listingsQuery = query(
-				collection(db, "track", "users", auth.currentUser.uid)
-			);
-			const unsubscribe = onSnapshot(listingsQuery, (snapshot) => {
-				snapshot.docChanges;
-				const listings = [];
-	
-				snapshot.forEach((doc) => {
-					listings.push({ id: doc.id, ...doc.data() });
-				});
-	
-				setListings([...listings]);
+			snapshot.forEach((doc) => {
+				listings.push({ id: doc.id, ...doc.data() });
 			});
-			return unsubscribe;
-		}, []);
-	}
+
+			setListings([...listings]);
+		});
+		return unsubscribe;
+	}, []);
 	
 
 	return (
@@ -57,10 +51,11 @@ const Track = ({ navigation, testParams }) => {
 								.includes(searchPhrase.toLowerCase())
 						)}
 						renderItem={({ item, index }) => (
-							<ItemButton data={item} key={index} testID="navigate_to_item" />
+							<ItemButton data={item} key={index} />
 						)}
 						style={styles.list}
 						showsVerticalScrollIndicator={false}
+						testID="item_list"
 					/>
 				</View>
 			</View>

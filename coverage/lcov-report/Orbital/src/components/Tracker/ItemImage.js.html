@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">50% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>3/6</span>
-            </div>
-        
-            
-            <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
-                <span class="quiet">Branches</span>
-                <span class='fraction'>0/8</span>
-            </div>
-        
-            
-            <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
-                <span class="quiet">Functions</span>
-                <span class='fraction'>0/1</span>
+                <span class='fraction'>6/6</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">50% </span>
+                <span class="quiet">Branches</span>
+                <span class='fraction'>4/8</span>
+            </div>
+        
+            
+            <div class='fl pad1y space-right2'>
+                <span class="strong">100% </span>
+                <span class="quiet">Functions</span>
+                <span class='fraction'>1/1</span>
+            </div>
+        
+            
+            <div class='fl pad1y space-right2'>
+                <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>3/6</span>
+                <span class='fraction'>6/6</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line medium'></div>
+    <div class='status-line high'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -141,13 +141,11 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-yes">8x</span>
+<span class="cline-any cline-yes">8x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">8x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -167,9 +165,9 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">6x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -194,7 +192,9 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">6x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -215,23 +215,23 @@
 import { StyleSheet, Text, View, Image } from "react-native";
 import { ThemeContext } from "../ThemeManager";
 &nbsp;
-const ItemImage = <span class="fstat-no" title="function not covered" >(p</span>rops) =&gt; {
-	const { data } = <span class="cstat-no" title="statement not covered" >props;</span>
-	const { darkTheme } = <span class="cstat-no" title="statement not covered" >useContext(ThemeContext);</span>
+const ItemImage = (props) =&gt; {
+	const { data } = props;
+	const { darkTheme } = useContext(ThemeContext);
 &nbsp;
-<span class="cstat-no" title="statement not covered" >	return (</span>
-		&lt;View style={darkTheme ? darkStyles.container : styles.container}&gt;
+	return (
+		&lt;View style={darkTheme ? <span class="branch-0 cbranch-no" title="branch not covered" >darkStyles.container </span>: styles.container}&gt;
 			&lt;View&gt;
-				&lt;Image style={styles.logo} source={{ uri: data.imgUrl }} /&gt;
+				&lt;Image style={styles.logo} source={{ uri: data.imgUrl }} testID="image" /&gt;
 			&lt;/View&gt;
 			&lt;View style={styles.rightContainer}&gt;
-				&lt;Text style={darkTheme ? darkStyles.text : styles.text}&gt;
+				&lt;Text style={darkTheme ? <span class="branch-0 cbranch-no" title="branch not covered" >darkStyles.text </span>: styles.text} testID="name"&gt;
 					Name: {data.name}
 				&lt;/Text&gt;
-				&lt;Text style={darkTheme ? darkStyles.text : styles.text}&gt;
+				&lt;Text style={darkTheme ? <span class="branch-0 cbranch-no" title="branch not covered" >darkStyles.text </span>: styles.text} testID="price"&gt;
 					Current Price: {"$" + data.price[0]}
 				&lt;/Text&gt;
-				&lt;Text style={darkTheme ? darkStyles.text : styles.text}&gt;
+				&lt;Text style={darkTheme ? <span class="branch-0 cbranch-no" title="branch not covered" >darkStyles.text </span>: styles.text} testID="threshold_price"&gt;
 					Notify At: ${data.thresholdPrice}
 				&lt;/Text&gt;
 			&lt;/View&gt;
@@ -292,7 +292,7 @@ const darkStyles = StyleSheet.create({
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2022-07-21T13:37:57.575Z
+                at 2022-07-22T14:23:07.596Z
             </div>
         <script src="../../../../prettify.js"></script>
         <script>

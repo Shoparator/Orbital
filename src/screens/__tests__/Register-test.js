@@ -2,7 +2,11 @@ import React from 'react';
 import Register from "../Register";
 import { ThemeContext } from '../../components/ThemeManager';
 import { render, fireEvent } from '@testing-library/react-native';
+import Toast from 'react-native-root-toast';
+import * as auth from 'firebase/auth'
 
+Toast.show = jest.fn();
+jest.mock("firebase/auth");
 
 describe('Register screen', () => {
     it("should render the screen without crashing", () => {
@@ -54,5 +58,19 @@ describe('Register screen', () => {
         fireEvent.press(redirectRegister);
 
         expect(navigation.navigate).toHaveBeenCalledWith("Login");
+    })
+
+    it('Should display error toast when fields are empty', async () => {
+        const page = render(
+            <ThemeContext.Provider value={{darkTheme: false}}>
+                <Register/>
+            </ThemeContext.Provider>
+        );
+
+        const registerButton = page.getByTestId("register_button");
+        fireEvent.press(registerButton);
+
+        expect(Toast.show).toHaveBeenCalled();
+        expect(auth.createUserWithEmailAndPassword).not.toHaveBeenCalled();
     })
 })
