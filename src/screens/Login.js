@@ -18,7 +18,7 @@ import { StatusBar } from "expo-status-bar";
 
 import { AuthButton, AuthTextInput } from "../components";
 import { auth } from "../firebase";
-import { ThemeContext } from "../components/ThemeManager";
+import { ThemeContext } from "../components/Contexts/ThemeManager";
 
 const Login = ({ navigation }) => {
 	// Store values that are typed

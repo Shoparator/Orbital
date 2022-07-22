@@ -18,7 +18,7 @@ import Toast from "react-native-root-toast";
 
 import { AuthButton, AuthTextInput } from "../components";
 import { auth } from "../firebase";
-import { ThemeContext } from "../components/ThemeManager";
+import { ThemeContext } from "../components/Contexts/ThemeManager";
 
 const Register = ({ navigation }) => {
 	const [email, setEmail] = useState("");

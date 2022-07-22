@@ -16,7 +16,7 @@ import PureChart from 'react-native-pure-chart';
 
 import { AuthButton, ItemImage } from "../components";
 import { db, auth } from "../firebase";
-import { ThemeContext } from "../components/ThemeManager";
+import { ThemeContext } from "../components/Contexts/ThemeManager";
 
 const ItemDetails = () => {
 	const route = useRoute();
@@ -47,27 +47,22 @@ const ItemDetails = () => {
 			);
 
 			console.log("onDeleteHandler success", id);
-			showRes("Successfully deleted task!");
+			Toast.show("Successfully deleted task!", {
+				duration: Toast.durations.SHORT,
+				backgroundColor: "#fff",
+				textColor: "black",
+				position: Toast.positions.CENTER - 50,
+			});
 			navigation.navigate("Currently Tracking");
 		} catch (err) {
 			console.log("onDeleteHandler failure", err);
-			showRes("Failed to delete task!");
+			Toast.show("Failed to delete task!", {
+				duration: Toast.durations.SHORT,
+				backgroundColor: "#fff",
+				textColor: "black",
+				position: Toast.positions.CENTER - 50,
+			});
 		}
-	};
-
-	// Pop up to display message
-	const showRes = (text) => {
-		Toast.show(text, {
-			duration: Toast.durations.SHORT,
-			backgroundColor: "#fff",
-			textColor: "black",
-			position: Toast.positions.CENTER - 50,
-		});
-	};
-
-	// Navigates to edit page
-	const onPress = () => {
-		navigation.navigate("Edit Item", { data: data });
 	};
 
 	const chartData = [
@@ -104,7 +99,7 @@ const ItemDetails = () => {
 					/>
 				}
 				buttonColor="rgba(10,132,255,1)"
-				onPress={onPress}
+				onPress={navigation.navigate("Edit Item", { data: data })}
 				testID="navigate_to_edit_item"
 			/>
 		</SafeAreaView>

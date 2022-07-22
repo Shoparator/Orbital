@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import { StyleSheet, Text, View, Image } from "react-native";
-import { ThemeContext } from "../ThemeManager";
+import { ThemeContext } from "../Contexts/ThemeManager";
 
 const ItemImage = (props) => {
 	const { data } = props;

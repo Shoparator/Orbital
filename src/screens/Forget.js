@@ -18,7 +18,7 @@ import { AuthButton, AuthTextInput } from "../components";
 import { auth } from "../firebase";
 
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
-import { ThemeContext } from "../components/ThemeManager";
+import { ThemeContext } from "../components/Contexts/ThemeManager";
 
 const Forget = ({ navigation }) => {
 	const [email, setEmail] = useState("");

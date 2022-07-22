@@ -5,12 +5,12 @@ import { StatusBar } from "expo-status-bar";
 
 import { db } from "../firebase";
 import { VoucherBlock } from "../components";
-import { ThemeContext } from "../components/ThemeManager";
+import { ThemeContext } from "../components/Contexts/ThemeManager";
 
 const Coupon = ({ navigation }) => {
-	const [lazadaVouchers, setLazadaVouchers] = useState([]);
-	const [shopeeVouchers, setShopeeVouchers] = useState([]);
-	const [time, setTime] = useState("");
+	const [ lazadaVouchers, setLazadaVouchers ] = React.useState([]);
+	const [ shopeeVouchers, setShopeeVouchers ] = React.useState([]);
+	const [ time, setTime ] = React.useState("");
 	const { darkTheme } = useContext(ThemeContext);
 	const [selected, setSelected] = useState("lazada");
 
@@ -34,28 +34,30 @@ const Coupon = ({ navigation }) => {
 		<SafeAreaView style={styles.container}>
 			<StatusBar style={darkTheme ? "light" : "dark"} />
 			<View style={{flexDirection: "row", justifyContent: "space-evenly"}}>
-				<TouchableOpacity onPress={() => setSelected("lazada")}>
+				<TouchableOpacity onPress={() => setSelected("lazada")} testID="lazada_button">
 					<View style = {styles.button}>
 						<Image source={require("../../assets/lazada.png")} style={{width: 95, height: 25, margin: 5}} />
 					</View>
 				</TouchableOpacity>
-				<TouchableOpacity onPress={() => setSelected("shopee")}>
+				<TouchableOpacity onPress={() => setSelected("shopee")} testID="shopee_button">
 					<View style={styles.button}>
-					<Image source={require("../../assets/shopee.png")} style={{width: 71, height: 25, margin: 5}} />
-
+						<Image source={require("../../assets/shopee.png")} style={{width: 71, height: 25, margin: 5}} />
 					</View>
 				</TouchableOpacity>
 			</View>
-			<Text style={{alignSelf: "flex-end", paddingTop: 5, color: darkTheme ? "#fff" : "#000000"}}>Last Updated: {time} </Text>
+				<Text style={{alignSelf: "flex-end", paddingTop: 5, color: darkTheme ? "#fff" : "#000000"}} testID="time">
+					Last Updated: {time}
+				</Text>
 			<View style={styles.contentContainer}>
 				<View style={styles.listContainer}>
 					<FlatList
 						data={selected == "lazada" ? lazadaVouchers : shopeeVouchers}
 						renderItem={({ item, index }) => (
-							<VoucherBlock data={item} shop={selected} key={index} />
+							<VoucherBlock data={item} shop={selected} key={index}/>
 						)}
 						style={styles.list}
 						showsVerticalScrollIndicator={false}
+						testID="voucher_list"
 					/>
 				</View>
 			</View>

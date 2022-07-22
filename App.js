@@ -6,12 +6,13 @@ import * as Notifications from "expo-notifications";
 import * as TaskManager from "expo-task-manager";
 import { RootSiblingParent } from "react-native-root-siblings";
 
-import MainNavigation from "./src/navigation/MainNavigation";
+import { MainNavigation } from "./src/navigation";
 import { LogBox } from "react-native";
 import { db, auth } from "./src/firebase";
 import { doc, setDoc } from "firebase/firestore";
 import * as RootNavigation from "./src/navigation/RootNavigation";
-import { ThemeProvider } from "./src/components/ThemeManager";
+import { ThemeProvider } from "./src/components/Contexts/ThemeManager";
+import { AuthProvider } from "./src/components/Contexts/AuthManager";
 
 
 LogBox.ignoreLogs(["Warning: ..."]); // Ignore log notification by message
@@ -133,9 +134,11 @@ export default function App() {
 
 	return (
 		<RootSiblingParent>
-			<ThemeProvider>
-				<MainNavigation />
-			</ThemeProvider>
+			<AuthProvider>
+				<ThemeProvider>
+					<MainNavigation />
+				</ThemeProvider>
+			</AuthProvider>
 		</RootSiblingParent>
 	);
 }

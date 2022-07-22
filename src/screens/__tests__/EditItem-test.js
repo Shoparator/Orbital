@@ -1,7 +1,8 @@
 import React from 'react';
-import ItemDetails from "../ItemDetails";
+import EditItem from "../EditItem";
 import { ThemeContext } from '../../components/ThemeManager';
 import { render, fireEvent } from '@testing-library/react-native';
+import * as Firestore from "firebase/firestore";
 
 jest.mock('firebase/auth', () => {
     return {
@@ -12,14 +13,12 @@ jest.mock('firebase/auth', () => {
 });
 
 const mockedNavigate = jest.fn();
-const mockedSetOptions = jest.fn();
 jest.mock('@react-navigation/native', () => {
     const actualNav = jest.requireActual('@react-navigation/native');
     return {
         ...actualNav,
         useNavigation: () => ({
             navigate: mockedNavigate,
-            setOptions: mockedSetOptions
         }),
         useRoute: () => ({
             params: {
@@ -37,12 +36,13 @@ jest.mock('@react-navigation/native', () => {
     };
 });
 
-describe('Item Details screen', () => {
-    it("should render the screen without crashing", async () => {
+jest.mock("firebase/firestore");
 
+describe('Edit Item screen', () => {
+    it("should render the screen without crashing", async () => {
         const rendered = render(
             <ThemeContext.Provider value={{darkTheme: false}}>
-                <ItemDetails/>
+                <EditItem/>
             </ThemeContext.Provider>
         ).toJSON();
 
@@ -52,41 +52,31 @@ describe('Item Details screen', () => {
     it("should render child elements", async () => {
         const page = render(
             <ThemeContext.Provider value={{darkTheme: false}}>
-                <ItemDetails />
+                <EditItem />
             </ThemeContext.Provider>
         );
         
-        const image = page.getByTestId("image");
-        const name = page.getByText("Name: M1 Macbook 8 core 512gb 16gb");
-        const price = page.getByText("Current Price: $1078.00");
-        const thresholdPrice = page.getByText("Notify At: $800");
+        const name = page.getByTestId("name");
+        const thresholdPrice = page.getByTestId("threshold_price");
+        const submitButton = page.getByTestId("submit_button")
 
-        expect(mockedSetOptions).toHaveBeenCalled(); // attempt to create delete button
-        expect(image.props.source).toEqual({uri: "https://cf.shopee.sg/file/8a5d077c95cb1c60ea64a32248fa21d0_tn"});
         expect(name).toBeTruthy();
-        expect(price).toBeTruthy();
         expect(thresholdPrice).toBeTruthy();
+        expect(submitButton).toBeTruthy();
     });
 
-    it("should navigate to Edit Item Page", async () => {
-
+    it('should render placeholder text', async () => {
         const page = render(
             <ThemeContext.Provider value={{darkTheme: false}}>
-                <ItemDetails />
+                <EditItem />
             </ThemeContext.Provider>
         );
         
-        const button = page.getByTestId("navigate_to_edit_item");
-        fireEvent.press(button);
+        const name = page.getByTestId("name");
+        const thresholdPrice = page.getByTestId("threshold_price");
 
-        expect(mockedNavigate).toHaveBeenCalledWith("Edit Item", {data: {
-            id: 1,
-            imgUrl: "https://cf.shopee.sg/file/8a5d077c95cb1c60ea64a32248fa21d0_tn",
-            name: "M1 Macbook 8 core 512gb 16gb",
-            price: ["1078.00", "1078.00", "1078.00", "1078.00", "1078.00"],
-            thresholdPrice: "800",
-            time: ["07-13 09:10", "07-13 05:10", "07-13 01:10", "07-12 21:10", "07-132 17:10"],
-            url: "https://shopee.sg/product/442800909/18314161043?smtt=0.179891669-1656087482.9"
-        }});
-    });
+        expect(name.props.placeholder).toEqual("M1 Macbook 8 core 512gb 16gb");
+        expect(thresholdPrice.props.placeholder).toEqual("800");
+    })
+
 })

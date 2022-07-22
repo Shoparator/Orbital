@@ -5,7 +5,7 @@ import { StatusBar } from "expo-status-bar";
 
 import { db, auth } from "../firebase";
 import { ItemButton, SearchBar } from "../components";
-import { ThemeContext } from "../components/ThemeManager";
+import { ThemeContext } from "../components/Contexts/ThemeManager";
 
 const Track = ({ navigation }) => {
 	const [listings, setListings] = React.useState([]);

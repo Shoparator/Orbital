@@ -15,7 +15,7 @@ import { StatusBar } from "expo-status-bar";
 
 import { db, auth } from "../firebase";
 import { AuthButton, AuthTextInput } from "../components";
-import { ThemeContext } from "../components/ThemeManager";
+import { ThemeContext } from "../components/Contexts/ThemeManager";
 
 const EditItem = () => {
 	const route = useRoute();
@@ -94,6 +94,7 @@ const EditItem = () => {
 								size={20}
 							/>
 						}
+						testID="name"
 					/>
 					<AuthTextInput
 						value={warnPrice}
@@ -110,8 +111,9 @@ const EditItem = () => {
 								size={20}
 							/>
 						}
+						testID="threshold_price"
 					/>
-					<AuthButton title="Submit" onPressHandler={submitHandler} />
+					<AuthButton title="Submit" onPressHandler={submitHandler} testID="submit_button" />
 				</View>
 			</KeyboardAvoidingView>
 		</SafeAreaView>

@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import { StyleSheet, TextInput, View } from "react-native";
 
-import { ThemeContext } from "../ThemeManager";
+import { ThemeContext } from "../Contexts/ThemeManager";
 
 const AuthTextInput = (props) => {
 	const {

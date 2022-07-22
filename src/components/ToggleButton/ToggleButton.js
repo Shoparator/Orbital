@@ -1,7 +1,7 @@
 import { useContext } from "react";
 import { View, Switch, StyleSheet, Text } from "react-native";
 
-import { ThemeContext } from "../ThemeManager";
+import { ThemeContext } from "../Contexts/ThemeManager";
 
 const ToggleButton = (props) => {
 	const { text, value, onPress } = props;
