@@ -52,16 +52,6 @@ const MainNavigation = () => {
 		return unsubscribeAuthStateChanged;
 	}, []);
 
-	// Pop up to display message
-	const showRes = (text) => {
-		Toast.show(text, {
-			duration: Toast.durations.SHORT,
-			backgroundColor: "#fff",
-			textColor: "black",
-			position: Toast.positions.CENTER - 50,
-		});
-	};
-
 	// If user is authenticated by Firebase, bring user to the main screen.
 	// Else bring user to login screen
 	return (

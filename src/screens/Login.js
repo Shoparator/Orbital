@@ -28,17 +28,9 @@ const Login = ({ navigation }) => {
 
 	// Helper Fucntions
 
-	const missingFieldsToast = () => {
-		Toast.show("Missing fields, please try again!", {
-			duration: Toast.durations.SHORT,
-			backgroundColor: "#fff",
-			textColor: "black",
-			position: Toast.positions.CENTER - 50,
-		});
-	};
-
-	const loginFailedToast = () => {
-		Toast.show("Login failed. Please check your email and password.", {
+	// Pop up to display message
+	const showRes = (text) => {
+		Toast.show(text, {
 			duration: Toast.durations.SHORT,
 			backgroundColor: "#fff",
 			textColor: "black",
@@ -57,12 +49,11 @@ const Login = ({ navigation }) => {
 	const loginHandler = () => {
 		// Checks if there is anything typed
 		if (email.length === 0 || password.length === 0) {
-			missingFieldsToast();
+			showRes("Missing fields, please try again!");
 			return;
-		}
-
-		// Function from firebase to sign in
-		return signInWithEmailAndPassword(auth, email, password)
+		} else {
+			// Function from firebase to sign in
+			return signInWithEmailAndPassword(auth, email, password)
 			.then((userCredentials) => {
 				restoreForm();
 			})
@@ -70,8 +61,9 @@ const Login = ({ navigation }) => {
 				const errorCode = error.code;
 				const errorMessage = error.message;
 				console.error("[loginHandler]", errorCode, errorMessage);
-				loginFailedToast();
+				showRes("Login failed. Please check your email and password.");
 			});
+		}
 	};
 
 	return (

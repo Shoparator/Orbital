@@ -5,8 +5,24 @@ import { render, fireEvent } from '@testing-library/react-native';
 import Toast from 'react-native-root-toast';
 import * as auth from 'firebase/auth'
 
+jest.mock('react', () => {
+    const actualReact = jest.requireActual('react');
+    return {
+        ...actualReact,
+        Keyboard: {
+            dismiss: () => jest.fn()
+        }
+    };
+});
+
+jest.mock('firebase/auth');
+
 Toast.show = jest.fn();
-jest.mock("firebase/auth");
+auth.sendPasswordResetEmail = jest.fn().mockReturnValue({
+    then: () => ({
+        catch: jest.fn()
+    })
+});
 
 describe('Forget screen', () => {
     it("should render the screen without crashing", () => {
@@ -68,5 +84,34 @@ describe('Forget screen', () => {
 
         expect(Toast.show).toHaveBeenCalled();
         expect(auth.sendPasswordResetEmail).not.toHaveBeenCalled();
+    })
+
+    it('should change values in text inputs when input changes', () => {
+        const page = render(
+            <ThemeContext.Provider value={{darkTheme: false}}>
+                <Forget/>
+            </ThemeContext.Provider>
+        );
+        
+        const emailField = page.getByTestId("email_field");
+        fireEvent.changeText(emailField, "test@test123.com");
+
+        expect(emailField.props.value).toEqual("test@test123.com");
+    })
+
+    it('should attempt to send request with firebase if text inputs are not empty', () => {
+        const page = render(
+            <ThemeContext.Provider value={{darkTheme: false}}>
+                <Forget/>
+            </ThemeContext.Provider>
+        );
+        
+        const emailField = page.getByTestId("email_field");
+        const submitButton = page.getByTestId("submit_button");
+        fireEvent.changeText(emailField, "test@test123.com");
+
+        fireEvent.press(submitButton);
+        
+        expect(auth.sendPasswordResetEmail).toHaveBeenCalled();
     })
 })

@@ -27,6 +27,7 @@ const TabButton = (props) => {
 			onPress={onPress}
 			activeOpacity={1}
 			style={styles.container}
+			testID = "tab_button"
 		>
 			<Animatable.View
 				ref={viewRef}

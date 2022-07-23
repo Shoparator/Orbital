@@ -14,6 +14,16 @@ const DrawerNavigator = () => {
     const { setIsAuth } = useContext(AuthContext);
     const { darkTheme, toggleTheme } = useContext(ThemeContext);
 
+    // Pop up to display message
+	const showRes = (text) => {
+		Toast.show(text, {
+			duration: Toast.durations.SHORT,
+			backgroundColor: "#fff",
+			textColor: "black",
+			position: Toast.positions.CENTER - 50,
+		});
+	};
+
     const logoutHandler = () => {
         signOut(auth).then(() => {
             setIsAuth(false);
@@ -23,15 +33,15 @@ const DrawerNavigator = () => {
     
     const CustomDrawerContent = (props) => {
         return (
-          <DrawerContentScrollView {...props}>
-            <DrawerItemList {...props} />
-            <ToggleButton
-                text={"Dark Mode"}
-                onPress={toggleTheme}
-                value={darkTheme}
-            />
-            <DrawerItem label="Logout" onPress={() => logoutHandler()} />
-          </DrawerContentScrollView>
+            <DrawerContentScrollView {...props}>
+                <DrawerItemList {...props} />
+                    <ToggleButton
+                        text={"Dark Mode"}
+                        onPress={toggleTheme}
+                        value={darkTheme}
+                    />
+                <DrawerItem label="Logout" onPress={() => logoutHandler()} />
+            </DrawerContentScrollView>
         );
     }
 

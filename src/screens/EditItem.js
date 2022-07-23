@@ -30,6 +30,10 @@ const EditItem = () => {
 			showRes("Notify At should contains numbers only.");
 			return;
 		}
+		if (warnPrice.length == 0 || name.length == 0) {
+			showRes("Fields must not be empty to make changes.");
+			return;
+		}
 		if (name.length > 0 || warnPrice.length > 0) {
 			try {
 				const ref = doc(

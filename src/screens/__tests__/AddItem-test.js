@@ -40,6 +40,15 @@ jest.mock('@react-navigation/native', () => {
     };
 });
 
+jest.mock('react', () => {
+    const actualReact = jest.requireActual('react');
+    return {
+        ...actualReact,
+        Keyboard: {
+            dismiss: jest.fn()
+        }
+    };
+});
 
 describe('Add Item screen', () => {
     it("should render the screen without crashing", async () => {
@@ -103,5 +112,67 @@ describe('Add Item screen', () => {
 			textColor: "black",
 			position: Toast.positions.CENTER - 50,
 		});
+    })
+
+    it('should change values in text inputs when input changes', () => {
+        const page = render(
+            <ThemeContext.Provider value={{darkTheme: false}}>
+                <AddItem/>
+            </ThemeContext.Provider>
+        );
+        
+        const nameField = page.getByTestId("name_field");
+        const urlField = page.getByTestId("url_field")
+        const thresholdPriceField = page.getByTestId("threshold_field");
+        fireEvent.changeText(nameField, "test name");
+        fireEvent.changeText(urlField, "test url");
+        fireEvent.changeText(thresholdPriceField, "test price");
+
+        expect(nameField.props.value).toEqual("test name");
+        expect(urlField.props.value).toEqual("test url");
+        expect(thresholdPriceField.props.value).toEqual("test price");
+    })
+
+    it('should display error toast if threshold price value is not a number are not empty', () => {
+        const page = render(
+            <ThemeContext.Provider value={{darkTheme: false}}>
+                <AddItem/>
+            </ThemeContext.Provider>
+        );
+        
+        const nameField = page.getByTestId("name_field");
+        const urlField = page.getByTestId("url_field")
+        const thresholdPriceField = page.getByTestId("threshold_field");
+        const submitButton = page.getByTestId("submit_button");
+        
+        fireEvent.changeText(nameField, "test name");
+        fireEvent.changeText(urlField, "test url");
+        fireEvent.changeText(thresholdPriceField, "test price");
+        fireEvent.press(submitButton);
+        
+        expect(Toast.show).toHaveBeenCalled();
+        expect(Firestore.updateDoc).not.toHaveBeenCalled();
+        expect(Firestore.doc).not.toHaveBeenCalled();
+    })
+
+    it('should attempt to send request with firebase if text inputs are not empty', () => {
+        const page = render(
+            <ThemeContext.Provider value={{darkTheme: false}}>
+                <AddItem/>
+            </ThemeContext.Provider>
+        );
+        
+        const nameField = page.getByTestId("name_field");
+        const urlField = page.getByTestId("url_field")
+        const thresholdPriceField = page.getByTestId("threshold_field");
+        const submitButton = page.getByTestId("submit_button");
+        
+        fireEvent.changeText(nameField, "test name");
+        fireEvent.changeText(urlField, "test url");
+        fireEvent.changeText(thresholdPriceField, "200");
+        fireEvent.press(submitButton);
+
+        expect(Firestore.collection).toHaveBeenCalled();
+        expect(Firestore.addDoc).toHaveBeenCalled();
     })
 })

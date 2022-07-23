@@ -53,7 +53,6 @@ const Register = ({ navigation }) => {
 			.then(() => {
 				restoreForm();
 				showRes("Verify email to login");
-
 			})
 			.catch((error) => {
 				const errorCode = error.code;

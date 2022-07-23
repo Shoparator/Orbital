@@ -6,8 +6,26 @@ import { ThemeContext } from '../../components/Contexts/ThemeManager';
 import Toast from 'react-native-root-toast';
 import * as auth from 'firebase/auth'
 
+jest.mock('react', () => {
+    const actualReact = jest.requireActual('react');
+    return {
+        ...actualReact,
+        Keyboard: {
+            dismiss: () => jest.fn()
+        }
+    };
+})
+
+jest.mock('firebase/auth');
+
 Toast.show = jest.fn();
-jest.mock("firebase/auth");
+auth.signInWithEmailAndPassword= jest.fn().mockReturnValue({
+    then: () => ({
+        catch: jest.fn()
+    })
+});
+
+
 
 describe('Login screen', () => {
     it("should render the screen without crashing", () => {
@@ -44,7 +62,7 @@ describe('Login screen', () => {
         expect(navigateToRegister).toBeTruthy();
     })
 
-    it('Should go to register on register', async () => {
+    it('should go to register on register', async () => {
         const navigation = {navigate: () => {}};
         spyOn(navigation, 'navigate');
 
@@ -61,7 +79,7 @@ describe('Login screen', () => {
         expect(navigation.navigate).toHaveBeenCalledWith("Register");
     })
 
-    it('Should go to forget on forget', async () => {
+    it('should go to forget on forget', async () => {
         const navigation = {navigate: () => {}};
         spyOn(navigation, 'navigate');
 
@@ -78,7 +96,7 @@ describe('Login screen', () => {
         expect(navigation.navigate).toHaveBeenCalledWith("Forget");
     })
 
-    it('Should display error toast when fields are empty', async () => {
+    it('should display error toast when fields are empty', async () => {
         const page = render(
             <ThemeContext.Provider value={{darkTheme: false}}>
                 <Login/>
@@ -90,5 +108,38 @@ describe('Login screen', () => {
 
         expect(Toast.show).toHaveBeenCalled();
         expect(auth.signInWithEmailAndPassword).not.toHaveBeenCalled();
+    })
+
+    it('should change values in text inputs when input changes', () => {
+        const page = render(
+            <ThemeContext.Provider value={{darkTheme: false}}>
+                <Login/>
+            </ThemeContext.Provider>
+        );
+        
+        const emailField = page.getByTestId("email_field");
+        const passwordField = page.getByTestId("password_field");
+        fireEvent.changeText(emailField, "test@test123.com");
+        fireEvent.changeText(passwordField, "test123");
+
+        expect(emailField.props.value).toEqual("test@test123.com");
+        expect(passwordField.props.value).toEqual("test123");
+    })
+
+    it('should attempt to login with firebase if text inputs are not empty', () => {
+        const page = render(
+            <ThemeContext.Provider value={{darkTheme: false}}>
+                <Login/>
+            </ThemeContext.Provider>
+        );
+        
+        const emailField = page.getByTestId("email_field");
+        const passwordField = page.getByTestId("password_field");
+        const loginButton = page.getByTestId("login_button");
+        fireEvent.changeText(emailField, "test@test123.com");
+        fireEvent.changeText(passwordField, "test123");
+        fireEvent.press(loginButton);
+        
+        expect(auth.signInWithEmailAndPassword).toHaveBeenCalled();
     })
 })

@@ -37,6 +37,24 @@ describe('Coupon screen', () => {
     });
 
     it("should render child elements", async () => {
+        const page = render(
+            <ThemeContext.Provider value={{darkTheme: false}}>
+                <Coupon />
+            </ThemeContext.Provider>
+        );
+
+        const lazadaButton = page.getByTestId("lazada_button");
+        const shopeeButton = page.getByTestId("shopee_button");
+        const timeElement = page.getByTestId("time");
+        const list = page.getByTestId("voucher_list");
+        
+        expect(lazadaButton).toBeTruthy();
+        expect(shopeeButton).toBeTruthy();
+        expect(timeElement).toBeTruthy();
+        expect(list).toBeTruthy();
+    });
+
+    it("should change list items when other shop button is pressed", async () => {
         const realUseState = React.useState;
         const lazadaVouchers = [
             "Media, Books, Stationery/$4/Min.spend $40/10-31 Jul,2022",
@@ -55,24 +73,21 @@ describe('Coupon screen', () => {
 
         const page = render(
             <ThemeContext.Provider value={{darkTheme: false}}>
-                <Coupon />
+                <Coupon/>
             </ThemeContext.Provider>
-        );
-
-        const lazadaButton = page.getByTestId("lazada_button");
-        const shopeeButton = page.getByTestId("shopee_button");
-        const timeElement = page.getByTestId("time");
-        const list = page.getByTestId("voucher_list");
-        const vouchers = page.getAllByTestId("voucher_block");
+        )
         
-        expect(lazadaButton).toBeTruthy();
-        expect(shopeeButton).toBeTruthy();
-        expect(timeElement).toBeTruthy();
-        expect(list).toBeTruthy();
-        expect(vouchers.length).toEqual(3);
+        const shopeeButton = page.getByTestId("shopee_button");
+        const voucherList = page.getByTestId("voucher_list");
+
+        expect(voucherList.props.data.length).toEqual(3);
+
+        fireEvent.press(shopeeButton);
+
+        expect(voucherList.props.data.length).toEqual(2);
     });
 
-    it("should attempt to data from Firestore", async () => {
+    it("should attempt to get data from Firestore", async () => {
         const page = render(
             <ThemeContext.Provider value={{darkTheme: false}}>
                 <Coupon/>
@@ -81,5 +96,4 @@ describe('Coupon screen', () => {
 
         expect(Firestore.onSnapshot).toHaveBeenCalled();
     });
-    
 })

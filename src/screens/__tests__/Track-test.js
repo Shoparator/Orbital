@@ -25,7 +25,14 @@ jest.mock('@react-navigation/native', () => {
 
 jest.mock("firebase/firestore");
 
+const realUseState = React.useState;
+
+
 describe('Track screen', () => {
+    afterEach(() => {
+        // restore mocked method
+        React.useState = realUseState;
+      });
     it("should render the screen without crashing", async () => {
         const rendered = render(
             <ThemeContext.Provider value={{darkTheme: false}}>
@@ -131,4 +138,48 @@ describe('Track screen', () => {
             url: "https://shopee.sg/product/442800909/18314161043?smtt=0.179891669-1656087482.9"
         }});
     });
+
+    it("should filter the list when search bar has values", () => {
+        const stubInitialState = [
+            {
+                id: 1,
+                imgUrl: "https://cf.shopee.sg/file/8a5d077c95cb1c60ea64a32248fa21d0_tn",
+                name: "M1 Macbook 8 core 512gb 16gb",
+                price: ["1078.00", "1078.00", "1078.00", "1078.00", "1078.00"],
+                thresholdPrice: "800",
+                time: ["07-13 09:10", "07-13 05:10", "07-13 01:10", "07-12 21:10", "07-132 17:10"],
+                url: "https://shopee.sg/product/442800909/18314161043?smtt=0.179891669-1656087482.9"
+            },
+            {
+                id: 2,
+                imgUrl: "https://lzd-img-global.slatic.net/g/p/190a334ebe8f4f6b8d05e5654d61416b.jpg_720x720q80.jpg_.webp",
+                name: "S22",
+                price: ["1829.00", "1829.00", "1829.00", "1829.00", "1879.00"],
+                thresholdPrice: "1000",
+                time: ["07-13 09:10", "07-13 05:10", "07-13 01:10", "07-12 21:10", "07-132 17:10"],
+                url: "https://www.lazada.sg/products/samsung-galaxy-5g-i2177483385-s12434648195.html?freeshipping=1&search=1&spm=a2o42.searchlist.list.i8.c1b98eb4LWkzgs"
+            }
+        ];
+
+        jest.spyOn(React, 'useState').mockImplementationOnce(() => realUseState(stubInitialState));
+
+        const page = render(
+            <ThemeContext.Provider value={{darkTheme: false}}>
+                <Track />
+            </ThemeContext.Provider>
+        );
+
+        const searchBar = page.getByTestId("search_bar");
+        const list = page.getByTestId("item_list");
+
+        expect(list.props.data.length).toEqual(2);
+
+        fireEvent.changeText(searchBar, "2");
+
+        expect(list.props.data.length).toEqual(2);
+        
+        fireEvent.changeText(searchBar, "M1");
+
+        expect(list.props.data.length).toEqual(1);
+    })
 })

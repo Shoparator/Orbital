@@ -38,17 +38,4 @@ describe('Auth Components', () => {
         expect(searchBar).toBeTruthy();
         expect(searchBarButton).toBeTruthy();
     })
-
-    // it("should stop display of cancel button and stop focus when pressed", async () => {
-    //     let clicked = [true];
-    //     const page = render(<SearchBar clicked={clicked[0]} setClicked={(bool) => clicked[0] = bool} />);
-
-    //     const searchBar = page.getByTestId("search_bar");
-    //     const searchBarButton = page.queryByTestId("search_bar_button");
-
-    //     fireEvent.press(searchBarButton);
-
-    //     expect(searchBar.props.clicked).toEqual(false);
-    //     expect(searchBarButton).toBeNull();
-    // })
 })

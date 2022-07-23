@@ -27,8 +27,13 @@ const AddItem = ({ navigation }) => {
 	// Helper Functions
 	const submitHandler = async () => {
 		// Checks if fields are empty
-		if (name.length === 0 || url.length === 0) {
+		if (name.length === 0 || url.length === 0 || warnPrice.length == 0) {
 			showRes("Fields cannot be empty!");
+			return;
+		}
+
+		if (isNaN(warnPrice)) { // Ensures only numbers inputted in the field
+			showRes("Notify At should contains numbers only.");
 			return;
 		}
 

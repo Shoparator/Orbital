@@ -3,6 +3,9 @@ import EditItem from "../EditItem";
 import { ThemeContext } from '../../components/Contexts/ThemeManager';
 import { render, fireEvent } from '@testing-library/react-native';
 import * as Firestore from "firebase/firestore";
+import Toast from 'react-native-root-toast';
+
+Toast.show = jest.fn();
 
 jest.mock('firebase/auth', () => {
     return {
@@ -38,6 +41,16 @@ jest.mock('@react-navigation/native', () => {
 
 jest.mock("firebase/firestore");
 
+jest.mock('react', () => {
+    const actualReact = jest.requireActual('react');
+    return {
+        ...actualReact,
+        Keyboard: {
+            dismiss: jest.fn()
+        }
+    };
+});
+
 describe('Edit Item screen', () => {
     it("should render the screen without crashing", async () => {
         const rendered = render(
@@ -58,7 +71,7 @@ describe('Edit Item screen', () => {
         
         const name = page.getByTestId("name");
         const thresholdPrice = page.getByTestId("threshold_price");
-        const submitButton = page.getByTestId("submit_button")
+        const submitButton = page.getByTestId("submit_button");
 
         expect(name).toBeTruthy();
         expect(thresholdPrice).toBeTruthy();
@@ -79,4 +92,71 @@ describe('Edit Item screen', () => {
         expect(thresholdPrice.props.placeholder).toEqual("800");
     })
 
+    it('should show error toast', async () => {
+        const page = render(
+            <ThemeContext.Provider value={{darkTheme: false}}>
+                <EditItem />
+            </ThemeContext.Provider>
+        );
+        
+        const submitButton = page.getByTestId("submit_button");
+        fireEvent.press(submitButton);
+
+        expect(Toast.show).toHaveBeenCalled();
+    })
+
+    it('should change values in text inputs when input changes', () => {
+        const page = render(
+            <ThemeContext.Provider value={{darkTheme: false}}>
+                <EditItem/>
+            </ThemeContext.Provider>
+        );
+        
+        const nameField = page.getByTestId("name");
+        const thresholdPriceField = page.getByTestId("threshold_price");
+        fireEvent.changeText(nameField, "test name");
+        fireEvent.changeText(thresholdPriceField, "test price");
+
+        expect(nameField.props.value).toEqual("test name");
+        expect(thresholdPriceField.props.value).toEqual("test price");
+
+    })
+
+    it('should display error toast if threshold price value is not a number are not empty', () => {
+        const page = render(
+            <ThemeContext.Provider value={{darkTheme: false}}>
+                <EditItem/>
+            </ThemeContext.Provider>
+        );
+        
+        const nameField = page.getByTestId("name");
+        const thresholdPriceField = page.getByTestId("threshold_price");
+        const submitButton = page.getByTestId("submit_button");
+        fireEvent.changeText(nameField, "test name");
+        fireEvent.changeText(thresholdPriceField, "test price");
+        fireEvent.press(submitButton);
+        
+        expect(Toast.show).toHaveBeenCalled();
+        expect(Firestore.updateDoc).not.toHaveBeenCalled();
+        expect(Firestore.doc).not.toHaveBeenCalled();
+    })
+
+    it('should attempt to send request with firebase if text inputs are not empty', () => {
+        const page = render(
+            <ThemeContext.Provider value={{darkTheme: false}}>
+                <EditItem/>
+            </ThemeContext.Provider>
+        );
+        
+        const nameField = page.getByTestId("name");
+        const thresholdPriceField = page.getByTestId("threshold_price");
+        const submitButton = page.getByTestId("submit_button");
+        
+        fireEvent.changeText(nameField, "test name");
+        fireEvent.changeText(thresholdPriceField, "100");
+        fireEvent.press(submitButton);
+
+        expect(Firestore.doc).toHaveBeenCalled();
+        expect(Firestore.updateDoc).toHaveBeenCalled();
+    })
 })

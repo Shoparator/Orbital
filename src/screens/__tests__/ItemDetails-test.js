@@ -33,7 +33,7 @@ jest.mock('@react-navigation/native', () => {
                     url: "https://shopee.sg/product/442800909/18314161043?smtt=0.179891669-1656087482.9"
                 }
             }
-          }),
+        }),
     };
 });
 
