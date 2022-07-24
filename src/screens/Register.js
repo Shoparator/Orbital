@@ -18,7 +18,7 @@ import Toast from "react-native-root-toast";
 
 import { AuthButton, AuthTextInput } from "../components";
 import { auth } from "../firebase";
-import { ThemeContext } from "../components/ThemeManager";
+import { ThemeContext } from "../components/Contexts/ThemeManager";
 
 const Register = ({ navigation }) => {
 	const [email, setEmail] = useState("");
@@ -53,7 +53,6 @@ const Register = ({ navigation }) => {
 			.then(() => {
 				restoreForm();
 				showRes("Verify email to login");
-
 			})
 			.catch((error) => {
 				const errorCode = error.code;
@@ -85,9 +84,10 @@ const Register = ({ navigation }) => {
 					<Image
 						style={styles.logo}
 						source={require("../../assets/logo_transparent.png")}
+						testID="logo"
 					/>
 
-					<Text style={darkTheme ? darkStyles.header : styles.header}>
+					<Text style={darkTheme ? darkStyles.header : styles.header} testID="header">
 						Register
 					</Text>
 
@@ -104,6 +104,7 @@ const Register = ({ navigation }) => {
 								style={styles.authImg}
 							/>
 						}
+						testID="email_field"
 					/>
 
 					<AuthTextInput
@@ -119,6 +120,7 @@ const Register = ({ navigation }) => {
 								style={styles.authImg}
 							/>
 						}
+						testID="password_field"
 					/>
 
 					<AuthTextInput
@@ -134,11 +136,13 @@ const Register = ({ navigation }) => {
 								style={styles.authImg}
 							/>
 						}
+						testID="repeat_password_field"
 					/>
 
 					<AuthButton
 						onPressHandler={signUpHandler}
 						title={"Register"}
+						testID="register_button"
 					/>
 
 					<View
@@ -153,6 +157,7 @@ const Register = ({ navigation }) => {
 							onPress={() => {
 								navigation.navigate("Login");
 							}}
+							testID="navigate_to_login"
 						>
 							<Text style={styles.textButton}>Login</Text>
 						</TouchableOpacity>

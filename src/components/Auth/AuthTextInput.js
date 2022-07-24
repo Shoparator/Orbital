@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import { StyleSheet, TextInput, View } from "react-native";
 
-import { ThemeContext } from "../ThemeManager";
+import { ThemeContext } from "../Contexts/ThemeManager";
 
 const AuthTextInput = (props) => {
 	const {
@@ -12,6 +12,7 @@ const AuthTextInput = (props) => {
 		textHandler,
 		icon,
 		button,
+		testID
 	} = props;
 
 	const { darkTheme } = useContext(ThemeContext);
@@ -28,6 +29,7 @@ const AuthTextInput = (props) => {
 				onChangeText={textHandler}
 				keyboardType={keyboardType}
 				placeholderTextColor={darkTheme ? "#fff" : null}
+				testID={testID}
 			/>
 
 			{button}

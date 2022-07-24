@@ -14,7 +14,7 @@ import { StatusBar } from "expo-status-bar";
 import { db, auth } from "../firebase";
 import { AuthButton, AuthTextInput } from "../components";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
-import { ThemeContext } from "../components/ThemeManager";
+import { ThemeContext } from "../components/Contexts/ThemeManager";
 
 const AddItem = ({ navigation }) => {
 	// Store values for the fields
@@ -27,8 +27,13 @@ const AddItem = ({ navigation }) => {
 	// Helper Functions
 	const submitHandler = async () => {
 		// Checks if fields are empty
-		if (name.length === 0 || url.length === 0) {
+		if (name.length === 0 || url.length === 0 || warnPrice.length == 0) {
 			showRes("Fields cannot be empty!");
+			return;
+		}
+
+		if (isNaN(warnPrice)) { // Ensures only numbers inputted in the field
+			showRes("Notify At should contains numbers only.");
 			return;
 		}
 
@@ -95,6 +100,7 @@ const AddItem = ({ navigation }) => {
 							/>
 						}
 						placeholderTextColor={darkTheme ? "#fff" : null}
+						testID="name_field"
 					/>
 
 					<AuthTextInput
@@ -112,6 +118,8 @@ const AddItem = ({ navigation }) => {
 								size={20}
 							/>
 						}
+						placeholderTextColor={darkTheme ? "#fff" : null}
+						testID="url_field"
 					/>
 
 					<AuthTextInput
@@ -129,9 +137,11 @@ const AddItem = ({ navigation }) => {
 								size={20}
 							/>
 						}
+						placeholderTextColor={darkTheme ? "#fff" : null}
+						testID="threshold_field"
 					/>
 
-					<AuthButton title="Submit" onPressHandler={submitHandler} />
+					<AuthButton title="Submit" onPressHandler={submitHandler} testID="submit_button" />
 				</View>
 			</KeyboardAvoidingView>
 		</SafeAreaView>

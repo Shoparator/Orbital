@@ -18,7 +18,7 @@ import { StatusBar } from "expo-status-bar";
 
 import { AuthButton, AuthTextInput } from "../components";
 import { auth } from "../firebase";
-import { ThemeContext } from "../components/ThemeManager";
+import { ThemeContext } from "../components/Contexts/ThemeManager";
 
 const Login = ({ navigation }) => {
 	// Store values that are typed
@@ -28,17 +28,9 @@ const Login = ({ navigation }) => {
 
 	// Helper Fucntions
 
-	const missingFieldsToast = () => {
-		Toast.show("Missing fields, please try again!", {
-			duration: Toast.durations.SHORT,
-			backgroundColor: "#fff",
-			textColor: "black",
-			position: Toast.positions.CENTER - 50,
-		});
-	};
-
-	const loginFailedToast = () => {
-		Toast.show("Login failed. Please check your email and password.", {
+	// Pop up to display message
+	const showRes = (text) => {
+		Toast.show(text, {
 			duration: Toast.durations.SHORT,
 			backgroundColor: "#fff",
 			textColor: "black",
@@ -57,12 +49,11 @@ const Login = ({ navigation }) => {
 	const loginHandler = () => {
 		// Checks if there is anything typed
 		if (email.length === 0 || password.length === 0) {
-			missingFieldsToast();
+			showRes("Missing fields, please try again!");
 			return;
-		}
-
-		// Function from firebase to sign in
-		return signInWithEmailAndPassword(auth, email, password)
+		} else {
+			// Function from firebase to sign in
+			return signInWithEmailAndPassword(auth, email, password)
 			.then((userCredentials) => {
 				restoreForm();
 			})
@@ -70,8 +61,9 @@ const Login = ({ navigation }) => {
 				const errorCode = error.code;
 				const errorMessage = error.message;
 				console.error("[loginHandler]", errorCode, errorMessage);
-				loginFailedToast();
+				showRes("Login failed. Please check your email and password.");
 			});
+		}
 	};
 
 	return (
@@ -90,9 +82,10 @@ const Login = ({ navigation }) => {
 					<Image
 						style={styles.logo}
 						source={require("../../assets/logo_transparent.png")}
+						testID="logo"
 					/>
 
-					<Text style={darkTheme ? darkStyles.header : styles.header}>
+					<Text style={darkTheme ? darkStyles.header : styles.header} testID="login_header">
 						Login
 					</Text>
 
@@ -109,6 +102,7 @@ const Login = ({ navigation }) => {
 								style={styles.authImg}
 							/>
 						}
+						testID="email_field"
 					/>
 
 					<AuthTextInput
@@ -127,13 +121,15 @@ const Login = ({ navigation }) => {
 						button={
 							<TouchableOpacity
 								onPress={() => navigation.navigate("Forget")}
+								testID="navigate_to_forget"
 							>
 								<Text style={styles.buttonText}>Forget?</Text>
 							</TouchableOpacity>
 						}
+						testID="password_field"
 					/>
 
-					<AuthButton onPressHandler={loginHandler} title={"Login"} />
+					<AuthButton onPressHandler={loginHandler} title={"Login"} testID="login_button" />
 
 					<View
 						style={{
@@ -147,6 +143,7 @@ const Login = ({ navigation }) => {
 							onPress={() => {
 								navigation.navigate("Register");
 							}}
+							testID="navigate_to_register"
 						>
 							<Text style={styles.textButton}>Register</Text>
 						</TouchableOpacity>

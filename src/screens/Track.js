@@ -5,13 +5,14 @@ import { StatusBar } from "expo-status-bar";
 
 import { db, auth } from "../firebase";
 import { ItemButton, SearchBar } from "../components";
-import { ThemeContext } from "../components/ThemeManager";
+import { ThemeContext } from "../components/Contexts/ThemeManager";
 
 const Track = ({ navigation }) => {
-	const [listings, setListings] = useState([]);
+	const [listings, setListings] = React.useState([]);
 	const [searchPhrase, setSearchPhrase] = useState("");
 	const [clicked, setClicked] = useState(false);
 	const { darkTheme } = useContext(ThemeContext);
+
 
 	// Helper Functions
 	useEffect(() => {
@@ -19,9 +20,7 @@ const Track = ({ navigation }) => {
 		const listingsQuery = query(
 			collection(db, "track", "users", auth.currentUser.uid)
 		);
-
 		const unsubscribe = onSnapshot(listingsQuery, (snapshot) => {
-			snapshot.docChanges;
 			const listings = [];
 
 			snapshot.forEach((doc) => {
@@ -32,6 +31,7 @@ const Track = ({ navigation }) => {
 		});
 		return unsubscribe;
 	}, []);
+	
 
 	return (
 		<SafeAreaView style={styles.container}>
@@ -55,6 +55,7 @@ const Track = ({ navigation }) => {
 						)}
 						style={styles.list}
 						showsVerticalScrollIndicator={false}
+						testID="item_list"
 					/>
 				</View>
 			</View>

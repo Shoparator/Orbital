@@ -15,7 +15,7 @@ import { StatusBar } from "expo-status-bar";
 
 import { db, auth } from "../firebase";
 import { AuthButton, AuthTextInput } from "../components";
-import { ThemeContext } from "../components/ThemeManager";
+import { ThemeContext } from "../components/Contexts/ThemeManager";
 
 const EditItem = () => {
 	const route = useRoute();
@@ -28,6 +28,10 @@ const EditItem = () => {
 	const submitHandler = async () => {
 		if (isNaN(warnPrice)) { // Ensures only numbers inputted in the field
 			showRes("Notify At should contains numbers only.");
+			return;
+		}
+		if (warnPrice.length == 0 || name.length == 0) {
+			showRes("Fields must not be empty to make changes.");
 			return;
 		}
 		if (name.length > 0 || warnPrice.length > 0) {
@@ -94,6 +98,7 @@ const EditItem = () => {
 								size={20}
 							/>
 						}
+						testID="name"
 					/>
 					<AuthTextInput
 						value={warnPrice}
@@ -110,8 +115,9 @@ const EditItem = () => {
 								size={20}
 							/>
 						}
+						testID="threshold_price"
 					/>
-					<AuthButton title="Submit" onPressHandler={submitHandler} />
+					<AuthButton title="Submit" onPressHandler={submitHandler} testID="submit_button" />
 				</View>
 			</KeyboardAvoidingView>
 		</SafeAreaView>

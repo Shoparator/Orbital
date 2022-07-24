@@ -1,9 +1,9 @@
 import React, { useContext } from "react";
 import { StyleSheet, Text, View, Image } from "react-native";
-import { ThemeContext } from "../ThemeManager";
+import { ThemeContext } from "../Contexts/ThemeManager";
 
 const VoucherBlock = (props) => {
-	const { data, shop } = props;
+	const { data } = props;
 	const { darkTheme } = useContext(ThemeContext);
 
 	const info = data.split("/");
@@ -16,7 +16,7 @@ const VoucherBlock = (props) => {
 					: require("../../../assets/Citi.png"));
 
 	return (
-		<View style={darkTheme ? darkStyles.container : styles.container}>
+		<View style={darkTheme ? darkStyles.container : styles.container} testID="voucher_block">
 			<View style={{backgroundColor: "rgb(10, 148, 244)", justifyContent: "center", borderRadius: 10}}>
 				<View style={styles.logo}>
 					{info[0].includes("Voucher") 

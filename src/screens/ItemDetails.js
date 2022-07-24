@@ -4,7 +4,6 @@ import {
 	View,
 	TouchableOpacity,
 	Linking,
-	Dimensions,
 	SafeAreaView
 } from "react-native";
 import { useNavigation, useRoute } from "@react-navigation/native";
@@ -17,20 +16,19 @@ import PureChart from 'react-native-pure-chart';
 
 import { AuthButton, ItemImage } from "../components";
 import { db, auth } from "../firebase";
-import { ThemeContext } from "../components/ThemeManager";
+import { ThemeContext } from "../components/Contexts/ThemeManager";
 
 const ItemDetails = () => {
 	const route = useRoute();
 	const navigation = useNavigation();
 	const data = route.params.data;
-	const screenWidth = Dimensions.get("window").width;
 	const { darkTheme } = useContext(ThemeContext);
 
 	// Add delete icon on the header
 	useLayoutEffect(() => {
 		navigation.setOptions({
 			headerRight: () => (
-				<TouchableOpacity onPress={() => onDeleteHandler(data.id)}>
+				<TouchableOpacity onPress={() => onDeleteHandler(data.id)} testID="delete_button" >
 					<MaterialIcons
 						name="delete"
 						size={30}
@@ -49,27 +47,22 @@ const ItemDetails = () => {
 			);
 
 			console.log("onDeleteHandler success", id);
-			showRes("Successfully deleted task!");
+			Toast.show("Successfully deleted task!", {
+				duration: Toast.durations.SHORT,
+				backgroundColor: "#fff",
+				textColor: "black",
+				position: Toast.positions.CENTER - 50,
+			});
 			navigation.navigate("Currently Tracking");
 		} catch (err) {
 			console.log("onDeleteHandler failure", err);
-			showRes("Failed to delete task!");
+			Toast.show("Failed to delete task!", {
+				duration: Toast.durations.SHORT,
+				backgroundColor: "#fff",
+				textColor: "black",
+				position: Toast.positions.CENTER - 50,
+			});
 		}
-	};
-
-	// Pop up to display message
-	const showRes = (text) => {
-		Toast.show(text, {
-			duration: Toast.durations.SHORT,
-			backgroundColor: "#fff",
-			textColor: "black",
-			position: Toast.positions.CENTER - 50,
-		});
-	};
-
-	// Navigates to edit page
-	const onPress = () => {
-		navigation.navigate("Edit Item", { data: data });
 	};
 
 	const chartData = [
@@ -87,7 +80,7 @@ const ItemDetails = () => {
 				<ItemImage data={data} />
 			</View>
 			<View style={{padding:10, marginBottom:10}}>
-				<PureChart data={chartData} type='line' />
+				<PureChart data={chartData} type='line' testID="chart" />
 			</View>
 			<View>
 				<AuthButton
@@ -95,6 +88,7 @@ const ItemDetails = () => {
 						Linking.openURL(data.url);
 					}}
 					title="Go to Product Page"
+					testID="redirect_button"
 				/>
 			</View>
 			<ActionButton
@@ -105,7 +99,8 @@ const ItemDetails = () => {
 					/>
 				}
 				buttonColor="rgba(10,132,255,1)"
-				onPress={onPress}
+				onPress={navigation.navigate("Edit Item", { data: data })}
+				testID="navigate_to_edit_item"
 			/>
 		</SafeAreaView>
 	);

@@ -18,7 +18,7 @@ import { AuthButton, AuthTextInput } from "../components";
 import { auth } from "../firebase";
 
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
-import { ThemeContext } from "../components/ThemeManager";
+import { ThemeContext } from "../components/Contexts/ThemeManager";
 
 const Forget = ({ navigation }) => {
 	const [email, setEmail] = useState("");
@@ -73,9 +73,10 @@ const Forget = ({ navigation }) => {
 					<Image
 						style={styles.logo}
 						source={require("../../assets/logo_transparent.png")}
+						testID="logo"
 					/>
 
-					<Text style={darkTheme ? darkStyles.header : styles.header}>
+					<Text style={darkTheme ? darkStyles.header : styles.header} testID="header">
 						Reset Password
 					</Text>
 
@@ -92,11 +93,13 @@ const Forget = ({ navigation }) => {
 								style={styles.authImg}
 							/>
 						}
+						testID="email_field"
 					/>
 
 					<AuthButton
 						onPressHandler={resetHandler}
 						title={"Reset Password"}
+						testID="submit_button"
 					/>
 					<View
 						style={{
@@ -110,6 +113,7 @@ const Forget = ({ navigation }) => {
 							onPress={() => {
 								navigation.navigate("Login");
 							}}
+							testID="navigate_to_login"
 						>
 							<Text style={styles.textButton}>Login</Text>
 						</TouchableOpacity>

@@ -2,13 +2,14 @@ import { StyleSheet, Text, Pressable } from "react-native";
 import React from "react";
 
 const AuthButton = (props) => {
-	const { onPressHandler, title } = props;
+	const { onPressHandler, title, testID } = props;
 
 	return (
 		<Pressable
 			style={styles.button}
 			onPress={onPressHandler}
 			android_ripple={{ color: "#FFF" }}
+			testID={testID}
 		>
 			<Text style={styles.text}>{title}</Text>
 		</Pressable>

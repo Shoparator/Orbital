@@ -1,7 +1,7 @@
 import { useContext } from "react";
 import { View, Switch, StyleSheet, Text } from "react-native";
 
-import { ThemeContext } from "../ThemeManager";
+import { ThemeContext } from "../Contexts/ThemeManager";
 
 const ToggleButton = (props) => {
 	const { text, value, onPress } = props;
@@ -10,10 +10,10 @@ const ToggleButton = (props) => {
 	return (
 		<View>
 			<View style={styles.container}>
-				<Text style={darkTheme ? darkStyles.text : styles.text}>
+				<Text style={darkTheme ? darkStyles.text : styles.text} testID="toggle_button_text">
 					{text}
 				</Text>
-				<Switch onValueChange={onPress} value={value} />
+				<Switch onValueChange={onPress} value={value} testID="toggle_button" />
 			</View>
 		</View>
 	);
