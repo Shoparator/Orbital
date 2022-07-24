@@ -1,7 +1,7 @@
 import React from 'react';
 import AuthTextInput from '../AuthTextInput';
 import { ThemeContext } from '../../Contexts/ThemeManager';
-import { fireEvent, render,screen } from '@testing-library/react-native';
+import { fireEvent, render, screen } from '@testing-library/react-native';
 
 describe('Auth Components', () => {
     it("should render without crashing", () => {
@@ -36,9 +36,11 @@ describe('Auth Components', () => {
 
         expect(textInput.props.value).toEqual("Testing");
 
-        rerender(<ThemeContext.Provider value={{darkTheme: false}}>
-            <AuthTextInput value="Testing2" testID="test" /> 
-        </ThemeContext.Provider>)
+        rerender(
+            <ThemeContext.Provider value={{darkTheme: false}}>
+                <AuthTextInput value="Testing2" testID="test" /> 
+            </ThemeContext.Provider>
+        );
 
         expect(textInput.props.value).toEqual("Testing2");
     })

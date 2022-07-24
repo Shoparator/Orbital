@@ -85,7 +85,7 @@ const Login = ({ navigation }) => {
 						testID="logo"
 					/>
 
-					<Text style={darkTheme ? darkStyles.header : styles.header} testID="header">
+					<Text style={darkTheme ? darkStyles.header : styles.header} testID="login_header">
 						Login
 					</Text>
 

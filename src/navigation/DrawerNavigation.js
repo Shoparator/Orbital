@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import { createDrawerNavigator, DrawerContentScrollView, DrawerItemList, DrawerItem } from '@react-navigation/drawer';
-import {  signOut } from "firebase/auth";
+import { signOut } from "firebase/auth";
 
 import { auth } from "../firebase";
 import { ThemeContext } from "../components/Contexts/ThemeManager";
@@ -40,7 +40,7 @@ const DrawerNavigator = () => {
                         onPress={toggleTheme}
                         value={darkTheme}
                     />
-                <DrawerItem label="Logout" onPress={() => logoutHandler()} />
+                <DrawerItem label="Logout" onPress={() => logoutHandler()}/>
             </DrawerContentScrollView>
         );
     }

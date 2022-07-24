@@ -25,8 +25,6 @@ auth.signInWithEmailAndPassword= jest.fn().mockReturnValue({
     })
 });
 
-
-
 describe('Login screen', () => {
     it("should render the screen without crashing", () => {
         const rendered = render(
@@ -46,7 +44,7 @@ describe('Login screen', () => {
         );
 
         const logo = page.getByTestId("logo");
-        const header = page.getByTestId("header");
+        const header = page.getByTestId("login_header");
         const emailField = page.getByTestId("email_field");
         const passwordField = page.getByTestId("password_field");
         const navigateToForget = page.getByTestId("navigate_to_forget");

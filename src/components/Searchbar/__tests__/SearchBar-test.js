@@ -1,8 +1,8 @@
 import React from 'react';
 import SearchBar from '../SearchBar';
-import { fireEvent, render,screen } from '@testing-library/react-native';
+import { render, screen } from '@testing-library/react-native';
 
-describe('Auth Components', () => {
+describe('Search Bar', () => {
     it("should render without crashing", () => {
         const rendered = render(<SearchBar /> ).toJSON();
 
@@ -29,7 +29,7 @@ describe('Auth Components', () => {
         expect(page.queryByTestId('search_bar_button')).toBeNull();
     })
 
-    it("should not display cancel button at start when focused", async () => {
+    it("should display cancel button at start when focused", async () => {
         const page = render(<SearchBar clicked={true}/>);
 
         const searchBar = page.getByTestId("search_bar");

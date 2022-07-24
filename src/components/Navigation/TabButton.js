@@ -33,6 +33,7 @@ const TabButton = (props) => {
 				ref={viewRef}
 				duration={300}
 				style={styles.container}
+				testID="animatable_view"
 			>
 				<View style={styles.btn}>
 					<Animatable.View
@@ -44,9 +45,10 @@ const TabButton = (props) => {
 						name={item.iconName}
 						color={focused ? "#fff" : "#CCCCC4"}
 						size={25}
+						testID="icon"
 					/>
 				</View>
-				<Animatable.Text ref={textRef} style={styles.text}>
+				<Animatable.Text ref={textRef} style={styles.text} testID="animatable_text">
 					{item.route}
 				</Animatable.Text>
 			</Animatable.View>

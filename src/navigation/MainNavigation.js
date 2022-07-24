@@ -18,7 +18,7 @@ const MainNavigation = () => {
 	 * This hook serves as a listener to auth state changes provided by firebase.
 	 */
 	const { isAuth, setIsAuth } = useContext(AuthContext);
-	const { darkTheme, toggleTheme } = useContext(ThemeContext);
+	const { darkTheme } = useContext(ThemeContext);
 
 	const verifyAccountToast = () => {
 		Toast.show("Verify your email to login.", {
