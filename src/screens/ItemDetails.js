@@ -99,7 +99,7 @@ const ItemDetails = () => {
 					/>
 				}
 				buttonColor="rgba(10,132,255,1)"
-				onPress={navigation.navigate("Edit Item", { data: data })}
+				onPress={() => navigation.navigate("Edit Item", { data: data })}
 				testID="navigate_to_edit_item"
 			/>
 		</SafeAreaView>

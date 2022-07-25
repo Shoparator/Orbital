@@ -10,7 +10,7 @@ import {
 	SafeAreaView,
 	TouchableOpacity,
 } from "react-native";
-import { createUserWithEmailAndPassword } from "firebase/auth";
+import { createUserWithEmailAndPassword, sendEmailVerification } from "firebase/auth";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { StatusBar } from "expo-status-bar";
@@ -52,7 +52,7 @@ const Register = ({ navigation }) => {
 		return createUserWithEmailAndPassword(auth, email, password)
 			.then(() => {
 				restoreForm();
-				showRes("Verify email to login");
+				sendEmailVerification(auth.currentUser);
 			})
 			.catch((error) => {
 				const errorCode = error.code;
@@ -66,6 +66,7 @@ const Register = ({ navigation }) => {
 	const restoreForm = () => {
 		setEmail("");
 		setPassword("");
+		setConfirmPassword("");
 		Keyboard.dismiss();
 	};
 
