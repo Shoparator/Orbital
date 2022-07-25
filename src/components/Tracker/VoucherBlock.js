@@ -13,6 +13,9 @@ const VoucherBlock = (props) => {
 					: info[0].includes("DBS") ? require("../../../assets/DBS.png")
 					: info[0].includes("ICBC") ? require("../../../assets/ICBC.png")
 					: info[0].includes("CIMB") ? require("../../../assets/CIMB.png")
+					: info[0].includes("ViSA") ? require("../../../assets/Visa.png")
+					: info[0].includes("Mastercard") ? require("../../../assets/Mastercard.png")
+					: info[0].includes("Paylah") ? require("../../../assets/Paylah.png")
 					: require("../../../assets/Citi.png"));
 
 	return (
