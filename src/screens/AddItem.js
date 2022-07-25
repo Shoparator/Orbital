@@ -37,24 +37,28 @@ const AddItem = ({ navigation }) => {
 			return;
 		}
 
-		// Attempt to add the listing to Firestore
-		try {
-			const taskRef = await addDoc(
-				collection(db, "track", "users", auth.currentUser.uid),
-				{
-					name: name,
-					url: url,
-					price: [0, 0, 0, 0, 0],
-					thresholdPrice: warnPrice,
-					time: [0, 0, 0, 0, 0]
-				}
-			);
-			clearForm();
-			console.log("onSubmitHandler success", taskRef.id);
-			showRes("Successfully added listing!");
-		} catch (err) {
-			console.log("onSubmitHandler failure", err);
-			showRes("Failed to add listing!");
+		if (url.includes("lazada") || url.includes("shopee") || url.includes("amazon")) {
+			// Attempt to add the listing to Firestore
+			try {
+				const taskRef = await addDoc(
+					collection(db, "track", "users", auth.currentUser.uid),
+					{
+						name: name,
+						url: url,
+						price: [0, 0, 0, 0, 0],
+						thresholdPrice: warnPrice,
+						time: [0, 0, 0, 0, 0]
+					}
+				);
+				clearForm();
+				console.log("onSubmitHandler success", taskRef.id);
+				showRes("Successfully added listing!");
+			} catch (err) {
+				console.log("onSubmitHandler failure", err);
+				showRes("Failed to add listing!");
+			}
+		} else {
+			showRes("App currently only supports Shopee, Lazada and Amazon");
 		}
 	};
 

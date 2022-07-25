@@ -44,12 +44,24 @@ const Forget = ({ navigation }) => {
 		return sendPasswordResetEmail(auth, email)
 			.then(() => {
 				restoreForm();
+				Toast.show("Check your email for the link to reset your password.", {
+					duration: Toast.durations.SHORT,
+					backgroundColor: "#fff",
+					textColor: "black",
+					position: Toast.positions.CENTER - 50,
+				})
 			})
 			.catch((error) => {
 				const errorCode = error.code;
 				const errorMessage = error.message;
 
 				console.error("[resetHandler]", errorCode, errorMessage);
+				Toast.show("Something failed. Please check your email and try again.", {
+					duration: Toast.durations.SHORT,
+					backgroundColor: "#fff",
+					textColor: "black",
+					position: Toast.positions.CENTER - 50,
+				})
 			});
 	};
 

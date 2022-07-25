@@ -30,7 +30,7 @@ const EditItem = () => {
 			showRes("Notify At should contains numbers only.");
 			return;
 		}
-		if (warnPrice.length == 0 || name.length == 0) {
+		if (warnPrice.length == 0 && name.length == 0) {
 			showRes("Fields must not be empty to make changes.");
 			return;
 		}
@@ -50,10 +50,10 @@ const EditItem = () => {
 				});
 				clearForm();
 				console.log("onSubmitHandler success", ref.id);
-				showRes("Successfully added listing!");
+				showRes("Successfully edited listing!");
 			} catch (err) {
 				console.log("onSubmitHandler failure", err);
-				showRes("Failed to add listing!");
+				showRes("Failed to edit listing!");
 			}
 		}
 	};
